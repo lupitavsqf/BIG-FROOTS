@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Pomodoro- Big Froots</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Registrar la fuente */
+    @font-face {
+      font-family: 'QuadernoBold';
+      src: url("assets/quaderno_bold.otf") format("opentype");
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    /* General reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: url("assets/background.jpg") no-repeat center center fixed;
+      background-size: cover;
+      color: #034c3c;
+      line-height: 1.6;
+      font-family: 'QuadernoBold', Arial, sans-serif; /* fuente aplicada */
+    }
+
+    /* Navbar (igual que index.html) */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      background: url("assets/background.jpg") no-repeat center center;
+      background-size: cover;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0,0,0,0.3);
+      z-index: 0;
+    }
+
+    .navbar img,
+    .navbar nav,
+    .navbar nav a {
+      position: relative;
+      z-index: 1;
+      color: white;
+    }
+
+    .navbar .logo {
+      width: 120px;
+      height: auto; 
+      transition: transform 0.3s;
+    }
+
+    .navbar .logo:hover {
+      transform: scale(1.1);
+    }
+
+    nav a {
+      margin-left: 25px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #fcd34d;
+    }
+
+    /* Hero Producto */
+    .hero-producto {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      background: rgba(255,255,255,0.85);
+      border-radius: 20px;
+      margin: 40px auto;
+      max-width: 1000px;
+    }
+
+    .hero-producto .froot-image {
+    max-width: 800px; /* antes 400px */
+    width: 100%;
+    border-radius: 20px;
+    margin: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    .hero-producto img {
+      max-width: 600px;
+      max-width: 100%;
+      height: auto;
+      width: 100%;
+      border-radius: 20px;
+      margin: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    .hero-producto div {
+      max-width: 500px;
+      margin: 20px;
+      text-align: center;
+    }
+
+    .hero-producto h1 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      color: #034c3c;
+      font-family: 'QuadernoBold', Arial, sans-serif; /* fuente aplicada */
+    }
+
+    .hero-producto p {
+      font-size: 1.1rem;
+      margin-bottom: 25px;
+      color: #05695e;
+    }
+
+    .hero-producto button {
+      padding: 15px 30px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 50px;
+      background-color: #02a488;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      font-family: 'QuadernoBold', Arial, sans-serif; /* fuente en botón */
+    }
+
+    .hero-producto button:hover {
+      background-color: #045c3f;
+      transform: scale(1.05);
+    }
+
+    /* Features */
+    .features {
+      padding: 60px 20px;
+      text-align: center;
+      background: rgba(255,255,255,0.85);
+      border-radius: 20px;
+      max-width: 900px;
+      margin: 40px auto;
+    }
+
+    .features h2 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      color: #034c3c;
+      font-family: 'QuadernoBold', Arial, sans-serif; /* fuente aplicada */
+    }
+
+    .features ul {
+      list-style: none;
+    }
+
+    .features li {
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+      padding-left: 25px;
+      position: relative;
+      text-align: left;
+    }
+
+    .features li::before {
+      content: "✔";
+      position: absolute;
+      left: 0;
+      color: #02a488;
+      font-weight: bold;
+    }
+
+    /* Imagen destacada entre producto y características */
+.imagen-destacada {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 20px;
+  margin: 40px auto;
+  max-width: 900px;
+  padding: 40px;
+}
+
+.imagen-destacada img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 15px;
+}
+
+
+    /* Footer */
+    footer {
+      padding: 20px;
+      text-align: center;
+      background-color: #034c3c;
+      color: #fff;
+      font-size: 0.9rem;
+      margin-top: 40px;
+      font-family: 'QuadernoBold', Arial, sans-serif;
+    }
+
+    @media(max-width:768px){
+      .hero-producto {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <a href="index.html"><img src="assets/logo-fruta.png" alt="Big Froots Logo" class="logo"></a>
+    <nav>
+      <a href="index.html#productos">Products</a>
+      <a href="index.html#nosotros">About Us</a>
+      <a href="index.html#contacto">Contact</a>
+    </nav>
+  </header>
+
+<!-- Hero Producto -->
+<section class="hero-producto">
+    <img src="assets/pomodoro-closeup.png" alt="Digital Pomodoro" class="froot-image">
+    <div>
+      <h1>Digital Pomodoro</h1>
+      <p>The interactive clock designed to help kids -and kids at heart- organize their time with clear and motivating routines.</p>
+    </div>
+  </section>
+  
+  <!-- Nueva sección con reins-opacity -->
+  <section class="hero-producto">
+    <img src="assets/pomodoro-1.png" alt="Reins Opacity">
+  </section>
+
+  <section class="hero-producto">
+    <img src="assets/reins-screen-horse.png" alt="Reins Opacity">
+  </section>
+  
+  <!-- Características -->
+  <section class="features">
+    <h2>Technical Details</h2>
+    <ul>
+      <li>Alarmas visuales y auditivas</li>
+      <li>Rutinas personalizables</li>
+      <li>Diseño amigable para niños</li>
+    </ul>
+  </section>
+  
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Big Froots. Todos los derechos reservados.</p>
+  </footer>
+
+</body>
+</html>

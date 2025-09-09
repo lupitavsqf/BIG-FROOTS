@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Big Froots - Juguetes Digitales</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <img src="assets/logo-fruta.png" alt="Big Froots Logo" class="logo">
+    <nav>
+      <a href="#productos">Products</a>
+      <a href="#nosotros">About Us</a>
+      <a href="#contacto">Contact</a>
+    </nav>
+  </header>
+<!-- Banner superior solo con logo -->
+<section class="logo-banner">
+    <img src="assets/logo-80.png" alt="Big Froots Logo">
+  </section>
+  
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Welcome to Big Froots</h1>
+    <p> Conscious devices to break barriers and foster creativity and wellbeing.</p>
+    <button onclick="scrollToSection('productos')">Explore</button>
+  </section>
+
+  <!-- Productos -->
+  <section id="productos" class="productos">
+    <div class="proximamente-bar">
+        <p>✨ Coming soon: These products are in development ✨</p>
+    </div>
+    <h2>Our Products</h2>
+    <div class="grid">
+        <div class="card">
+            <div class="carousel">
+              <img src="assets/smart-reins-1.png" alt="Producto 1" class="active">
+              <img src="assets/reins-opacity.png" alt="Producto 1 - Vista 2" class="active">
+              <img src="assets/reins-screen-horse.png" alt="Producto 1 - Vista 3" class="active">
+              <button class="prev">‹</button>
+              <button class="next">›</button>
+            </div>
+            <h3>Digital reins</h3>
+            <p>Smart digital reins with vibrating motors for haptic feedback. Designed to foster inclusive horse-riding therapy lessons in kids with autism, useful for everyone. </p>
+            <a href="producto1.html" class="btn">See more</a>
+          </div>
+          
+          <div class="card">
+            <div class="carousel">
+              <img src="assets/history-of-sushi.png" alt="Producto 2" class="active">
+              <img src="assets/history-of-sushi-2.png" alt="Producto 2 - Vista 2" class="active">
+              <img src="assets/screenshot-essay-writer.png" alt="Producto 2 - Vista 3" class="active">
+              <button class="prev">‹</button>
+              <button class="next">›</button>
+            </div>
+            <h3>AI Essay Writer / Podcast Generator</h3>
+            <p>A user interface designed to maximize cognitive engagement when generating text with LLM's, reducing the risk of cognitive decline.</p>
+            <a href="producto2.html" class="btn">See more</a>
+          </div>
+          
+          <div class="card">
+            <div class="carousel">
+              <img src="assets/pomodoro.png" alt="Producto 3" class="active">
+              <img src="assets/pomodoro-closeup.png" alt="Producto 3 - Vista 2" class="active">
+              <button class="prev">‹</button>
+              <button class="next">›</button>
+            </div>
+            <h3>Digital Pomodoro</h3>
+            <p>An isolated device with functionalities of a to-do list for planning activities and structuring them in pomodoro sessions.</p>
+            <a href="producto3.html" class="btn">See more</a>
+          </div>
+          
+    </div>
+  </section>
+  
+
+  <!-- Nosotros -->
+  <section id="nosotros" class="nosotros">
+    <h2>About us</h2>
+    <p>As a non profit organization, we design consciously to use technology in ethical ways: to reduce the impact of current technologies in mental health and to develop new technologies for neurodivergent inclusion. 
+        We design assistive technologies and take care of the impact of technology in our mental health that is often overlooked when we search for profit. 
+        In a world where posts and technology interactions are designed to maximize engagement the result has been a measurable cognitive decline, where our attention span has shortened and we have anxiety when we are not close to our phones. And that anxiety isn’t irrational; we depend on those very devices to access our money or to get a cab. 
+        At the same time, there are gaps in neurodiversity inclusion that we could use technology for.
+        We want to improve the relationship between ourselves and our technologies by establishing standards of ethics and inclusion.</p>
+  </section>
+
+  <!-- Contacto -->
+  <section id="contacto" class="contacto">
+    <h2>Contacto</h2>
+    <form>
+      <input type="text" placeholder="Nombre" required>
+      <input type="email" placeholder="Correo" required>
+      <textarea placeholder="Mensaje" required></textarea>
+      <button type="submit">Enviar</button>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Big Froots. Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
