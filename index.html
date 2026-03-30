@@ -3,561 +3,1187 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ReinGuide — Digital Reins · BIG FROOTS</title>
+  <title>BIG FROOTS — Digital Toys for Learning &amp; Wellbeing</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    @font-face { font-family: 'QuadernoBold'; src: url('assets/quaderno_bold.otf') format('opentype'); }
-
-    :root {
-      --coral:    #F4613C; --coral-lt: #FF8B6B; --coral-dk: #C94220;
-      --teal:     #0BBFAD; --teal-lt:  #D6F6F3;
-      --indigo:   #0b5a42; --indigo-lt:#EEF0FF;
-      --amber:    #FFC842;
-      --white:    #FFFFFF; --off: #F7F5F2;
-      --ink:      #1A1A2E; --muted: #6B7280;
-      --radius: 14px; --shadow: 0 6px 30px rgba(0,0,0,0.08);
+    /* ── Custom font ── */
+    @font-face {
+      font-family: 'QuadernoBold';
+      src: url('assets/quaderno_bold.otf') format('opentype');
     }
+
+    /* ── Tokens ── */
+    :root {
+      --coral:    #F4613C;
+      --coral-lt: #FF8B6B;
+      --coral-dk: #C94220;
+      --teal:     #72b7a3;
+      --teal-lt:  #D6F6F3;
+      --indigo:   #0b5a42;
+      --indigo-lt:#EEF0FF;
+      --amber:    #FFC842;
+      --white:    #FFFFFF;
+      --off:      #F7F5F2;
+      --ink:      #313131;
+      --muted:    #6B7280;
+      --radius:   14px;
+      --shadow:   0 6px 30px rgba(0,0,0,0.08);
+    }
+
+    /* ── Reset ── */
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     html { scroll-behavior: smooth; }
-    body { font-family:'Nunito',sans-serif; background:var(--off); color:var(--ink); line-height:1.65; overflow-x:hidden; }
 
-    /* NAVBAR */
-    .navbar { position:sticky; top:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:0 48px; height:70px; background:rgba(255,255,255,0.92); backdrop-filter:blur(12px); border-bottom:1px solid rgba(0,0,0,0.06); box-shadow:0 2px 16px rgba(0,0,0,0.05); }
-    .navbar__brand { display:flex; align-items:center; gap:12px; text-decoration:none; }
-    .navbar__logo  { height:46px; object-fit:contain; }
-    .navbar__wordmark { font-family:'Fredoka',sans-serif; font-size:1.55rem; font-weight:700; color:var(--ink); letter-spacing:0.02em; text-transform:uppercase; line-height:1; }
-    .navbar__wordmark span { color:var(--coral); }
-    .navbar nav { display:flex; align-items:center; gap:8px; }
-    .navbar nav a { color:var(--ink); text-decoration:none; font-size:0.9rem; font-weight:600; padding:7px 16px; border-radius:8px; transition:background 0.2s,color 0.2s; }
-    .navbar nav a:hover { background:var(--indigo-lt); color:var(--indigo); }
-    .navbar nav a.cta { background:var(--coral); color:#fff; margin-left:8px; }
-    .navbar nav a.cta:hover { background:var(--coral-dk); }
-
-    /* UTILITIES */
-    .tag { display:inline-block; padding:4px 14px; border-radius:99px; font-size:0.75rem; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; }
-    .tag--teal   { background:var(--teal-lt);  color:#0a9a8a; }
-    .tag--indigo { background:var(--indigo-lt); color:var(--indigo); }
-    .tag--amber  { background:#FFF3D0; color:#B8860B; }
-
-    .section-label { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
-    .section-label::before { content:''; display:block; width:32px; height:3px; background:var(--coral); border-radius:2px; }
-    .section-label span { font-size:0.78rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--coral); }
-
-    .breadcrumb { padding:16px 64px; display:flex; align-items:center; gap:8px; font-size:0.83rem; color:var(--muted); }
-    .breadcrumb a { color:var(--muted); text-decoration:none; transition:color 0.2s; }
-    .breadcrumb a:hover { color:var(--coral); }
-    .breadcrumb .sep { opacity:0.4; }
-    .breadcrumb .current { color:var(--ink); font-weight:600; }
-
-    .btn-primary { display:inline-flex; align-items:center; gap:8px; padding:14px 28px; background:var(--coral); color:#fff; border:none; border-radius:10px; font-family:'Nunito',sans-serif; font-size:0.95rem; font-weight:700; cursor:pointer; text-decoration:none; transition:background 0.2s,transform 0.15s,box-shadow 0.2s; box-shadow:0 4px 18px rgba(244,97,60,0.35); }
-    .btn-primary:hover { background:var(--coral-dk); transform:translateY(-2px); box-shadow:0 8px 24px rgba(244,97,60,0.4); }
-    .btn-outline { display:inline-flex; align-items:center; gap:8px; padding:13px 26px; background:transparent; color:var(--ink); border:2px solid rgba(0,0,0,0.14); border-radius:10px; font-family:'Nunito',sans-serif; font-size:0.95rem; font-weight:700; cursor:pointer; text-decoration:none; transition:border-color 0.2s,color 0.2s,transform 0.15s; }
-    .btn-outline:hover { border-color:var(--indigo); color:var(--indigo); transform:translateY(-2px); }
-    .btn-white { display:inline-flex; align-items:center; gap:8px; padding:14px 32px; background:var(--white); color:var(--coral); border:none; border-radius:10px; font-family:'Nunito',sans-serif; font-size:0.95rem; font-weight:700; cursor:pointer; text-decoration:none; transition:transform 0.15s,box-shadow 0.2s; box-shadow:0 4px 18px rgba(0,0,0,0.15); }
-    .btn-white:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(0,0,0,0.2); }
-
-    h2.stitle { font-family:'Fredoka',sans-serif; font-size:clamp(1.8rem,3vw,2.5rem); font-weight:700; line-height:1.2; color:var(--ink); margin-bottom:18px; }
-    h2.stitle.light { color:var(--white); }
-    p.sbody { font-size:0.98rem; color:var(--muted); line-height:1.8; margin-bottom:14px; }
-    p.sbody.light { color:rgba(255,255,255,0.7); }
-
-    /* HERO */
-    .hero { display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:64px; padding:56px 64px 80px; background:linear-gradient(145deg,#fff 0%,var(--teal-lt) 100%); position:relative; overflow:hidden; }
-    .hero::after { content:''; position:absolute; width:500px; height:500px; border-radius:50%; background:var(--coral-lt); filter:blur(80px); opacity:0.2; top:-100px; right:-100px; pointer-events:none; }
-    .hero__text { position:relative; z-index:1; }
-    .hero__meta { display:flex; align-items:center; gap:10px; margin-bottom:20px; flex-wrap:wrap; }
-    .hero__title { font-family:'Fredoka',sans-serif; font-size:clamp(2.6rem,5.5vw,4rem); font-weight:700; line-height:1.05; color:var(--ink); margin-bottom:6px; }
-    .hero__sub   { font-size:1rem; font-weight:700; color:var(--teal); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:18px; }
-    .hero__desc  { font-size:1.05rem; color:var(--muted); line-height:1.75; max-width:500px; margin-bottom:36px; }
-    .hero__actions { display:flex; gap:14px; flex-wrap:wrap; }
-    .hero__imgwrap { position:relative; z-index:1; border-radius:20px; overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,0.15); }
-    .hero__imgwrap img { width:100%; display:block; object-fit:cover; }
-    .hero__imgwrap .badge { position:absolute; bottom:20px; left:20px; background:rgba(255,255,255,0.92); backdrop-filter:blur(8px); border-radius:12px; padding:10px 16px; font-size:0.82rem; font-weight:700; color:var(--ink); display:flex; align-items:center; gap:8px; box-shadow:0 4px 16px rgba(0,0,0,0.12); }
-
-    /* SECTIONS */
-    .s-white  { background:var(--white);   padding:88px 64px; }
-    .s-off    { background:var(--off);     padding:88px 64px; }
-    .s-indigo { background:var(--indigo);  padding:80px 64px; }
-    .s-coral  { background:linear-gradient(135deg,var(--coral) 0%,var(--coral-dk) 100%); padding:72px 64px; text-align:center; }
-
-    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
-    .two-col.flip > *:first-child { order:2; }
-    .two-col.flip > *:last-child  { order:1; }
-
-    /* IMAGE WRAPPER WITH CAPTION */
-    .simg-wrap { display:flex; flex-direction:column; gap:0; }
-    .simg { border-radius:20px; overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,0.12); }
-    .simg img { width:100%; display:block; object-fit:cover; }
-    .simg-caption { font-size:0.76rem; color:var(--muted); line-height:1.55; padding:10px 14px 0; font-style:italic; }
-    .simg-caption strong { font-style:normal; font-weight:700; color:var(--ink); }
-
-    /* CALLOUT */
-    .callout { background:var(--indigo); padding:72px 64px; text-align:center; }
-    .callout__inner { max-width:800px; margin:0 auto; }
-    .callout h2 { font-family:'Fredoka',sans-serif; font-size:clamp(1.6rem,3.5vw,2.8rem); font-weight:700; color:var(--white); line-height:1.3; margin-bottom:14px; }
-    .callout h2 em { font-style:normal; color:var(--amber); }
-    .callout p { color:rgba(255,255,255,0.6); font-size:1rem; }
-
-    /* STATS */
-    .stat-row { display:flex; gap:20px; flex-wrap:wrap; margin-top:28px; }
-    .stat { background:var(--indigo-lt); border-radius:12px; padding:16px 20px; text-align:center; min-width:110px; }
-    .stat__n { font-family:'Fredoka',sans-serif; font-size:1.8rem; font-weight:700; color:var(--indigo); }
-    .stat__l { font-size:0.75rem; color:var(--muted); font-weight:600; margin-top:2px; }
-
-    /* FEATURE LIST */
-    .flist { display:flex; flex-direction:column; gap:14px; margin-top:8px; }
-    .fi { display:flex; align-items:flex-start; gap:14px; padding:16px; background:var(--off); border-radius:12px; border-left:3px solid var(--teal); }
-    .fi__icon { flex-shrink:0; margin-top:2px; width:28px; height:28px; }
-    .fi__icon svg { width:100%; height:100%; }
-    .fi h4 { font-size:0.92rem; font-weight:700; color:var(--ink); margin-bottom:3px; }
-    .fi p  { font-size:0.83rem; color:var(--muted); line-height:1.55; }
-
-    /* COMMANDS */
-    .cmd-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:20px; max-width:1000px; margin:0 auto; }
-    .cmd-card { background:var(--off); border-radius:var(--radius); padding:24px 18px; text-align:center; box-shadow:var(--shadow); transition:transform 0.2s; border-top:3px solid var(--teal); }
-    .cmd-card:hover { transform:translateY(-4px); }
-    .cmd-card .icon { width:44px; height:44px; margin:0 auto 10px; }
-    .cmd-card .icon svg { width:100%; height:100%; }
-    .cmd-card .pill { display:inline-block; background:var(--indigo-lt); color:var(--indigo); font-size:0.7rem; font-weight:700; letter-spacing:0.06em; padding:3px 10px; border-radius:99px; text-transform:uppercase; margin-bottom:8px; }
-    .cmd-card h4 { font-family:'Fredoka',sans-serif; font-size:1rem; font-weight:600; color:var(--ink); margin-bottom:6px; }
-    .cmd-card p { font-size:0.8rem; color:var(--muted); line-height:1.5; }
-
-    /* HARDWARE */
-    .hw-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:22px; max-width:980px; margin:36px auto 0; }
-    .hw { background:var(--white); border-radius:var(--radius); padding:26px 22px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:10px; transition:transform 0.2s; }
-    .hw:hover { transform:translateY(-4px); }
-    .hw .icon { width:46px; height:46px; border-radius:12px; background:var(--teal-lt); display:flex; align-items:center; justify-content:center; }
-    .hw .icon svg { width:26px; height:26px; }
-    .hw h4 { font-family:'Fredoka',sans-serif; font-size:1.02rem; font-weight:600; color:var(--ink); }
-    .hw p  { font-size:0.84rem; color:var(--muted); line-height:1.6; }
-
-    /* SOFTWARE */
-    .sw-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:22px; }
-    .sw { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:12px; padding:16px 18px; }
-    .sw h5 { font-size:0.88rem; font-weight:700; color:var(--amber); margin-bottom:6px; display:flex; align-items:center; gap:8px; }
-    .sw h5 svg { width:16px; height:16px; flex-shrink:0; }
-    .sw p  { font-size:0.8rem; color:rgba(255,255,255,0.65); line-height:1.5; }
-
-    /* WHO */
-    .who-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; max-width:960px; margin:36px auto 0; }
-    .who { background:var(--white); border-radius:var(--radius); padding:26px 20px; box-shadow:var(--shadow); text-align:center; transition:transform 0.2s; }
-    .who:hover { transform:translateY(-4px); }
-    .who .icon { width:44px; height:44px; margin:0 auto 10px; }
-    .who .icon svg { width:100%; height:100%; }
-    .who h4 { font-family:'Fredoka',sans-serif; font-size:1rem; font-weight:600; color:var(--ink); margin-bottom:7px; }
-    .who p  { font-size:0.82rem; color:var(--muted); line-height:1.55; }
-
-    /* VALUE */
-    .vlist { display:flex; flex-direction:column; gap:14px; margin-top:24px; }
-    .vrow { display:flex; align-items:flex-start; gap:14px; padding:16px 18px; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.1); border-radius:12px; }
-    .vrow .vi { font-size:1.4rem; flex-shrink:0; width:44px; height:44px; border-radius:10px; background:rgba(255,200,66,0.15); display:flex; align-items:center; justify-content:center; }
-    .vrow .vi svg { width:24px; height:24px; }
-    .vrow p { font-size:0.9rem; color:rgba(255,255,255,0.8); line-height:1.6; }
-
-    /* TEAM */
-    .team-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:24px; max-width:660px; margin:0 auto; }
-    .tm { background:var(--white); border-radius:var(--radius); padding:30px 24px; box-shadow:var(--shadow); text-align:center; transition:transform 0.2s; }
-    .tm:hover { transform:translateY(-4px); }
-    .tm__av { width:84px; height:84px; border-radius:50%; background:var(--indigo-lt); display:flex; align-items:center; justify-content:center; font-size:2rem; margin:0 auto 14px; overflow:hidden; }
-    .tm__av img { width:100%; height:100%; object-fit:cover; }
-    .tm__name   { font-family:'Fredoka',sans-serif; font-size:1.12rem; font-weight:700; color:var(--ink); margin-bottom:4px; }
-    .tm__school { font-size:0.76rem; font-weight:700; color:var(--teal); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:9px; }
-    .tm__role   { font-size:0.84rem; color:var(--muted); line-height:1.55; }
-
-    /* SAFETY */
-    .safety { background:#FFF8E7; border:2px solid var(--amber); border-radius:16px; padding:30px 36px; display:flex; gap:18px; align-items:flex-start; max-width:840px; margin:0 auto; }
-    .safety .si { flex-shrink:0; width:36px; height:36px; }
-    .safety .si svg { width:100%; height:100%; }
-    .safety h4 { font-family:'Fredoka',sans-serif; font-size:1.1rem; font-weight:700; color:#92600A; margin-bottom:8px; }
-    .safety p  { font-size:0.9rem; color:#7A5010; line-height:1.65; }
-
-    /* FOOTER */
-    footer { background:#10112a; color:rgba(255,255,255,0.5); padding:28px 64px; display:flex; align-items:center; justify-content:space-between; font-size:0.83rem; }
-    footer img { height:32px; opacity:0.6; filter:brightness(10); }
-    footer .fl { display:flex; gap:24px; }
-    footer .fl a { color:rgba(255,255,255,0.45); text-decoration:none; font-size:0.83rem; transition:color 0.2s; }
-    footer .fl a:hover { color:var(--teal); }
-
-    /* RESPONSIVE */
-    @media(max-width:900px){
-      .navbar{padding:0 20px;} .breadcrumb{padding:14px 24px;}
-      .hero,.two-col{grid-template-columns:1fr;gap:36px;}
-      .two-col.flip>*{order:unset;}
-      .hero,.s-white,.s-off,.s-indigo,.s-coral,.callout{padding:56px 24px;}
-      .sw-grid{grid-template-columns:1fr;}
-      footer{padding:24px;flex-direction:column;gap:16px;text-align:center;}
-      .safety{flex-direction:column;padding:22px;}
-    }
-    @media(max-width:600px){
-      .navbar nav a:not(.cta){display:none;}
-      .cmd-grid,.hw-grid,.who-grid{grid-template-columns:1fr 1fr;}
-      .team-grid{grid-template-columns:1fr;}
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--off);
+      color: var(--ink);
+      line-height: 1.65;
+      overflow-x: hidden;
     }
 
-    @keyframes fadeUp { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
-    .hero__text>*{opacity:0;animation:fadeUp 0.6s ease forwards;}
-    .hero__meta{animation-delay:0.1s;} .hero__title{animation-delay:0.22s;} .hero__sub{animation-delay:0.3s;} .hero__desc{animation-delay:0.38s;} .hero__actions{animation-delay:0.48s;}
+    /* ── Utility ── */
+    .tag {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 99px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .tag--teal   { background: var(--teal-lt);   color: #0a9a8a; }
+    .tag--indigo { background: var(--indigo-lt);  color: var(--indigo); }
+    .tag--amber  { background: #FFF3D0;           color: #B8860B; }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 70px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+    }
+
+    .navbar__logo {
+      height: 46px;
+      object-fit: contain;
+    }
+
+    .navbar__brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .navbar__wordmark {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    .navbar__wordmark span {
+      color: var(--coral);
+    }
+
+    .navbar nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .navbar nav a {
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 7px 16px;
+      border-radius: 8px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .navbar nav a:hover {
+      background: var(--indigo-lt);
+      color: var(--indigo);
+    }
+
+    .navbar nav a.cta {
+      background: var(--coral);
+      color: #fff;
+      margin-left: 8px;
+    }
+    .navbar nav a.cta:hover {
+      background: var(--coral-dk);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      min-height: 88vh;
+      padding: 0 64px;
+      gap: 48px;
+      overflow: hidden;
+      background: linear-gradient(145deg, #fff 0%, var(--indigo-lt) 100%);
+    }
+
+    /* Decorative blobs */
+    .hero::before, .hero::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: 0.35;
+      pointer-events: none;
+    }
+    .hero::before {
+      width: 520px; height: 520px;
+      background: var(--coral-lt);
+      top: -100px; right: -80px;
+    }
+    .hero::after {
+      width: 380px; height: 380px;
+      background: var(--teal);
+      bottom: -80px; left: 30%;
+    }
+
+    .hero__text { position: relative; z-index: 1; }
+
+    .hero__eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .hero__eyebrow span {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
+    .hero__eyebrow::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 3px;
+      background: var(--teal);
+      border-radius: 2px;
+    }
+
+    .hero h1 {
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 22px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--coral);
+      display: block;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 460px;
+      margin-bottom: 36px;
+      font-weight: 400;
+    }
+
+    .hero__buttons { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: var(--coral);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.25s, transform 0.15s, box-shadow 0.25s;
+      box-shadow: 0 4px 18px rgba(244,97,60,0.35);
+    }
+    .btn-primary:hover {
+      background: var(--coral-dk);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(244,97,60,0.4);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: transparent;
+      color: var(--ink);
+      border: 2px solid rgba(0,0,0,0.14);
+      border-radius: 10px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s, transform 0.15s;
+    }
+    .btn-secondary:hover {
+      border-color: var(--indigo);
+      color: var(--indigo);
+      transform: translateY(-2px);
+    }
+
+    /* Stats row */
+    .hero__stats {
+      display: flex;
+      gap: 32px;
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .hero__stat-num {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--indigo);
+    }
+
+    .hero__tagline {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--teal);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 10px !important;
+      opacity: 0;
+      animation: fadeUp 0.65s ease forwards;
+      animation-delay: 0.3s;
+    }
+
+    .hero__stat-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-weight: 400;
+      margin-top: 2px;
+    }
+
+    /* Hero image side */
+    .hero__visual {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero__logo-wrap {
+      position: relative;
+      width: 340px;
+      height: 340px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero__logo-bg {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: var(--white);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    /* iframe fills the white circle */
+    .hero__logo-bg iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 50%;
+      display: block;
+    }
+
+    .hero__logo-img {
+      position: relative;
+      z-index: 1;
+      width: 80%;
+      object-fit: contain;
+    }
+
+    /* Floating badges */
+    .badge-float {
+      position: absolute;
+      background: var(--white);
+      border-radius: 12px;
+      padding: 10px 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      font-size: 0.82rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      animation: floaty 4s ease-in-out infinite;
+      z-index: 2;
+    }
+
+    .badge-float:nth-child(2) { top: 20px;  right: -20px; animation-delay: -1s; }
+    .badge-float:nth-child(3) { bottom: 40px; left: -30px;  animation-delay: -2.5s; }
+    .badge-float:nth-child(4) { top: 50%;   left: -50px;  transform: translateY(-50%); animation-delay: -0.5s; }
+
+    .badge-icon { display: flex; align-items: center; justify-content: center; }
+
+    @keyframes floaty {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-8px); }
+    }
+    .badge-float:nth-child(4) {
+      animation: floaty2 4s ease-in-out infinite -0.5s;
+    }
+    @keyframes floaty2 {
+      0%,100% { transform: translateY(-50%); }
+      50%      { transform: translateY(calc(-50% - 8px)); }
+    }
+
+    /* ── COMING SOON MARQUEE ── */
+    .marquee-strip {
+      background: var(--coral);
+      padding: 12px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .marquee-track {
+      display: inline-block;
+      animation: marquee 28s linear infinite;
+    }
+
+    .marquee-track span {
+      display: inline-block;
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-right: 56px;
+    }
+
+    .marquee-track span::before {
+      content: '✦';
+      margin-right: 20px;
+      opacity: 0.7;
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── MISSION STRIP ── */
+    .mission {
+      background: var(--indigo);
+      color: #fff;
+      padding: 64px 64px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .mission h2 {
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .mission h2 em {
+      font-style: normal;
+      color: var(--amber);
+    }
+
+    .mission__pillars {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .pillar {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .pillar__icon {
+      font-size: 1.6rem;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+    }
+
+    .pillar__title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--amber);
+      margin-bottom: 6px;
+    }
+
+    .pillar__text {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.55;
+    }
+
+    /* ── PRODUCTS ── */
+    .products {
+      padding: 96px 64px;
+      background: var(--off);
+    }
+
+    .section-head {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .section-head h2 {
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 800;
+      margin-top: 12px;
+      color: var(--ink);
+    }
+
+    .section-head p {
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 520px;
+      margin: 12px auto 0;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px;
+      max-width: 1100px;
+      margin: 0 auto;
+      align-items: stretch;
+    }
+
+    /* Product Card */
+    .pcard {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .pcard:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.13);
+    }
+
+    /* Carousel */
+    .carousel {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      background: #f0efed;
+    }
+
+    .carousel img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+      transition: opacity 0.3s;
+    }
+
+    .carousel img.active { display: block; }
+
+    /* iframe carousel slides */
+    .carousel-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: none;
+      position: absolute;
+      top: 0; left: 0;
+    }
+    .carousel-frame.active { display: block; }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.85);
+      color: var(--ink);
+      border: none;
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+      backdrop-filter: blur(4px);
+      z-index: 5;
+    }
+
+    .carousel-btn:hover { background: var(--white); }
+    .carousel-btn.prev { left: 10px; }
+    .carousel-btn.next { right: 10px; }
+
+    .carousel-dots {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 5px;
+      z-index: 5;
+    }
+
+    .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+      transition: background 0.2s, transform 0.2s;
+    }
+    .dot.active {
+      background: var(--white);
+      transform: scale(1.3);
+    }
+
+    .pcard__body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .pcard__meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .pcard__title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+
+    .pcard__desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.6;
+      flex: 1;
+      margin-bottom: 20px;
+    }
+
+    .pcard__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--coral);
+      font-weight: 600;
+      font-size: 0.88rem;
+      text-decoration: none;
+      transition: gap 0.2s;
+    }
+    .pcard__link:hover { gap: 12px; }
+    .pcard__link svg { transition: transform 0.2s; }
+    .pcard__link:hover svg { transform: translateX(3px); }
+
+    .pcard { display: flex; flex-direction: column; height: 100%; }
+    .pcard__body { flex: 1; display: flex; flex-direction: column; }
+    .carousel img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ── ABOUT ── */
+    .about {
+      background: var(--white);
+      padding: 96px 64px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about__text h2 {
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(1.8rem, 2.8vw, 2.4rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+
+    .about__text p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+      line-height: 1.7;
+    }
+
+    .about__values {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .value-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .value-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--indigo-lt);
+      color: var(--indigo);
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .value-content h4 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .value-content p {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    /* ── CONTACT ── */
+    .contact {
+      background: linear-gradient(135deg, var(--indigo) 0%, #1a2470 100%);
+      padding: 96px 64px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+      align-items: start;
+    }
+
+    .contact__text h2 {
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(1.8rem, 2.8vw, 2.4rem);
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .contact__text p {
+      color: rgba(255,255,255,0.65);
+      font-size: 0.95rem;
+      margin-bottom: 36px;
+    }
+
+    .contact-info-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      color: rgba(255,255,255,0.8);
+      font-size: 0.9rem;
+    }
+
+    .contact-info-item .ci-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+
+    .contact-info-item a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+    }
+    .contact-info-item a:hover { color: var(--teal); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #10112a;
+      color: rgba(255,255,255,0.5);
+      padding: 28px 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.83rem;
+    }
+
+    footer img {
+      height: 32px;
+      opacity: 0.6;
+      filter: brightness(10);
+    }
+
+    footer .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    footer .footer-links a {
+      color: rgba(255,255,255,0.45);
+      text-decoration: none;
+      font-size: 0.83rem;
+      transition: color 0.2s;
+    }
+    footer .footer-links a:hover { color: var(--teal); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero, .mission, .about {
+        grid-template-columns: 1fr;
+        padding: 64px 28px;
+        gap: 48px;
+      }
+
+      .contact {
+        padding: 64px 28px;
+      }
+
+      .hero { min-height: auto; padding-top: 80px; padding-bottom: 80px; }
+      .hero__visual { display: none; }
+      .hero__stats { gap: 20px; }
+
+      .navbar { padding: 0 20px; }
+      .products { padding: 72px 24px; }
+      footer { padding: 24px 24px; flex-direction: column; gap: 16px; text-align: center; }
+
+      .mission__pillars { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .cards-grid { grid-template-columns: 1fr; }
+      .navbar nav a { display: none; }
+      .navbar nav a.cta { display: inline-flex; }
+      .mission__pillars { grid-template-columns: 1fr; }
+    }
+
+    /* ── Entrance animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero__text > * {
+      opacity: 0;
+      animation: fadeUp 0.65s ease forwards;
+    }
+    .hero__eyebrow   { animation-delay: 0.1s; }
+    .hero h1         { animation-delay: 0.22s; }
+    .hero__tagline   { animation-delay: 0.3s !important; }
+    .hero p:not(.hero__tagline) { animation-delay: 0.42s; }
+    .hero__buttons   { animation-delay: 0.54s; }
+    .hero__stats     { animation-delay: 0.68s; }
   </style>
 </head>
 <body>
 
-  <!-- NAVBAR -->
+  <!-- ── NAVBAR ── -->
   <header class="navbar">
-    <a href="index.html" class="navbar__brand">
-      <img src="assets/logo-fruta.png" alt="BIG FROOTS Logo" class="navbar__logo">
+    <a href="#" class="navbar__brand">
+      <img src="assets/logo-fruta.png" alt="Big Froots Logo" class="navbar__logo">
       <span class="navbar__wordmark">BIG <span>FROOTS</span></span>
     </a>
     <nav>
-      <a href="index.html#productos">Products</a>
-      <a href="index.html#nosotros">About Us</a>
-      <a href="index.html#contacto" class="cta">Get in Touch</a>
+      <a href="#productos">Products</a>
+      <a href="#nosotros">About Us</a>
+      <a href="#contacto" class="cta">Get in Touch</a>
     </nav>
   </header>
 
-  <!-- BREADCRUMB -->
-  <div class="breadcrumb">
-    <a href="index.html">Home</a><span class="sep">›</span>
-    <a href="index.html#productos">Products</a><span class="sep">›</span>
-    <span class="current">ReinGuide — assistive digital reins</span>
-  </div>
-
-  <!-- HERO -->
+  <!-- ── HERO ── -->
   <section class="hero">
     <div class="hero__text">
-      <div class="hero__meta">
-        <span class="tag tag--teal">Therapy tech</span>
-        <span class="tag tag--indigo">Hardware + software</span>
-        <span class="tag tag--amber">Coming soon</span>
+      <div class="hero__eyebrow"><span>EdTech for Everyone</span></div>
+      <h1>Welcome to<em>BIG FROOTS.</em></h1>
+      <p class="hero__tagline">Technology that teaches &amp; heals.</p>
+      <p>Conscious digital tech that breaks barriers, fosters creativity, and supports wellbeing — for children and adults of all abilities.</p>
+      <div class="hero__buttons">
+        <button class="btn-primary" onclick="scrollToSection('productos')">
+          Explore Products
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <a href="#nosotros" class="btn-secondary">Our Mission</a>
       </div>
-      <h1 class="hero__title">ReinGuide</h1>
-      <p class="hero__sub">Assistive digital reins</p>
-      <p class="hero__desc">Every child deserves to feel the language of the horse. ReinGuide brings haptic vibration and gentle warmth to the reins — giving non-verbal autistic riders a direct, sensory channel with their horse and instructor, no spoken words required.</p>
-      <div class="hero__actions">
-        <a href="https://lupitavsqf.github.io/ReinGuide/" target="_blank" class="btn-primary">
-          Try the Live Demo
-          <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-        <a href="index.html#contacto" class="btn-outline">Get in Touch</a>
-      </div>
-    </div>
-    <div class="hero__imgwrap">
-      <img src="assets/smart-reins-1.png" alt="Digital Reins hardware">
-      <div class="badge">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0BBFAD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 19.5c2.5-2 5-3 8.5-3s6 1 8.5 3"/><ellipse cx="12" cy="10" rx="5" ry="3.5"/><path d="M7 10c0 2 2.2 5 5 5s5-3 5-5"/><path d="M12 15.5V19"/></svg>
-        Horse-riding therapy tech
-      </div>
-    </div>
-  </section>
-
-  <!-- PROBLEM -->
-  <section class="s-white">
-    <div class="two-col">
-      <div>
-        <div class="section-label"><span>The Problem</span></div>
-        <h2 class="stitle">For Mariana, the lesson ends before it begins</h2>
-        <p class="sbody">Meet Mariana — a seven-year-old non-verbal autistic girl who loves horses. The warmth of the saddle, the rhythm of the gait, the smell of the arena: these are her favorite things. But the moment her horse slows to a stop, something shifts. The silence between movements is too much. Anxiety spikes, the session ends, and another week passes before she gets to try again.</p>
-        <p class="sbody">Equine therapy instructors rely almost entirely on spoken commands — "turn left," "release the reins," "slow down." But Mariana processes the world differently. What if instead of working around her sensory profile, we designed <em>with</em> it? Many of her sensitivities — a heightened awareness of touch, rhythm, and physical presence — are precisely the instincts that make a great rider. <strong>The reins are already a communication channel. We just need to make them speak her language.</strong></p>
-        <div class="stat-row">
-          <div class="stat"><div class="stat__n">900+</div><div class="stat__l">US therapy centers</div></div>
-          <div class="stat"><div class="stat__n">66k</div><div class="stat__l">kids helped / year</div></div>
-          <div class="stat"><div class="stat__n">2</div><div class="stat__l">assistants per rider</div></div>
-        </div>
-      </div>
-      <div class="simg"><img src="assets/therapy-session.png" alt="Standard therapy rein setup"></div>
-    </div>
-  </section>
-
-  <!-- CALLOUT -->
-  <section class="callout">
-    <div class="callout__inner">
-      <h2>Equine therapy changes lives — <em>but only if the rider can stay in the saddle long enough for it to work.</em></h2>
-      <p>Non-verbal autistic riders need clearer, sensory-based communication during transitions — not more words.</p>
-    </div>
-  </section>
-
-    <!-- PROPRIOCEPTION -->
-    <section class="s-off">
-      <div class="two-col flip">
+      <div class="hero__stats">
         <div>
-          <div class="section-label"><span>The Science</span></div>
-          <h2 class="stitle">The reins are the primary communication channel between rider and horse</h2>
-          <p class="sbody">There is one means of sensory communication that is direct — not mediated by language, symbol, or gesture. It's called <strong>proprioception</strong>: the sense of body awareness that tells us where our bodies are in space, and where our horse's body is while we ride.</p>
-          <p class="sbody">Good proprioception makes our requests clear. Through the way riders handle the reins, the horse can interpret cues to move forward, turn, or stop. Can we <em>digitally augment</em> proprioceptive signals to teach horse riding to kids like Mariana?</p>
-          <p class="sbody" style="font-size:0.8rem;font-style:italic;color:#999;">Jones, J. L. (2020). Horse brain, human brain (pp. 97–98). Trafalgar Square Books.</p>
+          <div class="hero__stat-num">3+</div>
+          <div class="hero__stat-label">Products in Dev</div>
         </div>
-        <div class="simg"><img src="assets/reins-proprioception.png" alt="Proprioception and rein communication"></div>
-      </div>
-    </section>
-
-  <!-- SOLUTION -->
-  <section class="s-white">
-    <div class="two-col">
-      <div>
-        <div class="section-label"><span>Our Solution</span></div>
-        <h2 class="stitle">Tactile cues. Gentle warmth. A game to practice before the arena.</h2>
-        <p class="sbody">ReinGuide wraps around any standard horse rein. Vibration patterns carry directional instructions directly into the rider's hands — no interpretation, no verbal processing, no delay. Warmth keeps sensory-sensitive riders grounded when the horse pauses. And a training simulator lets everyone practice the language together before they ever set foot in the arena.</p>
-        <div class="flist">
-          <div class="fi">
-            <div class="fi__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12"/><path d="M12 6v6l4 2"/><path d="M2 12a10 10 0 0 1 .5-3"/></svg>
-            </div>
-            <div><h4>Haptic Feedback</h4><p>Distinct vibration patterns communicate forward, stop, left, and right — delivered silently, directly into the rider's palms.</p></div>
-          </div>
-          <div class="fi">
-            <div class="fi__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/><circle cx="12" cy="12" r="4"/></svg>
-            </div>
-            <div><h4>Hand Warming</h4><p>Gentle heat activates during stops and pauses — keeping anxious riders grounded and reducing the sensory triggers that cut sessions short.</p></div>
-          </div>
-          <div class="fi">
-            <div class="fi__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-            </div>
-            <div><h4>ReinGuide Simulator</h4><p>An interactive equestrian training game where rider, instructor, and assistant learn the haptic language together — before the real session begins.</p></div>
-          </div>
+        <div>
+          <div class="hero__stat-num">100%</div>
+          <div class="hero__stat-label">Nonprofit Driven</div>
+        </div>
+        <div>
+          <div class="hero__stat-num">∞</div>
+          <div class="hero__stat-label">Inclusive by Design</div>
         </div>
       </div>
-      <div class="simg"><img src="assets/smart-reins-1.png" alt="ReinGuide solution overview"></div>
     </div>
-  </section>
 
-  <!-- COMMANDS -->
-  <section class="s-white" style="padding-top:0;">
-    <div style="max-width:1000px;margin:0 auto;text-align:center;">
-      <div class="section-label" style="justify-content:center;margin-bottom:14px;"><span>Haptic Command Language</span></div>
-      <h2 class="stitle" style="text-align:center;">Five patterns. One shared vocabulary.</h2>
-      <p class="sbody" style="max-width:520px;margin:0 auto 40px;">The lesson assistant holds a joystick and sends tactile cues directly to the rider's hands. No shouting across the arena. No waiting for words to land.</p>
-      <div class="cmd-grid">
-        <div class="cmd-card">
-          <div class="icon">
-            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="22" cy="22" r="20" fill="#D6F6F3"/><path d="M14 22h16M26 16l6 6-6 6" stroke="#0BBFAD" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <div class="pill">Both reins</div><h4>Forward</h4><p>Two quick taps on both reins — "tap tap!"</p>
+    <div class="hero__visual">
+      <div class="hero__logo-wrap">
+        <!-- White circle now shows the visual1.html animation -->
+        <div class="hero__logo-bg" style="overflow:hidden; width:400px; height:400px;">
+          <iframe src="visual1.html" title="BiGGi Animation" scrolling="no"
+            style="transform: scale(0.5); transform-origin: top left; width:200%; height:200%; border:none;">
+          </iframe>
         </div>
-        <div class="cmd-card">
-          <div class="icon">
-            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="22" cy="22" r="20" fill="#D6F6F3"/><path d="M30 22H14M20 16l-6 6 6 6" stroke="#0BBFAD" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <div class="pill">Left rein</div><h4>Turn Left</h4><p>Left rein vibrates continuously while joystick is held left.</p>
+
+        <!-- Floating badges (SVGs replacing emojis) -->
+        <div class="badge-float">
+          <span class="badge-icon">
+            <!-- Brain / neuro-inclusive -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9.5 2C7 2 5 4 5 6.5c0 .9.3 1.8.8 2.5C4.1 9.8 3 11.3 3 13c0 2.2 1.8 4 4 4h.5c.3 1.7 1.8 3 3.5 3s3.2-1.3 3.5-3H15c2.2 0 4-1.8 4-4 0-1.7-1.1-3.2-2.8-3.8.5-.7.8-1.5.8-2.4C17 4 15 2 12.5 2c-.9 0-1.8.3-2.5.8C9.6 2.3 9.3 2 9.5 2z" stroke="#0a9a8a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 8v4M10 10h4" stroke="#0a9a8a" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span>Neuro-inclusive</span>
         </div>
-        <div class="cmd-card">
-          <div class="icon">
-            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="22" cy="22" r="20" fill="#D6F6F3"/><path d="M14 22h16M26 16l6 6-6 6" stroke="#0BBFAD" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <div class="pill">Right rein</div><h4>Turn Right</h4><p>Right rein vibrates continuously while joystick is held right.</p>
+        <div class="badge-float">
+          <span class="badge-icon">
+            <!-- Leaf / ethical -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21 3C21 3 13 3 8 8c-3.5 3.5-4 9-4 9s5.5-.5 9-4c5-5 7-14 7-14z" stroke="#0a9a8a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M3 21l5-5" stroke="#0a9a8a" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span>Ethical Tech</span>
         </div>
-        <div class="cmd-card">
-          <div class="icon">
-            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="22" cy="22" r="20" fill="#FFE9E3"/><rect x="15" y="15" width="14" height="14" rx="3" fill="#F4613C" opacity="0.8"/></svg>
-          </div>
-          <div class="pill">Both reins</div><h4>Stop</h4><p>One long buzz followed by a short one — "whoa back!"</p>
-        </div>
-        <div class="cmd-card" style="border-top-color:var(--coral);">
-          <div class="icon">
-            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="22" cy="22" r="20" fill="#FFE9E3"/><path d="M10 22c0-4.4 3.6-8 8-8 2.8 0 5.2 1.4 6.6 3.6C26 15.4 28.4 14 31.2 14 35.6 14 39 17.6 39 22s-9 14-17 17c-8-3-17-12.6-17-17z" fill="#F4613C" opacity="0.7"/></svg>
-          </div>
-          <div class="pill">Both reins</div><h4>Heartbeat Mode</h4><p>Rhythmic pulse keeps riders engaged and grounded when the horse is still — turning stillness into a steady, comforting sensation.</p>
+        <div class="badge-float">
+          <span class="badge-icon">
+            <!-- Target / focus -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="9" stroke="#0a9a8a" stroke-width="1.5"/>
+              <circle cx="12" cy="12" r="5" stroke="#0a9a8a" stroke-width="1.5"/>
+              <circle cx="12" cy="12" r="1.5" fill="#0a9a8a"/>
+            </svg>
+          </span>
+          <span>Focus-first Design</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- HARDWARE -->
-  <section class="s-off">
-    <div style="max-width:980px;margin:0 auto;">
-      <div class="section-label"><span>Hardware</span></div>
-      <h2 class="stitle">Two components. One system. Zero infrastructure needed.</h2>
-      <p class="sbody" style="max-width:580px;">A wireless controller for the lesson assistant, and adjustable rein grips for the rider — designed to clip onto any standard horse rein without modification.</p>
-      <div class="hw-grid">
-        <div class="hw">
-          <div class="icon">
-            <svg viewBox="0 0 26 26" fill="none" stroke="#0BBFAD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="16" height="12" rx="3"/><circle cx="10" cy="14" r="2"/><path d="M16 13h2M16 16h2"/><path d="M13 8V5M10 8V5M16 8V5"/></svg>
-          </div>
-          <h4>Joystick Controller</h4>
-          <p>Held by the lesson assistant. Commands travel wirelessly via radio — longer range than Bluetooth, no WiFi or phone required. Built for the arena.</p>
+  <!-- ── MARQUEE ── -->
+  <div class="marquee-strip" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Coming Soon</span><span>ReinGuide</span><span>Assistive Digital Reins</span>
+      <span>Inclusive by Design</span><span>Conscious EdTech</span>
+      <span>Coming Soon</span><span>BiGGi</span><span>AI coding assistant</span>
+      <span>Inclusive by Design</span><span>Conscious EdTech</span>
+    </div>
+  </div>
+
+  <!-- ── MISSION ── -->
+  <section class="mission" id="nosotros-preview">
+    <div>
+      <h2>We build tools that<em> empower minds,</em> not exploit them.</h2>
+    </div>
+    <div class="mission__pillars">
+      <div class="pillar">
+        <div class="pillar__icon">
+          <!-- Puzzle / neurodiversity -->
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 2a2 2 0 0 1 4 0v1h3a2 2 0 0 1 2 2v3h1a2 2 0 0 1 0 4h-1v3a2 2 0 0 1-2 2h-3v1a2 2 0 0 1-4 0v-1H7a2 2 0 0 1-2-2v-3H4a2 2 0 0 1 0-4h1V5a2 2 0 0 1 2-2h3V2z" stroke="#FFC842" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </div>
-        <div class="hw">
-          <div class="icon">
-            <svg viewBox="0 0 26 26" fill="none" stroke="#0BBFAD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6c0-2.2 1.8-4 4-4s4 1.8 4 4v10c0 2.2-1.8 4-4 4s-4-1.8-4-4V6z"/><path d="M8 12h8"/></svg>
-          </div>
-          <h4>Movable Rein Grips</h4>
-          <p>Clip-on grips that guide correct hand position and deliver vibration plus warmth exactly where the rider holds the reins. Adjustable for any rein width.</p>
+        <div class="pillar__title">Neurodiversity</div>
+        <div class="pillar__text">Designed from the ground up for diverse cognitive styles.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar__icon">
+          <!-- Battery / wellbeing -->
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="7" width="18" height="10" rx="2" stroke="#FFC842" stroke-width="1.5"/>
+            <path d="M20 10h2v4h-2" stroke="#FFC842" stroke-width="1.5" stroke-linecap="round"/>
+            <rect x="4" y="9" width="10" height="6" rx="1" fill="#FFC842"/>
+          </svg>
         </div>
-        <div class="hw">
-          <div class="icon">
-            <svg viewBox="0 0 26 26" fill="none" stroke="#0BBFAD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3C8.5 3 5 6 5 10c0 3 2 5 4 6.5V21h6v-4.5c2-1.5 4-3.5 4-6.5 0-4-3.5-7-7-7z"/><path d="M9 21h8"/></svg>
-          </div>
-          <h4>Sensory-Safe Materials</h4>
-          <p>Soft, gummy grip surfaces already proven to keep sensory-sensitive riders like Mariana engaged — tactilely interesting without being overwhelming.</p>
+        <div class="pillar__title">Wellbeing</div>
+        <div class="pillar__text">Reduces anxiety and cognitive overload, not just symptoms.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar__icon">
+          <!-- Palette / creativity -->
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 6.48 2 12c0 5.52 4.48 10 10 10 1.1 0 2-.9 2-2 0-.52-.2-1-.52-1.36-.32-.35-.52-.83-.52-1.34 0-1.1.9-2 2-2h2.36C19.74 15.3 22 12.86 22 10c0-4.42-4.48-8-10-8z" stroke="#FFC842" stroke-width="1.5"/>
+            <circle cx="7" cy="12" r="1.5" fill="#FFC842"/>
+            <circle cx="9" cy="8" r="1.5" fill="#FFC842"/>
+            <circle cx="13" cy="7" r="1.5" fill="#FFC842"/>
+            <circle cx="16" cy="10" r="1.5" fill="#FFC842"/>
+          </svg>
         </div>
-        <div class="hw">
-          <div class="icon">
-            <svg viewBox="0 0 26 26" fill="none" stroke="#0BBFAD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13a8 8 0 0 1 16 0"/><path d="M2 13a11 11 0 0 1 22 0"/><circle cx="13" cy="13" r="2"/><path d="M13 15v4"/></svg>
+        <div class="pillar__title">Creativity</div>
+        <div class="pillar__text">Sparks imagination through purposeful, playful interaction.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar__icon">
+          <!-- Scale / ethics -->
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3v18M12 3l-5 5M12 3l5 5" stroke="#FFC842" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M4 12l-2 6h6L4 12zM20 12l-2 6h6L20 12z" stroke="#FFC842" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 21h18" stroke="#FFC842" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="pillar__title">Ethics</div>
+        <div class="pillar__text">No addictive loops. Tech that respects your time and attention.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PRODUCTS ── -->
+  <section id="productos" class="products">
+    <div class="section-head">
+      <span class="tag tag--teal">Products in Development</span>
+      <h2>Our Learning Tools</h2>
+      <p>Each product is crafted to reduce cognitive strain while expanding what's possible.</p>
+    </div>
+    <div class="cards-grid">
+
+      <!-- Card 1 — ReinGuide (images: rgimg1/2/3.png) -->
+      <div class="pcard">
+        <div class="carousel" id="c1">
+          <img src="rgimg1.png" alt="ReinGuide - View 1" class="active">
+          <img src="rgimg2.png" alt="ReinGuide - View 2">
+          <img src="rgimg3.png" alt="ReinGuide - View 3">
+          <button class="carousel-btn prev">‹</button>
+          <button class="carousel-btn next">›</button>
+          <div class="carousel-dots">
+            <div class="dot active"></div><div class="dot"></div><div class="dot"></div>
           </div>
-          <h4>Radio Technology</h4>
-          <p>Low-energy, long-range radio communication covers the entire arena with no connectivity infrastructure needed — it just works.</p>
+        </div>
+        <div class="pcard__body">
+          <div class="pcard__meta">
+            <span class="tag tag--teal">Therapy Tech</span>
+          </div>
+          <div class="pcard__title">ReinGuide</div>
+          <div class="pcard__desc">Smart digital reins with gentle haptic feedback — designed to enhance inclusive horse-riding therapy for children with autism, and fun for everyone.</div>
+          <a href="producto1.html" class="pcard__link">
+            Learn More
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 2 — BiGGi (iframe animations: visual1/2/3.html) -->
+      <div class="pcard">
+        <div class="carousel" id="c2" style="position:relative; overflow:hidden; aspect-ratio:4/3; background:#f0efed;">
+          <iframe class="carousel-frame active" src="visual1.html" title="BiGGi Visual 1" scrolling="no"></iframe>
+          <iframe class="carousel-frame" src="visual2.html" title="BiGGi Visual 2" scrolling="no"></iframe>
+          <iframe class="carousel-frame" src="visual3.html" title="BiGGi Visual 3" scrolling="no"></iframe>
+          <button class="carousel-btn prev">‹</button>
+          <button class="carousel-btn next">›</button>
+          <div class="carousel-dots">
+            <div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+          </div>
+        </div>
+        <div class="pcard__body">
+          <div class="pcard__meta">
+            <span class="tag tag--indigo">AI Learning</span>
+          </div>
+          <div class="pcard__title">BiGGi — AI coding agent for p5.js</div>
+          <div class="pcard__desc">
+            BiGGi helps users learn to code by generating AI-assisted code in structured, manageable chunks.
+            Instead of replacing the developer, it reduces cognitive overload, supports comprehension, and encourages active learning.
+          </div>
+          <a href="producto2.html" class="pcard__link">
+            Learn More
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── ABOUT ── -->
+  <section id="nosotros" class="about">
+    <div class="about__text">
+      <span class="tag tag--indigo" style="margin-bottom:16px;display:inline-block;">Who We Are</span>
+      <h2>BIG FROOTS: conscious design for a more inclusive world</h2>
+      <p>We are a nonprofit organization dedicated to ethical technology — building tools that truly support mental health and neurodivergent inclusion rather than exploit human attention.</p>
+      <p>Many modern devices are engineered for maximum engagement, causing cognitive strain, shortened attention spans, and screen anxiety. We believe technology can do better.</p>
+    </div>
+    <div class="about__values">
+      <div class="value-row">
+        <div class="value-icon">
+          <!-- Target -->
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="9" stroke="#0b5a42" stroke-width="1.8"/>
+            <circle cx="12" cy="12" r="5" stroke="#0b5a42" stroke-width="1.8"/>
+            <circle cx="12" cy="12" r="1.8" fill="#0b5a42"/>
+          </svg>
+        </div>
+        <div class="value-content">
+          <h4>Attention-Respecting Design</h4>
+          <p>We build tools that improve focus, not undermine it. No addictive patterns, ever.</p>
+        </div>
+      </div>
+      <div class="value-row">
+        <div class="value-icon">
+          <!-- Handshake / inclusive -->
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 12l4 4 4-4 4 4 4-4" stroke="#0b5a42" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 8l6 6M16 8l6 6" stroke="#0b5a42" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="value-content">
+          <h4>Inclusive by Default</h4>
+          <p>Our products are designed first for children and adults with diverse cognitive needs.</p>
+        </div>
+      </div>
+      <div class="value-row">
+        <div class="value-icon">
+          <!-- Lightbulb -->
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 21h6M12 3a6 6 0 0 1 6 6c0 2.4-1.4 4.5-3.5 5.5V17H9.5v-2.5C7.4 13.5 6 11.4 6 9a6 6 0 0 1 6-6z" stroke="#0b5a42" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="value-content">
+          <h4>Bridging the Gap</h4>
+          <p>We promote ethical standards and inclusive practices across the EdTech landscape.</p>
+        </div>
+      </div>
+      <div class="value-row">
+        <div class="value-icon">
+          <!-- Leaf / nonprofit -->
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 3C21 3 13 3 8 8c-3.5 3.5-4 9-4 9s5.5-.5 9-4c5-5 7-14 7-14z" stroke="#0b5a42" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 21l5-5" stroke="#0b5a42" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="value-content">
+          <h4>Nonprofit Mission</h4>
+          <p>Every product we build serves our mission — not shareholder growth.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- SOFTWARE -->
-  <section class="s-indigo">
-    <div class="two-col">
-      <div>
-        <div class="section-label" style="margin-bottom:16px;"><span style="color:var(--teal);">Software</span></div>
-        <h2 class="stitle light">Practice the language before the lesson</h2>
-        <p class="sbody light">Learning a new communication system mid-session — on a moving horse, with a child who needs predictability — is too much to ask of anyone. ReinGuide's training simulator lets riders, instructors, and assistants build fluency first. Draw a path through the arena, practice the commands, run through transitions — until the haptic language feels as natural as speech.</p>
-        <a href="https://lupitavsqf.github.io/ReinGuide/" target="_blank" class="btn-primary" style="margin-top:4px;margin-bottom:24px;">Try Live Demo →</a>
-        <div class="sw-grid">
-          <div class="sw">
-            <h5>
-              <svg viewBox="0 0 16 16" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="1" width="14" height="14" rx="2"/><path d="M4 8h8M4 5h5M4 11h3"/></svg>
-              Arena Builder
-            </h5>
-            <p>Draw paths, add cones, poles, and pause zones to lay out the lesson before the rider ever mounts.</p>
-          </div>
-          <div class="sw">
-            <h5>
-              <svg viewBox="0 0 16 16" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M8 4v4l3 2"/></svg>
-              Rider's Eye View
-            </h5>
-            <p>Pseudo-3D POV alongside the top-down arena map — teaching proprioception through perspective.</p>
-          </div>
-          <div class="sw">
-            <h5>
-              <svg viewBox="0 0 16 16" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12 6 7l3 3 2-4 3 4"/></svg>
-              Session Tracker
-            </h5>
-            <p>Measures time on/off path, stops, pole hits, and accuracy — giving therapists data on proprioceptive progress.</p>
-          </div>
-          <div class="sw">
-            <h5>
-              <svg viewBox="0 0 16 16" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="5" height="7" rx="1"/><rect x="9" y="3" width="5" height="9" rx="1"/><path d="M4 12v2M11 12v2"/></svg>
-              Command Preview
-            </h5>
-            <p>Shows the controller state in real time so the therapist can see and confirm every cue sent to the rider.</p>
-          </div>
+  <!-- ── CONTACT ── -->
+  <section id="contacto" class="contact">
+    <div class="contact__text">
+      <span class="tag tag--teal" style="margin-bottom:16px;display:inline-block;">Say Hello</span>
+      <h2>Let's build something meaningful together.</h2>
+      <p>Whether you're a partner, researcher, educator, or simply curious — we'd love to hear from you.</p>
+      <div class="contact-info-item">
+        <div class="ci-icon">
+          <!-- Envelope SVG -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="4" width="20" height="16" rx="2" stroke="rgba(255,255,255,0.7)" stroke-width="1.8"/>
+            <path d="M2 7l10 7 10-7" stroke="rgba(255,255,255,0.7)" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
         </div>
+        <span><a href="mailto:gsvfabela@gmail.com">gsvfabela@gmail.com</a></span>
       </div>
-      <div class="simg"><img src="assets/reinguide-software.gif" alt="ReinGuide Equestrian Arena Trainer screenshot"></div>
-    </div>
-  </section>
-
-  <!-- WHO IT HELPS -->
-  <section class="s-off">
-    <div style="max-width:960px;margin:0 auto;text-align:center;">
-      <div class="section-label" style="justify-content:center;margin-bottom:14px;"><span>Impact</span></div>
-      <h2 class="stitle" style="text-align:center;">Designed for Mariana. Built for many.</h2>
-      <p class="sbody" style="max-width:580px;margin:0 auto;text-align:center;">We focused obsessively on one rider — a 7-year-old non-verbal autistic girl whose needs shaped every design decision. That depth of specificity creates tools that work broadly and genuinely, not just on paper.</p>
-      <div class="who-grid">
-        <div class="who">
-          <div class="icon">
-            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="22" cy="22" r="20" fill="#D6F6F3"/><path d="M15 26c1.5-2 3.5-3 7-3s5.5 1 7 3" stroke="#0BBFAD" stroke-width="2" stroke-linecap="round"/><circle cx="22" cy="17" r="4" stroke="#0BBFAD" stroke-width="2"/><path d="M18 20c-2 1-3 3-3 5M26 20c2 1 3 3 3 5" stroke="#0BBFAD" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 2"/></svg>
-          </div>
-          <h4>Non-verbal ASD</h4>
-          <p>Haptic cues replace spoken instruction — riders receive and respond to directions without verbal processing.</p>
+      <div class="contact-info-item">
+        <div class="ci-icon">
+          <!-- Globe SVG -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,0.7)" stroke-width="1.8"/>
+            <path d="M2 12h20M12 3c-2.5 3-4 5.5-4 9s1.5 6 4 9M12 3c2.5 3 4 5.5 4 9s-1.5 6-4 9" stroke="rgba(255,255,255,0.7)" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
         </div>
-        <div class="who">
-          <div class="icon">
-            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="22" cy="22" r="20" fill="#D6F6F3"/><path d="M22 12v4M22 28v4M12 22h4M28 22h4" stroke="#0BBFAD" stroke-width="2" stroke-linecap="round"/><circle cx="22" cy="22" r="5" stroke="#0BBFAD" stroke-width="2"/></svg>
-          </div>
-          <h4>Sensory Sensitivity</h4>
-          <p>Heartbeat mode fills the silence during stops with a steady, predictable rhythm — preventing the anxiety that cuts sessions short.</p>
-        </div>
-        <div class="who">
-          <div class="icon">
-            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="22" cy="22" r="20" fill="#D6F6F3"/><path d="M14 20h4l2-5 4 10 3-5h3" stroke="#0BBFAD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <h4>ADHD</h4>
-          <p>Tactile reminders bring the rider's attention back to the reins — keeping kids with attentional differences focused for the full session.</p>
-        </div>
-        <div class="who">
-          <div class="icon">
-            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="22" cy="22" r="20" fill="#D6F6F3"/><path d="M22 14c-4.5 0-8 2-8 5.5 0 2 1.5 3.5 3 4.5V30h10v-6c1.5-1 3-2.5 3-4.5C30 16 26.5 14 22 14z" stroke="#0BBFAD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <h4>Beginners</h4>
-          <p>Gentle, intuitive tactile cues teach correct hand position and rein technique from the very first lesson.</p>
-        </div>
+        <span>Available worldwide · Remote-first</span>
       </div>
     </div>
   </section>
 
-  <!-- ECONOMIC VALUE -->
-  <section class="s-indigo">
-    <div class="two-col">
-      <div>
-        <div class="section-label" style="margin-bottom:16px;"><span style="color:var(--amber);">Economic Value</span></div>
-        <h2 class="stitle light">Fewer interrupted lessons. Better outcomes. Smarter sessions.</h2>
-        <p class="sbody light">A single equine therapy session can cost $100–$200. When sensory overload ends a lesson after ten minutes, that's not just a hard moment for the child — it's a missed therapeutic window, a frustrated family, and a real financial loss. ReinGuide is designed to protect that investment at every level.</p>
-        <div class="vlist">
-          <div class="vrow">
-            <div class="vi">
-              <svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M4.93 4.93l14.14 14.14"/></svg>
-            </div>
-            <p>Eliminates — or significantly reduces — sessions cut short by sensory overload during stops and transitions.</p>
-          </div>
-          <div class="vrow">
-            <div class="vi">
-              <svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l4-8 4 4 4-6 4 10"/></svg>
-            </div>
-            <p>Faster therapeutic progress through clearer, more consistent instruction across the same number of sessions.</p>
-          </div>
-          <div class="vrow">
-            <div class="vi">
-              <svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/></svg>
-            </div>
-            <p>One assistant can cue both reins from the controller — reducing the staffing burden without reducing care quality.</p>
-          </div>
-        </div>
-      </div>
-      <div class="simg-wrap">
-        <div class="simg" style="box-shadow:0 24px 60px rgba(0,0,0,0.3);">
-          <img src="assets/reins-class.png" alt="A rider at GallopNYC holding reins with ReinGuide grips, demonstrating the intended tool placement during a therapeutic session">
-        </div>
-        <p class="simg-caption" style="color:rgba(255,255,255,0.5);">
-          <strong style="color:rgba(255,255,255,0.8);">Photo:</strong> Original image courtesy of <strong style="color:rgba(255,255,255,0.8);">GallopNYC</strong>, a nonprofit providing equine-assisted therapy in New York. Edited to illustrate the intended placement of ReinGuide grip sensors during a therapeutic riding session.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- SAFETY -->
-  <section class="s-white">
-    <div class="section-label" style="justify-content:center;margin-bottom:32px;"><span>Safety First</span></div>
-    <div class="safety">
-      <div class="si">
-        <svg viewBox="0 0 36 36" fill="none" stroke="#B8860B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 3L3 9v9c0 8 6.5 14.5 15 17 8.5-2.5 15-9 15-17V9L18 3z"/><path d="M18 12v6M18 24h.01"/></svg>
-      </div>
-      <div>
-        <h4>An important safety consideration</h4>
-        <p>Horses are acutely sensitive to novel sensations — and as prey animals, unexpected vibration can startle them. Before ReinGuide is used with a child rider, an experienced adult must introduce each horse to the device: wearing the grips, activating the vibrations, and letting the horse acclimate calmly in a controlled environment. This step is non-negotiable. It protects the child, the horse, and the integrity of the therapeutic session.</p>
-        <p style="margin-top:10px;font-size:0.8rem;font-style:italic;color:#7A5010;">Jones, J. L. (2020). Horse brain, human brain (pp. 244). Trafalgar Square Books.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="s-coral">
-    <h2 class="stitle light" style="text-align:center;margin-bottom:12px;">Help us bring ReinGuide to the arena</h2>
-    <p class="sbody light" style="max-width:520px;margin:0 auto 32px;text-align:center;">We're actively developing ReinGuide and looking for therapy centers, researchers, and families to shape the next phase. Every conversation moves us closer to Mariana's next lesson.</p>
-    <a href="index.html#contacto" class="btn-white">
-      Get in Touch
-      <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </a>
-  </section>
-
-  <!-- FOOTER -->
+  <!-- ── FOOTER ── -->
   <footer>
-    <img src="assets/logo-fruta.png" alt="BIG FROOTS">
+    <img src="assets/logo-fruta.png" alt="Big Froots">
     <span>© 2025 BIG FROOTS. All rights reserved.</span>
-    <div class="fl">
-      <a href="index.html#productos">Products</a>
-      <a href="index.html#nosotros">About</a>
-      <a href="index.html#contacto">Contact</a>
+    <div class="footer-links">
+      <a href="#productos">Products</a>
+      <a href="#nosotros">About</a>
+      <a href="#contacto">Contact</a>
     </div>
   </footer>
+
+  <script>
+    /* Smooth scroll */
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    }
+
+    /* Carousels — handles both <img> and <iframe class="carousel-frame"> slides */
+    document.querySelectorAll('.carousel').forEach(carousel => {
+      // Detect whether this carousel uses images or iframes
+      const images = Array.from(carousel.querySelectorAll('img:not(.badge-icon img)'));
+      const frames = Array.from(carousel.querySelectorAll('.carousel-frame'));
+      const slides = frames.length > 0 ? frames : images;
+
+      const dots = carousel.querySelectorAll('.dot');
+      const prev = carousel.querySelector('.prev');
+      const next = carousel.querySelector('.next');
+      let idx = 0;
+
+      function show(i) {
+        slides[idx].classList.remove('active');
+        dots[idx]?.classList.remove('active');
+        idx = (i + slides.length) % slides.length;
+        slides[idx].classList.add('active');
+        dots[idx]?.classList.add('active');
+      }
+
+      prev?.addEventListener('click', () => show(idx - 1));
+      next?.addEventListener('click', () => show(idx + 1));
+      dots.forEach((dot, i) => dot.addEventListener('click', () => show(i)));
+    });
+  </script>
 
 </body>
 </html>
