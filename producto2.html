@@ -1,286 +1,813 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Essay Writer / Podcast Generator</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    /* Registrar la fuente */
-    @font-face {
-      font-family: 'QuadernoBold';
-      src: url("assets/quaderno_bold.otf") format("opentype");
-      font-weight: normal;
-      font-style: normal;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --coral:#F4613C;--coral-lt:#FAECE7;--coral-dk:#C94220;--coral-mid:#F0997B;
+  --teal:#0F6E56;--teal-lt:#E1F5EE;--teal-mid:#1D9E75;--teal-soft:#9FE1CB;
+  --purple:#534AB7;--purple-lt:#EEEDFE;--purple-mid:#7F77DD;
+  --amber:#BA7517;--amber-lt:#FAEEDA;--amber-mid:#EF9F27;
+  --ink:#1a1a1a;--muted:#6B7280;--off:#F7F5F2;--white:#fff;
+  --border:rgba(0,0,0,0.08);
+  --r:12px;--r-sm:8px;
+}
+body{font-family:'Nunito',sans-serif;background:var(--off);color:var(--ink);line-height:1.65;}
 
-    /* General reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+.nav{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 52px;height:66px;
+  background:rgba(255,255,255,0.95);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);}
+.biggi-logo {
+  display: inline-flex;
+  align-items: flex-end;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 26px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-right: 4px;
+  user-select: none;
+}
+.biggi-dotless { position: relative; display: inline-block; }
+.biggi-dotless .logo-dot-wrapper {
+  position: absolute; top: 2px; left: 50%; transform: translateX(-50%);
+  width: 6px; height: 6px; display: flex; align-items: center; justify-content: center;
+}
+.logo-dot { width: 3.5px; height: 3.5px; background: var(--coral-mid); border-radius: 50%; position: absolute; }
+.logo-ring {
+  width: 3.5px; height: 3.5px; border: 1.5px solid var(--coral-mid); border-radius: 50%;
+  position: absolute; animation: logoPulseExpand 2s ease-out infinite;
+}
+.logo-ring:nth-child(2) { animation-delay: 0.7s; }
+@keyframes logoPulseExpand {
+  0%   { width: 3.5px; height: 3.5px; opacity: 1; }
+  100% { width: 15px; height: 15px; opacity: 0; }
+}
+.brand-sub{font-size:0.78rem;color:var(--muted);font-weight:600;margin-top:1px;}
+.nav-r{display:flex;align-items:center;gap:10px;}
+.nav-link{text-decoration:none;color:var(--muted);font-weight:600;font-size:0.875rem;padding:7px 14px;border-radius:var(--r-sm);transition:all 0.15s;}
+.nav-link:hover{background:var(--off);color:var(--ink);}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:var(--r-sm);font-weight:700;font-size:0.875rem;font-family:'Nunito';text-decoration:none;cursor:pointer;border:none;transition:all 0.15s;}
+.btn-primary{background:var(--coral);color:#fff;}
+.btn-primary:hover{background:var(--coral-dk);}
+.btn-outline{background:#fff;color:var(--ink);border:1.5px solid var(--border);}
+.btn-outline:hover{border-color:rgba(0,0,0,0.3);}
+.btn-lg{padding:13px 26px;font-size:1rem;border-radius:var(--r);}
 
-    body {
-      background: url("assets/background.jpg") no-repeat center center fixed;
-      background-size: cover;
-      color: #034c3c;
-      line-height: 1.6;
-      font-family: 'QuadernoBold', Arial, sans-serif; /* fuente aplicada */
-    }
+/* 3-COLUMN HERO */
+.hero{
+  padding:64px 52px 72px;
+  background:#fff;
+  display:grid;
+  grid-template-columns: 1fr 240px 1fr;
+  gap:40px;
+  align-items:center;
+  border-bottom:1px solid var(--border);
+}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:0.75rem;font-weight:700;letter-spacing:0.06em;
+  color:var(--purple);background:var(--purple-lt);
+  padding:5px 12px;border-radius:20px;margin-bottom:18px;
+  border:1px solid rgba(83,74,183,0.15);
+  text-transform:uppercase;
+}
+.eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--purple-mid);}
+h1{font-family:'Fredoka';font-size:3rem;font-weight:700;line-height:1.1;margin-bottom:14px;}
+h1 em{font-style:normal;color:var(--coral);}
+.hero-p{color:var(--muted);font-size:1.05rem;margin-bottom:10px;max-width:420px;}
+.hero-detail{
+  font-size:0.85rem;color:var(--muted);
+  background:var(--off);
+  padding:10px 14px;
+  margin-bottom:28px;
+  border-left:3px solid var(--purple-mid);
+}
+.hero-detail strong{color:var(--purple);font-weight:700;}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;}
 
-    /* Navbar (igual que index.html) */
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 40px;
-      background: url("assets/background.jpg") no-repeat center center;
-      background-size: cover;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    .navbar::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-color: rgba(0,0,0,0.3);
-      z-index: 0;
-    }
-
-    .navbar img,
-    .navbar nav,
-    .navbar nav a {
-      position: relative;
-      z-index: 1;
-      color: white;
-    }
-
-    .navbar .logo {
-      width: 120px;
-      height: auto; 
-      transition: transform 0.3s;
-    }
-
-    .navbar .logo:hover {
-      transform: scale(1.1);
-    }
-
-    nav a {
-      margin-left: 25px;
-      text-decoration: none;
-      color: #fff;
-      font-weight: 600;
-      transition: color 0.3s;
-    }
-
-    nav a:hover {
-      color: #fcd34d;
-    }
-
-    /* Hero Producto */
-    .hero-producto {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-      padding: 60px 20px;
-      background: rgba(255,255,255,0.85);
-      border-radius: 20px;
-      margin: 40px auto;
-      max-width: 1000px;
-    }
-
-    .hero-producto .froot-image {
-    max-width: 800px; /* antes 400px */
-    width: 100%;
-    border-radius: 20px;
-    margin: 20px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    }
-
-    .hero-producto img {
-      max-width: 600px;
-      max-width: 100%;
-      height: auto;
-      width: 100%;
-      border-radius: 20px;
-      margin: 20px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    }
-
-    .hero-producto div {
-      max-width: 500px;
-      margin: 20px;
-      text-align: center;
-    }
-
-    .hero-producto h1 {
-      font-size: 2.5rem;
-      margin-bottom: 15px;
-      color: #034c3c;
-      font-family: 'QuadernoBold', Arial, sans-serif; /* fuente aplicada */
-    }
-
-    .hero-producto p {
-      font-size: 1.1rem;
-      margin-bottom: 25px;
-      color: #05695e;
-    }
-
-    .hero-producto button {
-      padding: 15px 30px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 50px;
-      background-color: #02a488;
-      color: #fff;
-      cursor: pointer;
-      transition: background-color 0.3s, transform 0.2s;
-      font-family: 'QuadernoBold', Arial, sans-serif; /* fuente en botón */
-    }
-
-    .hero-producto button:hover {
-      background-color: #045c3f;
-      transform: scale(1.05);
-    }
-
-    /* Features */
-    .features {
-      padding: 60px 20px;
-      text-align: center;
-      background: rgba(255,255,255,0.85);
-      border-radius: 20px;
-      max-width: 900px;
-      margin: 40px auto;
-    }
-
-    .features h2 {
-      font-size: 2rem;
-      margin-bottom: 30px;
-      color: #034c3c;
-      font-family: 'QuadernoBold', Arial, sans-serif; /* fuente aplicada */
-    }
-
-    .features ul {
-      list-style: none;
-    }
-
-    .features li {
-      font-size: 1.2rem;
-      margin-bottom: 15px;
-      padding-left: 25px;
-      position: relative;
-      text-align: left;
-    }
-
-    .features li::before {
-      content: "✔";
-      position: absolute;
-      left: 0;
-      color: #02a488;
-      font-weight: bold;
-    }
-
-    /* Imagen destacada entre producto y características */
-.imagen-destacada {
+/* ROBOT CENTER COLUMN */
+.robot-col{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:14px;
+}
+.robot-container {
+  width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.85);
-  border-radius: 20px;
-  margin: 40px auto;
-  max-width: 900px;
-  padding: 40px;
+}
+.robot-container svg { width: 100%; height: auto; }
+.ring1 { animation: pulseExpand 2s ease-out infinite; transform-origin: 340px 52px; }
+.ring2 { animation: pulseExpand 2s ease-out infinite; animation-delay: 0.7s; transform-origin: 340px 52px; }
+@keyframes pulseExpand {
+  0%   { r: 18px; opacity: 1; }
+  100% { r: 72px; opacity: 0; }
+}
+.robot-intro{
+  font-family:'Fredoka';
+  font-size:1.45rem;
+  font-weight:700;
+  color:var(--ink);
+  text-align:center;
+  letter-spacing:-0.01em;
+}
+.robot-intro em{font-style:normal;color:var(--coral);}
+
+/* HERO RIGHT COLUMN */
+.hero-right-col{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.hero-visual-container {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 16px;
+  background: var(--off);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  position: relative;
+  overflow: hidden;
+}
+#p5-container {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+}
+#p5-container canvas { display: block; width: 100% !important; height: 100% !important; }
+
+/* "made in BiGGi" label */
+.made-in-biggi{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:0.72rem;
+  font-weight:700;
+  color:var(--muted);
+  font-family:'JetBrains Mono',monospace;
+  letter-spacing:0.04em;
+  align-self:flex-end;
+  padding:4px 10px;
+  background:var(--off);
+  border:1px solid var(--border);
+  border-radius:20px;
+}
+.mib-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--coral-mid);
+  animation:mibPulse 2s ease-in-out infinite;
+}
+@keyframes mibPulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+
+/* APP MOCKUP */
+.app-frame{
+  background:#0f0f17;
+  border-radius:16px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.app-titlebar{
+  background:#1a1a26;
+  padding:10px 16px;
+  display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.app-dot{width:11px;height:11px;border-radius:50%;}
+.d-r{background:#FF5F56;} .d-y{background:#FFBD2E;} .d-g{background:#27C93F;}
+.app-label{color:rgba(255,255,255,0.3);font-size:0.75rem;font-weight:600;margin-left:6px;font-family:'JetBrains Mono';}
+.gif-pane{
+  width:100%;
+  position:relative;
+  background:#0a0a14;
+  aspect-ratio:16/10;
+  overflow:hidden;
+}
+.gif-pane img{width:100%;height:100%;object-fit:cover;display:block;}
+.gif-placeholder{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:10px;
+  color:rgba(255,255,255,0.18);
+  font-family:'JetBrains Mono';
+  font-size:0.75rem;
+  letter-spacing:0.05em;
+  pointer-events:none;
+  user-select:none;
 }
 
-.imagen-destacada img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 15px;
+/* SECTIONS */
+.section{padding:72px 52px;}
+.sec-w{background:#fff;}
+.sec-o{background:var(--off);}
+.sec-hdr{text-align:center;margin-bottom:52px;}
+.sec-hdr h2{font-family:'Fredoka';font-size:2.1rem;margin-bottom:10px;}
+.sec-hdr p{color:var(--muted);max-width:500px;margin:0 auto;}
+
+/* LOOP DIAGRAM */
+.loop-wrap{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;}
+.loop-node{
+  display:flex;flex-direction:column;align-items:center;
+  gap:10px;width:140px;
+  animation:fadeUp 0.5s ease both;
 }
+.loop-node:nth-child(1){animation-delay:0s;}
+.loop-node:nth-child(3){animation-delay:0.15s;}
+.loop-node:nth-child(5){animation-delay:0.3s;}
+.loop-node:nth-child(7){animation-delay:0.45s;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.loop-icon{
+  width:56px;height:56px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+}
+.li-purple{background:var(--purple-lt);}
+.li-coral{background:var(--coral-lt);}
+.li-teal{background:var(--teal-lt);}
+.li-amber{background:var(--amber-lt);}
+.loop-node span{font-size:0.8rem;font-weight:700;text-align:center;color:var(--ink);}
+.loop-node small{font-size:0.72rem;color:var(--muted);text-align:center;line-height:1.4;}
+.loop-arrow{font-size:1.2rem;color:var(--muted);padding:0 4px;margin-top:-20px;}
+.loop-back{
+  width:100%;margin-top:28px;
+  display:flex;align-items:center;justify-content:center;
+  gap:12px;
+  font-size:0.8rem;color:var(--muted);font-weight:600;
+}
+.loop-back-line{flex:1;max-width:200px;height:1px;background:rgba(0,0,0,0.1);position:relative;}
+.loop-back-line::after{content:'';position:absolute;right:-1px;top:-4px;width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:7px solid rgba(0,0,0,0.15);}
 
+/* CONTEXT SYSTEM */
+.ctx-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:0;}
+.ctx-card{background:#fff;border-radius:var(--r);border:1px solid var(--border);padding:24px;}
+.ctx-card h3{font-size:0.95rem;font-weight:700;margin-bottom:6px;}
+.ctx-card p{font-size:0.85rem;color:var(--muted);margin-bottom:16px;}
 
-    /* Footer */
-    footer {
-      padding: 20px;
-      text-align: center;
-      background-color: #034c3c;
-      color: #fff;
-      font-size: 0.9rem;
-      margin-top: 40px;
-      font-family: 'QuadernoBold', Arial, sans-serif;
-    }
+/* BEFORE/AFTER */
+.ba-wrap{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.ba-side{border-radius:var(--r);overflow:hidden;border:1px solid var(--border);}
+.ba-head{padding:13px 20px;font-weight:700;font-size:0.85rem;display:flex;align-items:center;gap:10px;}
+.ba-h-bad{background:#FCEBEB;color:#A32D2D;}
+.ba-h-good{background:var(--teal-lt);color:var(--teal);}
+.badge{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.badge-x{background:#E24B4A;}
+.badge-ok{background:var(--teal-mid);}
+.ba-body{background:#fff;padding:20px;}
+.code-wall{
+  font-family:'JetBrains Mono';font-size:0.7rem;
+  background:var(--off);border-radius:var(--r-sm);
+  padding:12px;color:var(--muted);line-height:1.7;
+  height:150px;overflow:hidden;position:relative;
+}
+.code-wall::after{content:'';position:absolute;bottom:0;left:0;right:0;height:48px;background:linear-gradient(transparent,var(--off));}
+.verdict-list{margin-top:12px;display:flex;flex-direction:column;gap:5px;}
+.verdict{display:flex;align-items:flex-start;gap:8px;font-size:0.8rem;}
+.v-bad{color:#A32D2D;}
+.v-good{color:var(--teal);}
+.mod-chips{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.chip{border-radius:var(--r-sm);padding:10px 12px;font-size:0.78rem;font-weight:700;}
+.chip-setup{background:var(--purple-lt);color:#534AB7;}
+.chip-draw{background:var(--coral-lt);color:var(--coral-dk);}
+.chip-interact{background:var(--teal-lt);color:var(--teal);}
+.chip-explain{background:var(--amber-lt);color:var(--amber);}
+.chip span{display:block;font-size:0.68rem;font-weight:400;color:var(--muted);margin-top:2px;}
 
-    @media(max-width:768px){
-      .hero-producto {
-        flex-direction: column;
-      }
-    }
-  </style>
+/* WHY P5 */
+.p5-strip{
+  background:var(--ink);
+  padding:48px 52px;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:32px;
+}
+.p5-item{padding:20px;border-radius:var(--r);background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);}
+.p5-item h3{color:#fff;font-size:0.95rem;font-weight:700;margin-bottom:8px;}
+.p5-item p{color:rgba(255,255,255,0.45);font-size:0.83rem;}
+.p5-num{font-family:'Fredoka';font-size:2rem;color:var(--coral-mid);font-weight:700;margin-bottom:4px;}
+
+/* CTA */
+.cta{padding:80px 52px;background:var(--teal);text-align:center;}
+.cta h2{font-family:'Fredoka';font-size:2.3rem;color:#fff;margin-bottom:12px;}
+.cta p{color:rgba(255,255,255,0.65);margin-bottom:32px;font-size:1rem;}
+.btn-cta-w{background:#fff;color:var(--teal);}
+.btn-cta-w:hover{background:var(--teal-lt);}
+
+footer{background:#0d0d1a;color:rgba(255,255,255,0.3);padding:22px 52px;text-align:center;font-size:0.82rem;}
+
+@media(max-width:900px){
+  .hero,.ctx-grid,.ba-wrap,.p5-strip{grid-template-columns:1fr;}
+  .section,.hero,.cta,.nav{padding-left:20px;padding-right:20px;}
+  h1{font-size:2.2rem;}
+  .loop-wrap{gap:0;justify-content:flex-start;}
+}
+</style>
 </head>
 <body>
 
-  <!-- Navbar -->
-  <header class="navbar">
-    <a href="index.html"><img src="assets/logo-fruta.png" alt="Big Froots Logo" class="logo"></a>
-    <nav>
-      <a href="index.html#productos">Products</a>
-      <a href="index.html#nosotros">About Us</a>
-      <a href="index.html#contacto">Contact</a>
-    </nav>
-  </header>
-
-<!-- Hero Producto -->
-<section class="hero-producto">
-    <img src="assets/screenshot-essay-writer.png" alt="Froot Clock" class="froot-image">
-    <div>
-      <h1>Ant Podcaster: Essay Writer / Podcast Generator</h1>
-      <p>The use of LLMs, like ChatGPT, in academic activities is on the rise, with divided opinions about 
-        the cognitive implications of their use, and a perceived disengagement from generated content. 
-        Recent studies have shown that its impact can vary depending on the specific activities and stages 
-        of the creative process where they are used. This represents an opportunity to explore how user 
-        interfaces and related factors can optimize privacy, learning and cognitive wellbeing of its users.</p>
+<header class="nav">
+  <a href="#" class="brand">
+    <div class="biggi-logo">
+      <span class="biggi-letter">B</span>
+      <span class="biggi-dotless">i<span class="logo-dot-wrapper"><span class="logo-ring"></span><span class="logo-ring"></span><span class="logo-dot"></span></span></span>
+      <span class="biggi-letter">GG</span>
+      <span class="biggi-dotless">i<span class="logo-dot-wrapper"><span class="logo-ring" style="animation-delay: 0.35s;"></span><span class="logo-ring" style="animation-delay: 1.05s;"></span><span class="logo-dot"></span></span></span>
     </div>
-  </section>
-  
-  <!-- Nueva sección con reins-opacity -->
-  <section class="hero-producto">
-    <img src="assets/history-of-sushi.png" alt="Reins Opacity">
     <div>
-      <h2>Can we design a user interface to maximize cognitive engagement and the quality  of outputs generated through LLM’s? </h2>
-      <p>We decided to make a website with a user interface that prompts users for a main theme to generate
-        text and podcasts about, like the history of sushi. Then a few subthemes are generated depending on 
-        how long the user expects for the text to be. The user can decide to keep those subthemes, or include 
-        some other subthemes to talk about. The subthemes can also be rearranged or deleted, allowing for 
-        the user to get more control of the content.  </p>
+      <div style="font-weight:700;font-size:0.9rem;">BIG FROOTS</div>
+      <div class="brand-sub">p5.js AI coding agent</div>
     </div>
-    <img src="assets/history-of-sushi-2.png" alt="Reins Opacity">
-  </section>
+  </a>
+  <div class="nav-r">
+    <a href="#" class="nav-link">How it works</a>
+    <a href="#" class="nav-link">About</a>
+    <a href="https://biggi.fly.dev" class="btn btn-primary">Try BiGGi</a>
+  </div>
+</header>
 
-  
-  <!-- Características -->
-  <section class="features">
-    <div><h2>Technical Details</h2>
-      <p>Ant Podcaster is a minimal, fast writing assistant that helps you outline on the left pane 
-        and compose on the right—then turns your draft into a short podcast via streamed TTS (no file 
-        writes, no dev-server reloads).
-        Backend: FastAPI (OpenAI for text + speech). Frontend: HTML/CSS/JS (optional p5.js background). 
-        Default layout is a 50/50 resizable split with careful sizing so content never overlaps.</p>
-        <br><br>
-      <a href="https://github.com/maximilianobarajas/AntPodcast" target="_blank">
-        View the project on GitHub
+<section class="hero">
+  <!-- LEFT: text -->
+  <div>
+    <div class="eyebrow"><div class="eyebrow-dot"></div>For p5.js creative coders</div>
+    <h1>Vibe code.<br><em>Actually learn.</em><br>Build visuals.</h1>
+    <p class="hero-p">BiGGi is a p5.js AI agent that starts small and grows with you. Prompt a piece, see it run, tweak it — no copy-paste, no walls of code.</p>
+    <div class="hero-detail">
+      <strong>Not a chat.</strong> BiGGi is a structured environment where your live canvas <em>is</em> the context. Every module is editable. Every generation is targeted — only what changed.
+    </div>
+    <div class="hero-actions">
+      <button class="btn btn-primary btn-lg" onclick="openModal()">
+        <!-- Play icon SVG -->
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="7" cy="7" r="6.5" stroke="rgba(255,255,255,0.4)" stroke-width="1"/><polygon points="5.5,4 11,7 5.5,10" fill="white"/></svg>
+        Watch demo
+      </button>
+      <a href="#how" class="btn btn-outline btn-lg">
+        <!-- Arrow down SVG -->
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M7 2v9M3.5 8l3.5 3.5L10.5 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        See how it works
       </a>
     </div>
-  </section>
-  
+  </div>
 
-  <!-- Footer -->
-  <footer>
-    <p>© 2025 Big Froots. Todos los derechos reservados.</p>
-  </footer>
+  <!-- CENTER: robot + BiGGi name intro -->
+  <div class="robot-col">
+    <div class="robot-container">
+      <svg id="robot" viewBox="0 0 680 780" xmlns="http://www.w3.org/2000/svg">
+        <circle class="ring1" cx="340" cy="52" r="18" fill="none" stroke="#e8603a" stroke-width="3"/>
+        <circle class="ring2" cx="340" cy="52" r="18" fill="none" stroke="#e8603a" stroke-width="3"/>
+        <circle cx="340" cy="52" r="18" fill="none" stroke="#e8603a" stroke-width="3"/>
+        <circle cx="340" cy="52" r="8" fill="#e8603a"/>
+        <rect x="333" y="74" width="14" height="56" fill="#111"/>
+        <rect x="112" y="295" width="48" height="70" rx="6" fill="#5b8fd4" stroke="#111" stroke-width="5"/>
+        <rect x="520" y="295" width="48" height="70" rx="6" fill="#5b8fd4" stroke="#111" stroke-width="5"/>
+        <rect x="140" y="130" width="400" height="310" rx="48" fill="#f5e96a" stroke="#111" stroke-width="8"/>
+        <circle cx="252" cy="295" r="72" fill="white" stroke="#111" stroke-width="7"/>
+        <circle id="pupilL" cx="252" cy="295" r="28" fill="#111"/>
+        <circle cx="428" cy="295" r="72" fill="white" stroke="#111" stroke-width="7"/>
+        <circle id="pupilR" cx="428" cy="295" r="28" fill="#111"/>
+        <path d="M280 390 Q340 440 400 390" fill="none" stroke="#111" stroke-width="8" stroke-linecap="round"/>
+        <rect x="316" y="440" width="48" height="30" rx="4" fill="#111"/>
+        <rect x="296" y="470" width="88" height="28" rx="4" fill="#e8963a" stroke="#111" stroke-width="4"/>
+        <rect x="296" y="504" width="88" height="28" rx="4" fill="#f5e96a" stroke="#111" stroke-width="4"/>
+        <rect x="296" y="538" width="88" height="28" rx="4" fill="#e8963a" stroke="#111" stroke-width="4"/>
+      </svg>
+    </div>
+    <!-- BiGGi name intro below robot -->
+    <div class="robot-intro">Hi, I'm <em>BiGGi</em></div>
+  </div>
 
+  <!-- RIGHT: p5 visual + "made in BiGGi" badge -->
+  <div class="hero-right-col">
+    <div class="hero-visual-container">
+      <div id="p5-container"></div>
+    </div>
+    <div class="made-in-biggi">
+      <div class="mib-dot"></div>
+      made in BiGGi
+    </div>
+  </div>
+</section>
+
+<!-- WHY P5 — moved before The BiGGi Loop -->
+<section class="p5-strip">
+  <div class="p5-item">
+    <div class="p5-num">p5</div>
+    <h3>Made for p5.js</h3>
+    <p>BiGGi's module structure maps directly to p5's own architecture — setup, draw, events. It makes sense because p5 is already modular.</p>
+  </div>
+  <div class="p5-item">
+    <div class="p5-num">→</div>
+    <h3>Start small, grow iteratively</h3>
+    <p>Start with a bouncing ball. Add gravity. Add color. Add interaction. Each prompt is one idea — not an overwhelming feature spec.</p>
+  </div>
+  <div class="p5-item">
+    <div class="p5-num">⟳</div>
+    <h3>Vibe code that teaches</h3>
+    <p>The modular output and inline explanations aren't just for reading — the structure invites you to tinker, break things, and learn from it.</p>
+  </div>
+</section>
+
+<!-- THE BIGGI LOOP -->
+<section class="section sec-w" id="how">
+  <div class="sec-hdr">
+    <h2>The BiGGi loop</h2>
+    <p>Not a one-shot chat. A guided iteration cycle — every prompt builds on what's already on the canvas.</p>
+  </div>
+
+  <div class="loop-wrap">
+    <div class="loop-node">
+      <div class="loop-icon li-purple">
+        <!-- Pencil SVG icon -->
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" stroke="#534AB7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span>Prompt a piece</span>
+      <small>Describe one small thing to add or change</small>
+    </div>
+    <div class="loop-arrow">→</div>
+    <div class="loop-node">
+      <div class="loop-icon li-coral">
+        <!-- Puzzle SVG icon -->
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 3H5a2 2 0 00-2 2v4m6-6a2 2 0 012 2v1a2 2 0 002 2h1a2 2 0 012-2V5a2 2 0 012-2h4v4h-1a2 2 0 00-2 2v1a2 2 0 002 2h1v4h-4a2 2 0 01-2-2v-1a2 2 0 00-2-2h-1a2 2 0 00-2 2v1a2 2 0 01-2 2H3v-4h1a2 2 0 002-2v-1a2 2 0 00-2-2H3V9h6z" stroke="#C94220" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span>Modules update</span>
+      <small>Only the affected module is regenerated</small>
+    </div>
+    <div class="loop-arrow">→</div>
+    <div class="loop-node">
+      <div class="loop-icon li-teal">
+        <!-- Play circle SVG icon -->
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="#0F6E56" stroke-width="2"/><polygon points="10,8 17,12 10,16" fill="#0F6E56"/></svg>
+      </div>
+      <span>Test on canvas</span>
+      <small>Run it live before committing anything</small>
+    </div>
+    <div class="loop-arrow">→</div>
+    <div class="loop-node">
+      <div class="loop-icon li-amber">
+        <!-- Sliders SVG icon -->
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="4" y1="6" x2="20" y2="6" stroke="#BA7517" stroke-width="2" stroke-linecap="round"/><line x1="4" y1="12" x2="20" y2="12" stroke="#BA7517" stroke-width="2" stroke-linecap="round"/><line x1="4" y1="18" x2="20" y2="18" stroke="#BA7517" stroke-width="2" stroke-linecap="round"/><circle cx="9" cy="6" r="2.5" fill="#FAEEDA" stroke="#BA7517" stroke-width="1.8"/><circle cx="15" cy="12" r="2.5" fill="#FAEEDA" stroke="#BA7517" stroke-width="1.8"/><circle cx="9" cy="18" r="2.5" fill="#FAEEDA" stroke="#BA7517" stroke-width="1.8"/></svg>
+      </div>
+      <span>Edit or commit</span>
+      <small>Tweak yourself, or go again with a new prompt</small>
+    </div>
+  </div>
+
+  <div class="loop-back">
+    <div class="loop-back-line" style="transform:scaleX(-1);"></div>
+    <span style="font-size:0.78rem;">canvas state becomes the next prompt's context</span>
+    <div class="loop-back-line"></div>
+  </div>
+
+  <div style="margin-top:48px;display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+    <div class="app-frame">
+      <div class="app-titlebar">
+        <div class="app-dot d-r"></div><div class="app-dot d-y"></div><div class="app-dot d-g"></div>
+        <span class="app-label">BiGGi — Creating a responsive grid of circles</span>
+      </div>
+      <div class="gif-pane">
+        <img src="assets/demo1.gif" alt="BiGGi demo" onerror="this.style.display='none'" />
+        <div class="gif-placeholder"></div>
+      </div>
+    </div>
+    <div class="app-frame">
+      <div class="app-titlebar">
+        <div class="app-dot d-r"></div><div class="app-dot d-y"></div><div class="app-dot d-g"></div>
+        <span class="app-label">BiGGi — Creating a snake mini-game</span>
+      </div>
+      <div class="gif-pane">
+        <img src="assets/demo2.gif" alt="BiGGi demo" onerror="this.style.display='none'" />
+        <div class="gif-placeholder"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section sec-o">
+  <div class="sec-hdr">
+    <h2>Built-in context management</h2>
+    <p>BiGGi's RAG system keeps your live canvas as the context — so every prompt is targeted, not a full rewrite.</p>
+  </div>
+  <div class="ctx-grid">
+    <div class="ctx-card">
+      <h3>What's in context</h3>
+      <p>Chat stacks every message — context grows quadratically. BiGGi only sends the current code state — context stays constant.</p>
+      <svg viewBox="0 0 320 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;margin-top:12px;overflow:visible;" font-family="Nunito, sans-serif">
+        <text x="72" y="14" text-anchor="middle" font-size="8" font-weight="700" fill="#6B7280">Chat-based</text>
+        <text x="240" y="14" text-anchor="middle" font-size="8" font-weight="700" fill="#0F6E56">BiGGi</text>
+        <line x1="160" y1="0" x2="160" y2="210" stroke="rgba(0,0,0,0.06)" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="12" y="38" font-size="6.5" fill="#9CA3AF" font-weight="600">Turn 1</text>
+        <rect x="38" y="28" width="62" height="13" rx="3" fill="#E5E7EB" stroke="#D1D5DB" stroke-width="0.5"/>
+        <text x="69" y="37.5" text-anchor="middle" font-size="5.5" fill="#6B7280">msg 1</text>
+        <text x="12" y="65" font-size="6.5" fill="#9CA3AF" font-weight="600">Turn 2</text>
+        <rect x="38" y="54" width="62" height="11" rx="3" fill="#D1D5DB" stroke="#C0C4CC" stroke-width="0.5"/>
+        <text x="69" y="62" text-anchor="middle" font-size="5" fill="#9CA3AF">msg 1</text>
+        <rect x="38" y="66" width="62" height="11" rx="3" fill="#E5E7EB" stroke="#D1D5DB" stroke-width="0.5"/>
+        <text x="69" y="74" text-anchor="middle" font-size="5.5" fill="#6B7280">msg 2</text>
+        <text x="12" y="96" font-size="6.5" fill="#9CA3AF" font-weight="600">Turn 3</text>
+        <rect x="38" y="84" width="62" height="9" rx="3" fill="#C9CDD4" stroke="#B8BCC4" stroke-width="0.5"/>
+        <text x="69" y="91" text-anchor="middle" font-size="4.5" fill="#9CA3AF">msg 1</text>
+        <rect x="38" y="94" width="62" height="9" rx="3" fill="#D9DCE2" stroke="#C8CCD4" stroke-width="0.5"/>
+        <text x="69" y="101" text-anchor="middle" font-size="4.5" fill="#9CA3AF">msg 2</text>
+        <rect x="38" y="104" width="62" height="9" rx="3" fill="#E5E7EB" stroke="#D1D5DB" stroke-width="0.5"/>
+        <text x="69" y="111" text-anchor="middle" font-size="5" fill="#6B7280">msg 3</text>
+        <text x="12" y="130" font-size="6.5" fill="#9CA3AF" font-weight="600">Turn 4</text>
+        <rect x="38" y="118" width="62" height="8" rx="2" fill="#BFC3CB" stroke="#AEB3BC" stroke-width="0.5"/>
+        <text x="69" y="124.5" text-anchor="middle" font-size="4" fill="#9CA3AF">msg 1</text>
+        <rect x="38" y="127" width="62" height="8" rx="2" fill="#C9CDD4" stroke="#B8BCC4" stroke-width="0.5"/>
+        <text x="69" y="133.5" text-anchor="middle" font-size="4" fill="#9CA3AF">msg 2</text>
+        <rect x="38" y="136" width="62" height="8" rx="2" fill="#D5D8DF" stroke="#C4C8D0" stroke-width="0.5"/>
+        <text x="69" y="142.5" text-anchor="middle" font-size="4" fill="#9CA3AF">msg 3</text>
+        <rect x="38" y="145" width="62" height="8" rx="2" fill="#E5E7EB" stroke="#D1D5DB" stroke-width="0.5"/>
+        <text x="69" y="151.5" text-anchor="middle" font-size="5" fill="#6B7280">msg 4</text>
+        <line x1="108" y1="32" x2="108" y2="152" stroke="#F4613C" stroke-width="1.5" marker-end="url(#arr-red)"/>
+        <defs>
+          <marker id="arr-red" markerWidth="5" markerHeight="5" refX="3" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#F4613C"/></marker>
+          <marker id="arr-teal" markerWidth="5" markerHeight="5" refX="3" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#0F6E56"/></marker>
+        </defs>
+        <text x="120" y="90" font-size="6" fill="#F4613C" font-weight="700" transform="rotate(-90,120,90)">grows each turn</text>
+        <rect x="28" y="164" width="88" height="14" rx="4" fill="#FAECE7"/>
+        <text x="72" y="173.5" text-anchor="middle" font-size="6.5" fill="#C94220" font-weight="700">↗ quadratic growth</text>
+        <text x="172" y="38" font-size="6.5" fill="#9CA3AF" font-weight="600">Turn 1</text>
+        <rect x="198" y="28" width="62" height="13" rx="3" fill="#E1F5EE" stroke="#9FE1CB" stroke-width="0.8"/>
+        <text x="229" y="37" text-anchor="middle" font-size="5.5" fill="#0F6E56" font-weight="600">current code</text>
+        <text x="172" y="66" font-size="6.5" fill="#9CA3AF" font-weight="600">Turn 2</text>
+        <rect x="198" y="54" width="62" height="15" rx="3" fill="#D8F0E9" stroke="#9FE1CB" stroke-width="0.8"/>
+        <text x="229" y="63.5" text-anchor="middle" font-size="5.5" fill="#0F6E56" font-weight="600">current code</text>
+        <text x="172" y="98" font-size="6.5" fill="#9CA3AF" font-weight="600">Turn 3</text>
+        <rect x="198" y="84" width="62" height="17" rx="3" fill="#CEE9E1" stroke="#9FE1CB" stroke-width="0.8"/>
+        <text x="229" y="94" text-anchor="middle" font-size="5.5" fill="#0F6E56" font-weight="600">current code</text>
+        <text x="172" y="132" font-size="6.5" fill="#9CA3AF" font-weight="600">Turn 4</text>
+        <rect x="198" y="118" width="62" height="19" rx="3" fill="#C4E3D9" stroke="#9FE1CB" stroke-width="0.8"/>
+        <text x="229" y="129" text-anchor="middle" font-size="5.5" fill="#0F6E56" font-weight="600">current code</text>
+        <line x1="268" y1="32" x2="268" y2="130" stroke="#0F6E56" stroke-width="1.5" stroke-dasharray="2,2"/>
+        <text x="280" y="83" font-size="6" fill="#0F6E56" font-weight="700" transform="rotate(-90,280,83)">grows slowly</text>
+        <rect x="183" y="164" width="98" height="14" rx="4" fill="#E1F5EE"/>
+        <text x="232" y="173.5" text-anchor="middle" font-size="6.5" fill="#0F6E56" font-weight="700">≈ quasilinear growth</text>
+        <rect x="10" y="186" width="300" height="18" rx="5" fill="#1a1a1a"/>
+        <text x="160" y="198" text-anchor="middle" font-size="7" fill="#fff" font-weight="600">Context ≈ current modules — grows slowly, not exponentially</text>
+      </svg>
+    </div>
+    <div class="ctx-card">
+      <h3>Token efficiency</h3>
+      <p>Regenerating one module instead of the full sketch keeps output lean — faster, cheaper, more focused.</p>
+      <p style="font-size:0.83rem;color:var(--muted);margin-top:8px;">No more "give me the full code" for redundant regenerations: we know where to incorporate the modifications — and we'll show you, so it feels easier for you to get motivated to code by yourself.</p>
+      <div style="margin-top:14px;">
+        <div style="display:flex;gap:16px;margin-bottom:10px;font-size:0.68rem;font-weight:700;color:var(--muted);font-family:'Nunito';">
+          <span style="display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:2px;background:#0F6E56;display:inline-block;"></span>Prompt</span>
+          <span style="display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:2px;background:#9FE1CB;display:inline-block;"></span>Completion</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:6px;">
+          <div style="font-size:0.68rem;font-weight:700;color:var(--teal);text-align:center;font-family:'Nunito';">BiGGi</div>
+          <div style="font-size:0.68rem;font-weight:700;color:var(--muted);text-align:center;font-family:'Nunito';">Chat-based</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <svg viewBox="0 0 110 92" xmlns="http://www.w3.org/2000/svg" style="width:100%;overflow:visible;">
+            <line x1="20" y1="0" x2="20" y2="72" stroke="rgba(0,0,0,0.07)" stroke-width="0.8"/>
+            <line x1="20" y1="0" x2="110" y2="0" stroke="rgba(0,0,0,0.05)" stroke-width="0.5"/>
+            <line x1="20" y1="24" x2="110" y2="24" stroke="rgba(0,0,0,0.05)" stroke-width="0.5"/>
+            <line x1="20" y1="48" x2="110" y2="48" stroke="rgba(0,0,0,0.05)" stroke-width="0.5"/>
+            <line x1="20" y1="72" x2="110" y2="72" stroke="rgba(0,0,0,0.09)" stroke-width="0.8"/>
+            <text x="17" y="3" text-anchor="end" font-size="4.5" fill="#9CA3AF" font-family="JetBrains Mono">5k</text>
+            <text x="17" y="27" text-anchor="end" font-size="4.5" fill="#9CA3AF" font-family="JetBrains Mono">2.5k</text>
+            <text x="17" y="51" text-anchor="end" font-size="4.5" fill="#9CA3AF" font-family="JetBrains Mono">1k</text>
+            <text x="17" y="75" text-anchor="end" font-size="4.5" fill="#9CA3AF" font-family="JetBrains Mono">0</text>
+            <rect x="25" y="69.1" width="14" height="2.9" fill="#0F6E56" rx="1"/>
+            <rect x="25" y="54.7" width="14" height="14.4" fill="#9FE1CB" rx="1"/>
+            <rect x="44" y="50.4" width="14" height="21.6" fill="#0F6E56" rx="1"/>
+            <rect x="44" y="38.9" width="14" height="11.5" fill="#9FE1CB" rx="1"/>
+            <rect x="63" y="48.2" width="14" height="23.8" fill="#0F6E56" rx="1"/>
+            <rect x="63" y="36.0" width="14" height="12.2" fill="#9FE1CB" rx="1"/>
+            <rect x="82" y="47.5" width="14" height="24.5" fill="#0F6E56" rx="1"/>
+            <rect x="82" y="42.5" width="14" height="5.0" fill="#9FE1CB" rx="1"/>
+            <text x="32" y="82" text-anchor="middle" font-size="4.5" fill="#9CA3AF" font-family="JetBrains Mono">T1</text>
+            <text x="51" y="82" text-anchor="middle" font-size="4.5" fill="#9CA3AF" font-family="JetBrains Mono">T2</text>
+            <text x="70" y="82" text-anchor="middle" font-size="4.5" fill="#9CA3AF" font-family="JetBrains Mono">T3</text>
+            <text x="89" y="82" text-anchor="middle" font-size="4.5" fill="#9CA3AF" font-family="JetBrains Mono">T4</text>
+            <text x="65" y="91" text-anchor="middle" font-size="5" fill="#0F6E56" font-family="Nunito" font-weight="700">Total: 8,050</text>
+          </svg>
+          <svg viewBox="0 0 110 92" xmlns="http://www.w3.org/2000/svg" style="width:100%;overflow:visible;">
+            <line x1="20" y1="0" x2="20" y2="72" stroke="rgba(0,0,0,0.07)" stroke-width="0.8"/>
+            <line x1="20" y1="0" x2="110" y2="0" stroke="rgba(0,0,0,0.05)" stroke-width="0.5"/>
+            <line x1="20" y1="24" x2="110" y2="24" stroke="rgba(0,0,0,0.05)" stroke-width="0.5"/>
+            <line x1="20" y1="48" x2="110" y2="48" stroke="rgba(0,0,0,0.05)" stroke-width="0.5"/>
+            <line x1="20" y1="72" x2="110" y2="72" stroke="rgba(0,0,0,0.09)" stroke-width="0.8"/>
+            <text x="17" y="3" text-anchor="end" font-size="4.5" fill="#9CA3AF" font-family="JetBrains Mono">5k</text>
+            <text x="17" y="27" text-anchor="end" font-size="4.5" fill="#9CA3AF" font-family="JetBrains Mono">2.5k</text>
+            <text x="17" y="51" text-anchor="end" font-size="4.5" fill="#9CA3AF" font-family="JetBrains Mono">1k</text>
+            <text x="17" y="75" text-anchor="end" font-size="4.5" fill="#9CA3AF" font-family="JetBrains Mono">0</text>
+            <rect x="22" y="64.8" width="12" height="7.2" fill="#0F6E56" rx="1"/>
+            <rect x="22" y="62.6" width="12" height="2.2" fill="#9FE1CB" rx="1"/>
+            <rect x="36" y="57.6" width="12" height="14.4" fill="#0F6E56" rx="1"/>
+            <rect x="36" y="50.4" width="12" height="7.2" fill="#9FE1CB" rx="1"/>
+            <rect x="50" y="43.2" width="12" height="28.8" fill="#0F6E56" rx="1"/>
+            <rect x="50" y="35.3" width="12" height="7.9" fill="#9FE1CB" rx="1"/>
+            <rect x="64" y="28.8" width="12" height="43.2" fill="#0F6E56" rx="1"/>
+            <rect x="64" y="20.9" width="12" height="7.9" fill="#9FE1CB" rx="1"/>
+            <rect x="78" y="21.6" width="12" height="50.4" fill="#0F6E56" rx="1"/>
+            <rect x="78" y="4.3" width="12" height="17.3" fill="#9FE1CB" rx="1"/>
+            <text x="28" y="82" text-anchor="middle" font-size="4.5" fill="#9CA3AF" font-family="JetBrains Mono">T1</text>
+            <text x="42" y="82" text-anchor="middle" font-size="4.5" fill="#9CA3AF" font-family="JetBrains Mono">T2</text>
+            <text x="56" y="82" text-anchor="middle" font-size="4.5" fill="#9CA3AF" font-family="JetBrains Mono">T3</text>
+            <text x="70" y="82" text-anchor="middle" font-size="4.5" fill="#9CA3AF" font-family="JetBrains Mono">T4</text>
+            <text x="84" y="82" text-anchor="middle" font-size="4.5" fill="#9CA3AF" font-family="JetBrains Mono">T5</text>
+            <text x="65" y="91" text-anchor="middle" font-size="5" fill="#6B7280" font-family="Nunito" font-weight="700">Total: 12,950</text>
+          </svg>
+        </div>
+      </div>
+      <p style="font-size:0.72rem;color:var(--muted);margin-top:10px;">Single-task sample — BiGGi plateaus while chat-based grows each turn. The example compares two snake mini-games, one made with BiGGi's context management, the other with a naive context management.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section sec-w">
+  <div class="sec-hdr">
+    <h2>vs. asking ChatGPT for p5.js code</h2>
+    <p>The difference between getting code dumped on you and actually building something.</p>
+  </div>
+  <div class="ba-wrap">
+    <div class="ba-side">
+      <div class="ba-head ba-h-bad">
+        <div class="badge badge-x">
+          <!-- X icon -->
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 2L8 8M8 2L2 8" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        Generic AI chat
+      </div>
+      <div class="ba-body">
+        <div class="code-wall">
+function setup() {<br>
+&nbsp;&nbsp;createCanvas(600, 400);<br>
+&nbsp;&nbsp;for(let i=0; i&lt;100; i++){<br>
+&nbsp;&nbsp;&nbsp;&nbsp;particles.push({x:random(w),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;y:random(h),vx:random(-1,1),...<br>
+&nbsp;&nbsp;})<br>
+&nbsp;&nbsp;}<br>
+}<br>
+function draw() {<br>
+&nbsp;&nbsp;background(0);<br>
+&nbsp;&nbsp;particles.forEach(p =&gt; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;p.x += p.vx; p.y += p.vy;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if(p.x&lt;0||p.x&gt;w) p.vx*=-1;<br>
+        </div>
+        <div class="verdict-list">
+          <div class="verdict v-bad">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0;margin-top:1px;"><circle cx="7" cy="7" r="6.5" fill="#E24B4A"/><path d="M4.5 4.5L9.5 9.5M9.5 4.5L4.5 9.5" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg>
+            Full sketch in one block — where do you even start?
+          </div>
+          <div class="verdict v-bad">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0;margin-top:1px;"><circle cx="7" cy="7" r="6.5" fill="#E24B4A"/><path d="M4.5 4.5L9.5 9.5M9.5 4.5L4.5 9.5" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg>
+            Want to change the color? Regenerate everything.
+          </div>
+          <div class="verdict v-bad">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0;margin-top:1px;"><circle cx="7" cy="7" r="6.5" fill="#E24B4A"/><path d="M4.5 4.5L9.5 9.5M9.5 4.5L4.5 9.5" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg>
+            No canvas — paste it somewhere else to see it run.
+          </div>
+          <div class="verdict v-bad">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0;margin-top:1px;"><circle cx="7" cy="7" r="6.5" fill="#E24B4A"/><path d="M4.5 4.5L9.5 9.5M9.5 4.5L4.5 9.5" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg>
+            Losing context after a few turns.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ba-side">
+      <div class="ba-head ba-h-good">
+        <div class="badge badge-ok">
+          <!-- Check icon -->
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L3.8 7.5L8.5 2" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        BiGGi
+      </div>
+      <div class="ba-body">
+        <div class="mod-chips">
+          <div class="chip chip-setup">Drawing &amp; Display<span>Render shapes, colors, animation</span></div>
+          <div class="chip chip-draw">Input Handling<span>Mouse, keyboard, touch events</span></div>
+          <div class="chip chip-interact">Collision Detection<span>Boundary checks &amp; object hits</span></div>
+          <div class="chip chip-explain">Figure Movement<span>Velocity, gravity, trajectories</span></div>
+        </div>
+        <div class="verdict-list">
+          <div class="verdict v-good">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0;margin-top:1px;"><circle cx="7" cy="7" r="6.5" fill="#1D9E75"/><path d="M3.5 7L5.8 9.5L10.5 4" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Each module editable independently — touch only what you need.
+          </div>
+          <div class="verdict v-good">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0;margin-top:1px;"><circle cx="7" cy="7" r="6.5" fill="#1D9E75"/><path d="M3.5 7L5.8 9.5L10.5 4" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Live canvas in the same view — test before you commit.
+          </div>
+          <div class="verdict v-good">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0;margin-top:1px;"><circle cx="7" cy="7" r="6.5" fill="#1D9E75"/><path d="M3.5 7L5.8 9.5L10.5 4" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Canvas state = context. BiGGi always knows what's on screen.
+          </div>
+          <div class="verdict v-good">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0;margin-top:1px;"><circle cx="7" cy="7" r="6.5" fill="#1D9E75"/><path d="M3.5 7L5.8 9.5L10.5 4" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Invite yourself to modify — the structure makes it approachable.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <h2>Start your first p5 sketch</h2>
+  <p>Free during beta. No setup, no boilerplate — just prompt and run.</p>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+    <a href="https://biggi.fly.dev" class="btn btn-cta-w btn-lg">Try BiGGi free</a>
+  </div>
+</section>
+
+<footer>© 2025 BIG FROOTS — BiGGi is a p5.js AI coding environment</footer>
+
+<div id="modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;justify-content:center;align-items:center;" onclick="closeModal()">
+  <div style="background:#fff;border-radius:16px;padding:28px;max-width:720px;width:92%;text-align:center;" onclick="event.stopPropagation()">
+    <div style="font-family:'Fredoka';font-size:1.5rem;margin-bottom:8px;">BiGGi in action</div>
+    <p style="color:var(--muted);margin-bottom:16px;font-size:0.9rem;">See a full prompt → module → canvas → iterate cycle</p>
+    <video controls style="width:100%;border-radius:10px;background:#111;min-height:220px;" src="assets/demo.mp4">
+      <source src="assets/demo.mp4" type="video/mp4">
+    </video>
+    <button onclick="closeModal()" style="margin-top:16px;padding:10px 24px;background:var(--coral);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;">Close</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+<script>
+  // Robot Eye Tracking
+  const svg    = document.getElementById("robot");
+  const pupilL = document.getElementById("pupilL");
+  const pupilR = document.getElementById("pupilR");
+  const eyes = [
+    { el: pupilL, cx: 252, cy: 295, limit: 32 },
+    { el: pupilR, cx: 428, cy: 295, limit: 32 },
+  ];
+  document.addEventListener("mousemove", (e) => {
+    if(!svg) return;
+    const rect   = svg.getBoundingClientRect();
+    const scaleX = 680 / rect.width;
+    const scaleY = 780 / rect.height;
+    const mouseX = (e.clientX - rect.left) * scaleX;
+    const mouseY = (e.clientY - rect.top)  * scaleY;
+    eyes.forEach(({ el, cx, cy, limit }) => {
+      const dx   = mouseX - cx;
+      const dy   = mouseY - cy;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const move = Math.min(dist, limit) / (dist || 1);
+      el.setAttribute("cx", cx + dx * move);
+      el.setAttribute("cy", cy + dy * move);
+    });
+  });
+
+  // p5.js Sketch
+  const s = ( p ) => {
+    let angle = 0;
+    p.setup = function() {
+      let container = document.getElementById('p5-container');
+      let canvas = p.createCanvas(container.offsetWidth, container.offsetHeight, p.WEBGL);
+      canvas.parent('p5-container');
+    };
+    p.draw = function() {
+      let time = p.millis() * 0.001;
+      let r = p.map(p.sin(time), -1, 1, 100, 255);
+      let g = p.map(p.sin(time + p.TWO_PI / 3), -1, 1, 0, 100);
+      let b = p.map(p.sin(time + p.TWO_PI * 2 / 3), -1, 1, 200, 255);
+      p.background(r, g, b);
+      let spacing = 50;
+      let cols = p.floor(p.width / spacing);
+      let rows = p.floor(p.height / spacing);
+      let xOffset = -((cols - 1) * spacing) / 2;
+      let yOffset = -((rows - 1) * spacing) / 2;
+      for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+          p.push();
+          let d = p.dist(p.mouseX - p.width / 2, p.mouseY - p.height / 2, xOffset + i * spacing, yOffset + j * spacing);
+          let radius = p.map(d, 0, 200, 30, 5);
+          let sphereColorR = p.map(p.sin(time + (i + j) * 0.5), -1, 1, 100, 255);
+          let sphereColorG = p.map(p.sin(time + (i + j) * 0.5 + p.TWO_PI / 3), -1, 1, 0, 100);
+          let sphereColorB = p.map(p.sin(time + (i + j) * 0.5 + p.TWO_PI * 2 / 3), -1, 1, 200, 255);
+          p.fill(sphereColorR, sphereColorG, sphereColorB);
+          p.noStroke();
+          p.translate(xOffset + i * spacing, yOffset + j * spacing, 0);
+          p.rotateY(angle + (i + j) * 0.1);
+          p.sphere(radius);
+          p.pop();
+        }
+      }
+      angle += 0.01;
+    };
+    p.windowResized = function() {
+      let container = document.getElementById('p5-container');
+      if(container) p.resizeCanvas(container.offsetWidth, container.offsetHeight);
+    };
+  };
+  new p5(s);
+
+  function openModal(){document.getElementById('modal').style.display='flex';}
+  function closeModal(){document.getElementById('modal').style.display='none';}
+</script>
 </body>
 </html>
