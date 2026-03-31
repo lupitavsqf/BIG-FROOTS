@@ -64,6 +64,19 @@ body{font-family:'Nunito',sans-serif;background:var(--off);color:var(--ink);line
 .btn-outline:hover{border-color:rgba(0,0,0,0.3);}
 .btn-lg{padding:13px 26px;font-size:1rem;border-radius:var(--r);}
 
+/* ── BREADCRUMB ── */
+.breadcrumb{
+  padding:8px 52px;
+  background:#fff;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:6px;
+  font-size:0.78rem;font-weight:600;
+}
+.breadcrumb a{text-decoration:none;color:var(--muted);transition:color 0.15s;}
+.breadcrumb a:hover{color:var(--ink);}
+.breadcrumb-sep{color:var(--border);font-size:0.7rem;}
+.breadcrumb-current{color:var(--ink);}
+
 /* 3-COLUMN HERO */
 .hero{
   padding:64px 52px 72px;
@@ -131,20 +144,46 @@ h1 em{font-style:normal;color:var(--coral);}
   flex-direction:column;
   gap:8px;
 }
-.hero-visual-container {
-  width: 100%;
-  aspect-ratio: 1;
-  border-radius: 16px;
-  background: var(--off);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-  position: relative;
-  overflow: hidden;
+
+/* ── CAROUSEL ── */
+.carousel-wrap{
+  width:100%;
+  aspect-ratio:1;
+  border-radius:16px;
+  background:var(--off);
+  box-shadow:0 20px 40px rgba(0,0,0,0.08);
+  position:relative;
+  overflow:hidden;
 }
-#p5-container {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
+.carousel-slide{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  transition:opacity 0.6s ease;
+  pointer-events:none;
 }
-#p5-container canvas { display: block; width: 100% !important; height: 100% !important; }
+.carousel-slide.active{
+  opacity:1;
+  pointer-events:auto;
+}
+.carousel-slide canvas{
+  display:block;
+  width:100%!important;
+  height:100%!important;
+}
+/* dots */
+.carousel-dots{
+  position:absolute;
+  bottom:10px;left:50%;transform:translateX(-50%);
+  display:flex;gap:6px;z-index:10;
+}
+.carousel-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(255,255,255,0.45);
+  border:1px solid rgba(0,0,0,0.12);
+  cursor:pointer;transition:background 0.2s;
+}
+.carousel-dot.active{background:var(--coral);}
 
 /* "made in BiGGi" label */
 .made-in-biggi{
@@ -246,6 +285,15 @@ h1 em{font-style:normal;color:var(--coral);}
 .loop-back-line{flex:1;max-width:200px;height:1px;background:rgba(0,0,0,0.1);position:relative;}
 .loop-back-line::after{content:'';position:absolute;right:-1px;top:-4px;width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:7px solid rgba(0,0,0,0.15);}
 
+/* reject→modules curved arrow */
+.loop-reject-arrow{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  margin-top:16px;
+}
+.loop-reject-arrow svg{overflow:visible;}
+
 /* CONTEXT SYSTEM */
 .ctx-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:0;}
 .ctx-card{background:#fff;border-radius:var(--r);border:1px solid var(--border);padding:24px;}
@@ -305,7 +353,7 @@ footer{background:#0d0d1a;color:rgba(255,255,255,0.3);padding:22px 52px;text-ali
 
 @media(max-width:900px){
   .hero,.ctx-grid,.ba-wrap,.p5-strip{grid-template-columns:1fr;}
-  .section,.hero,.cta,.nav{padding-left:20px;padding-right:20px;}
+  .section,.hero,.cta,.nav,.breadcrumb{padding-left:20px;padding-right:20px;}
   h1{font-size:2.2rem;}
   .loop-wrap{gap:0;justify-content:flex-start;}
 }
@@ -333,6 +381,15 @@ footer{background:#0d0d1a;color:rgba(255,255,255,0.3);padding:22px 52px;text-ali
   </div>
 </header>
 
+<!-- ── BREADCRUMB ── -->
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="#">Home</a>
+  <span class="breadcrumb-sep">›</span>
+  <a href="#">Products</a>
+  <span class="breadcrumb-sep">›</span>
+  <span class="breadcrumb-current">BiGGi — p5.js AI Coding Agent</span>
+</nav>
+
 <section class="hero">
   <!-- LEFT: text -->
   <div>
@@ -344,12 +401,10 @@ footer{background:#0d0d1a;color:rgba(255,255,255,0.3);padding:22px 52px;text-ali
     </div>
     <div class="hero-actions">
       <button class="btn btn-primary btn-lg" onclick="openModal()">
-        <!-- Play icon SVG -->
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="7" cy="7" r="6.5" stroke="rgba(255,255,255,0.4)" stroke-width="1"/><polygon points="5.5,4 11,7 5.5,10" fill="white"/></svg>
         Watch demo
       </button>
       <a href="#how" class="btn btn-outline btn-lg">
-        <!-- Arrow down SVG -->
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M7 2v9M3.5 8l3.5 3.5L10.5 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         See how it works
       </a>
@@ -379,14 +434,30 @@ footer{background:#0d0d1a;color:rgba(255,255,255,0.3);padding:22px 52px;text-ali
         <rect x="296" y="538" width="88" height="28" rx="4" fill="#e8963a" stroke="#111" stroke-width="4"/>
       </svg>
     </div>
-    <!-- BiGGi name intro below robot -->
     <div class="robot-intro">Hi, I'm <em>BiGGi</em></div>
   </div>
 
-  <!-- RIGHT: p5 visual + "made in BiGGi" badge -->
+  <!-- RIGHT: carousel + "made in BiGGi" badge -->
   <div class="hero-right-col">
-    <div class="hero-visual-container">
-      <div id="p5-container"></div>
+    <div class="carousel-wrap" id="carousel-wrap">
+      <!-- Slide 0: original p5 sketch -->
+      <div class="carousel-slide active" id="slide-0">
+        <div id="p5-container-0" style="position:absolute;inset:0;"></div>
+      </div>
+      <!-- Slide 1: visual2 sketch -->
+      <div class="carousel-slide" id="slide-1">
+        <div id="p5-container-1" style="position:absolute;inset:0;"></div>
+      </div>
+      <!-- Slide 2: visual3 sketch -->
+      <div class="carousel-slide" id="slide-2">
+        <div id="p5-container-2" style="position:absolute;inset:0;"></div>
+      </div>
+      <!-- dots -->
+      <div class="carousel-dots">
+        <div class="carousel-dot active" onclick="goToSlide(0)"></div>
+        <div class="carousel-dot" onclick="goToSlide(1)"></div>
+        <div class="carousel-dot" onclick="goToSlide(2)"></div>
+      </div>
     </div>
     <div class="made-in-biggi">
       <div class="mib-dot"></div>
@@ -395,7 +466,7 @@ footer{background:#0d0d1a;color:rgba(255,255,255,0.3);padding:22px 52px;text-ali
   </div>
 </section>
 
-<!-- WHY P5 — moved before The BiGGi Loop -->
+<!-- WHY P5 -->
 <section class="p5-strip">
   <div class="p5-item">
     <div class="p5-num">p5</div>
@@ -424,7 +495,6 @@ footer{background:#0d0d1a;color:rgba(255,255,255,0.3);padding:22px 52px;text-ali
   <div class="loop-wrap">
     <div class="loop-node">
       <div class="loop-icon li-purple">
-        <!-- Pencil SVG icon -->
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" stroke="#534AB7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <span>Prompt a piece</span>
@@ -433,7 +503,6 @@ footer{background:#0d0d1a;color:rgba(255,255,255,0.3);padding:22px 52px;text-ali
     <div class="loop-arrow">→</div>
     <div class="loop-node">
       <div class="loop-icon li-coral">
-        <!-- Puzzle SVG icon -->
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 3H5a2 2 0 00-2 2v4m6-6a2 2 0 012 2v1a2 2 0 002 2h1a2 2 0 012-2V5a2 2 0 012-2h4v4h-1a2 2 0 00-2 2v1a2 2 0 002 2h1v4h-4a2 2 0 01-2-2v-1a2 2 0 00-2-2h-1a2 2 0 00-2 2v1a2 2 0 01-2 2H3v-4h1a2 2 0 002-2v-1a2 2 0 00-2-2H3V9h6z" stroke="#C94220" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <span>Modules update</span>
@@ -442,21 +511,39 @@ footer{background:#0d0d1a;color:rgba(255,255,255,0.3);padding:22px 52px;text-ali
     <div class="loop-arrow">→</div>
     <div class="loop-node">
       <div class="loop-icon li-teal">
-        <!-- Play circle SVG icon -->
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="#0F6E56" stroke-width="2"/><polygon points="10,8 17,12 10,16" fill="#0F6E56"/></svg>
       </div>
       <span>Test on canvas</span>
       <small>Run it live before committing anything</small>
     </div>
     <div class="loop-arrow">→</div>
-    <div class="loop-node">
+    <!-- MODIFIED: "Accept or reject edits" node -->
+    <div class="loop-node" id="loop-node-accept">
       <div class="loop-icon li-amber">
-        <!-- Sliders SVG icon -->
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="4" y1="6" x2="20" y2="6" stroke="#BA7517" stroke-width="2" stroke-linecap="round"/><line x1="4" y1="12" x2="20" y2="12" stroke="#BA7517" stroke-width="2" stroke-linecap="round"/><line x1="4" y1="18" x2="20" y2="18" stroke="#BA7517" stroke-width="2" stroke-linecap="round"/><circle cx="9" cy="6" r="2.5" fill="#FAEEDA" stroke="#BA7517" stroke-width="1.8"/><circle cx="15" cy="12" r="2.5" fill="#FAEEDA" stroke="#BA7517" stroke-width="1.8"/><circle cx="9" cy="18" r="2.5" fill="#FAEEDA" stroke="#BA7517" stroke-width="1.8"/></svg>
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="#BA7517" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 6l5 5" stroke="#BA7517" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/></svg>
       </div>
-      <span>Edit or commit</span>
-      <small>Tweak yourself, or go again with a new prompt</small>
+      <span>Accept or reject edits</span>
+      <small>Keep changes or send them back for revision</small>
     </div>
+  </div>
+
+  <!-- "Accept or reject edits" → "Modules update" curved arrow -->
+  <div class="loop-reject-arrow">
+    <svg width="700" height="52" viewBox="0 0 700 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Arrow curves from node 4 (rightmost) back to node 2 (second from left) -->
+      <!-- Node positions (approx centre-x at 700px container, 4 nodes at ~140px each with arrows):
+           Node1 ~70, Node2 ~210, Node3 ~350, Node4 ~490  (rough centres in the loop-wrap)
+           We draw from ~490 up and back to ~210 -->
+      <path d="M 567 10 C 567 42, 143 42, 143 10"
+            stroke="#BA7517" stroke-width="1.8" stroke-dasharray="5,3"
+            fill="none" marker-end="url(#arrowReject)"/>
+      <defs>
+        <marker id="arrowReject" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
+          <path d="M0,0 L7,3.5 L0,7 Z" fill="#BA7517"/>
+        </marker>
+      </defs>
+      <text x="355" y="40" text-anchor="middle" font-family="Nunito,sans-serif" font-size="10" font-weight="700" fill="#BA7517" opacity="0.7">reject → back to modules</text>
+    </svg>
   </div>
 
   <div class="loop-back">
@@ -635,7 +722,6 @@ footer{background:#0d0d1a;color:rgba(255,255,255,0.3);padding:22px 52px;text-ali
     <div class="ba-side">
       <div class="ba-head ba-h-bad">
         <div class="badge badge-x">
-          <!-- X icon -->
           <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 2L8 8M8 2L2 8" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
         </div>
         Generic AI chat
@@ -679,7 +765,6 @@ function draw() {<br>
     <div class="ba-side">
       <div class="ba-head ba-h-good">
         <div class="badge badge-ok">
-          <!-- Check icon -->
           <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5L3.8 7.5L8.5 2" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         BiGGi
@@ -737,77 +822,181 @@ function draw() {<br>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
 <script>
-  // Robot Eye Tracking
-  const svg    = document.getElementById("robot");
-  const pupilL = document.getElementById("pupilL");
-  const pupilR = document.getElementById("pupilR");
-  const eyes = [
-    { el: pupilL, cx: 252, cy: 295, limit: 32 },
-    { el: pupilR, cx: 428, cy: 295, limit: 32 },
-  ];
-  document.addEventListener("mousemove", (e) => {
-    if(!svg) return;
-    const rect   = svg.getBoundingClientRect();
-    const scaleX = 680 / rect.width;
-    const scaleY = 780 / rect.height;
-    const mouseX = (e.clientX - rect.left) * scaleX;
-    const mouseY = (e.clientY - rect.top)  * scaleY;
-    eyes.forEach(({ el, cx, cy, limit }) => {
-      const dx   = mouseX - cx;
-      const dy   = mouseY - cy;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      const move = Math.min(dist, limit) / (dist || 1);
-      el.setAttribute("cx", cx + dx * move);
-      el.setAttribute("cy", cy + dy * move);
-    });
+// ── Robot Eye Tracking ──
+const svg    = document.getElementById("robot");
+const pupilL = document.getElementById("pupilL");
+const pupilR = document.getElementById("pupilR");
+const eyes = [
+  { el: pupilL, cx: 252, cy: 295, limit: 32 },
+  { el: pupilR, cx: 428, cy: 295, limit: 32 },
+];
+document.addEventListener("mousemove", (e) => {
+  if(!svg) return;
+  const rect   = svg.getBoundingClientRect();
+  const scaleX = 680 / rect.width;
+  const scaleY = 780 / rect.height;
+  const mouseX = (e.clientX - rect.left) * scaleX;
+  const mouseY = (e.clientY - rect.top)  * scaleY;
+  eyes.forEach(({ el, cx, cy, limit }) => {
+    const dx   = mouseX - cx;
+    const dy   = mouseY - cy;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    const move = Math.min(dist, limit) / (dist || 1);
+    el.setAttribute("cx", cx + dx * move);
+    el.setAttribute("cy", cy + dy * move);
   });
+});
 
-  // p5.js Sketch
-  const s = ( p ) => {
-    let angle = 0;
-    p.setup = function() {
-      let container = document.getElementById('p5-container');
-      let canvas = p.createCanvas(container.offsetWidth, container.offsetHeight, p.WEBGL);
-      canvas.parent('p5-container');
-    };
-    p.draw = function() {
-      let time = p.millis() * 0.001;
-      let r = p.map(p.sin(time), -1, 1, 100, 255);
-      let g = p.map(p.sin(time + p.TWO_PI / 3), -1, 1, 0, 100);
-      let b = p.map(p.sin(time + p.TWO_PI * 2 / 3), -1, 1, 200, 255);
-      p.background(r, g, b);
-      let spacing = 50;
-      let cols = p.floor(p.width / spacing);
-      let rows = p.floor(p.height / spacing);
-      let xOffset = -((cols - 1) * spacing) / 2;
-      let yOffset = -((rows - 1) * spacing) / 2;
-      for (let i = 0; i < cols; i++) {
-        for (let j = 0; j < rows; j++) {
-          p.push();
-          let d = p.dist(p.mouseX - p.width / 2, p.mouseY - p.height / 2, xOffset + i * spacing, yOffset + j * spacing);
-          let radius = p.map(d, 0, 200, 30, 5);
-          let sphereColorR = p.map(p.sin(time + (i + j) * 0.5), -1, 1, 100, 255);
-          let sphereColorG = p.map(p.sin(time + (i + j) * 0.5 + p.TWO_PI / 3), -1, 1, 0, 100);
-          let sphereColorB = p.map(p.sin(time + (i + j) * 0.5 + p.TWO_PI * 2 / 3), -1, 1, 200, 255);
-          p.fill(sphereColorR, sphereColorG, sphereColorB);
-          p.noStroke();
-          p.translate(xOffset + i * spacing, yOffset + j * spacing, 0);
-          p.rotateY(angle + (i + j) * 0.1);
-          p.sphere(radius);
-          p.pop();
-        }
-      }
-      angle += 0.01;
-    };
-    p.windowResized = function() {
-      let container = document.getElementById('p5-container');
-      if(container) p.resizeCanvas(container.offsetWidth, container.offsetHeight);
-    };
+// ── p5 Sketch 0 (original spheres) ──
+const s0 = (p) => {
+  let angle = 0;
+  p.setup = function() {
+    let c0 = document.getElementById('p5-container-0');
+    let canvas = p.createCanvas(c0.offsetWidth, c0.offsetHeight, p.WEBGL);
+    canvas.parent('p5-container-0');
   };
-  new p5(s);
+  p.draw = function() {
+    let time = p.millis() * 0.001;
+    let r = p.map(p.sin(time), -1, 1, 100, 255);
+    let g = p.map(p.sin(time + p.TWO_PI / 3), -1, 1, 0, 100);
+    let b = p.map(p.sin(time + p.TWO_PI * 2 / 3), -1, 1, 200, 255);
+    p.background(r, g, b);
+    let spacing = 50;
+    let cols = p.floor(p.width / spacing);
+    let rows = p.floor(p.height / spacing);
+    let xOffset = -((cols - 1) * spacing) / 2;
+    let yOffset = -((rows - 1) * spacing) / 2;
+    for (let i = 0; i < cols; i++) {
+      for (let j = 0; j < rows; j++) {
+        p.push();
+        let d = p.dist(p.mouseX - p.width / 2, p.mouseY - p.height / 2, xOffset + i * spacing, yOffset + j * spacing);
+        let radius = p.map(d, 0, 200, 30, 5);
+        let sR = p.map(p.sin(time + (i + j) * 0.5), -1, 1, 100, 255);
+        let sG = p.map(p.sin(time + (i + j) * 0.5 + p.TWO_PI / 3), -1, 1, 0, 100);
+        let sB = p.map(p.sin(time + (i + j) * 0.5 + p.TWO_PI * 2 / 3), -1, 1, 200, 255);
+        p.fill(sR, sG, sB);
+        p.noStroke();
+        p.translate(xOffset + i * spacing, yOffset + j * spacing, 0);
+        p.rotateY(angle + (i + j) * 0.1);
+        p.sphere(radius);
+        p.pop();
+      }
+    }
+    angle += 0.01;
+  };
+  p.windowResized = function() {
+    let c0 = document.getElementById('p5-container-0');
+    if(c0) p.resizeCanvas(c0.offsetWidth, c0.offsetHeight);
+  };
+};
+new p5(s0);
 
-  function openModal(){document.getElementById('modal').style.display='flex';}
-  function closeModal(){document.getElementById('modal').style.display='none';}
+// ── p5 Sketch 1 (visual2 — rotating rects grid) ──
+const s1 = (p) => {
+  let lineSpacing, lineLength, linesX, linesY, angle = 0;
+  p.setup = function() {
+    let c1 = document.getElementById('p5-container-1');
+    let canvas = p.createCanvas(c1.offsetWidth, c1.offsetHeight);
+    canvas.parent('p5-container-1');
+    lineSpacing = 80;
+    lineLength = 50;
+    linesX = [];
+    linesY = [];
+    for (let x = lineSpacing / 2; x < p.width; x += lineSpacing) linesX.push(x);
+    for (let y = lineSpacing / 2; y < p.height; y += lineSpacing) linesY.push(y);
+  };
+  p.draw = function() {
+    p.background(255, 105, 180);
+    p.stroke(0);
+    p.strokeWeight(4);
+    for (let i = 0; i < linesX.length; i++) {
+      for (let j = 0; j < linesY.length; j++) {
+        p.push();
+        p.translate(linesX[i], linesY[j]);
+        p.rotate(angle);
+        p.rectMode(p.CENTER);
+        let colorValue = p.map(angle % p.TWO_PI, 0, p.TWO_PI, 0, 1);
+        let rv = p.lerp(255, 0, colorValue);
+        let gv = p.lerp(255, 255, colorValue);
+        let bv = p.lerp(0, 255, colorValue);
+        p.fill(rv, gv, bv);
+        p.rect(0, 0, lineLength, lineLength / 4);
+        p.pop();
+      }
+    }
+    angle += 0.01;
+  };
+  p.windowResized = function() {
+    let c1 = document.getElementById('p5-container-1');
+    if(c1) p.resizeCanvas(c1.offsetWidth, c1.offsetHeight);
+  };
+};
+new p5(s1);
+
+// ── p5 Sketch 2 (visual3 — color grid) ──
+const s2 = (p) => {
+  let colors = [];
+  let time2 = 0;
+  let isAnimating = true;
+  p.setup = function() {
+    let c2 = document.getElementById('p5-container-2');
+    let canvas = p.createCanvas(c2.offsetWidth, c2.offsetHeight);
+    canvas.parent('p5-container-2');
+    colors = ['#B3E0F7','#FFFF66','#C4F0B0','#FFDDAA','#FFFFFF'];
+  };
+  p.draw = function() {
+    let squareSize = 40;
+    let cols = p.width / squareSize;
+    let rows = p.height / squareSize;
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        let colorIndex = (x + y + p.floor(time2 / 10)) % colors.length;
+        p.fill(p.lerpColor(p.color(colors[colorIndex]), p.color('#FFFFFF'), 0.5));
+        p.noStroke();
+        p.rect(x * squareSize, y * squareSize, squareSize, squareSize);
+      }
+    }
+    if (isAnimating) time2++;
+  };
+  p.mousePressed = function() {
+    isAnimating = !isAnimating;
+  };
+  p.windowResized = function() {
+    let c2 = document.getElementById('p5-container-2');
+    if(c2) p.resizeCanvas(c2.offsetWidth, c2.offsetHeight);
+  };
+};
+new p5(s2);
+
+// ── Carousel logic ──
+let currentSlide = 0;
+const totalSlides = 3;
+let carouselTimer;
+
+function goToSlide(idx) {
+  document.querySelectorAll('.carousel-slide').forEach((s, i) => {
+    s.classList.toggle('active', i === idx);
+  });
+  document.querySelectorAll('.carousel-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === idx);
+  });
+  currentSlide = idx;
+  resetCarouselTimer();
+}
+
+function nextSlide() {
+  goToSlide((currentSlide + 1) % totalSlides);
+}
+
+function resetCarouselTimer() {
+  clearInterval(carouselTimer);
+  carouselTimer = setInterval(nextSlide, 5000);
+}
+
+resetCarouselTimer();
+
+function openModal(){document.getElementById('modal').style.display='flex';}
+function closeModal(){document.getElementById('modal').style.display='none';}
 </script>
 </body>
 </html>
