@@ -819,6 +819,323 @@
     .hero p:not(.hero__tagline) { animation-delay: 0.42s; }
     .hero__buttons   { animation-delay: 0.54s; }
     .hero__stats     { animation-delay: 0.68s; }
+
+/* ── NEW SEGMENTED PRODUCTS ── */
+
+.segment {
+  padding: 2rem 0;
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
+
+.segment:first-child {
+  border-top: none;
+  padding-top: 1rem;
+}
+
+.segment-header {
+  margin-bottom: 1.8rem;
+}
+
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+
+.label-robotics {
+  background: #E1F5EE;
+  color: #0F6E56;
+}
+
+.label-ai {
+  background: #EEEDFE;
+  color: #3C3489;
+}
+
+.segment-title {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.segment-desc {
+  color: var(--muted);
+  max-width: 620px;
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+.cards-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.segment-card {
+  background: white;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(0,0,0,0.06);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.segment-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+}
+
+.segment-thumb {
+  position: relative;
+  height: 190px;
+  overflow: hidden;
+  background: #f3f3f3;
+}
+
+.segment-thumb img,
+.segment-thumb iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  object-fit: cover;
+}
+
+/* Optional: subtle zoom effect */
+.segment-card:hover .segment-thumb img {
+  transform: scale(1.03);
+}
+
+.segment-thumb img {
+  transition: transform 0.35s ease;
+}
+
+
+.thumb-robotics {
+  background: #E1F5EE;
+}
+
+.thumb-ai {
+  background: #EEEDFE;
+}
+
+.thumb-icon {
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.segment-body {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  min-height: 250px;
+}
+
+.segment-tag {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.segment-card-title {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--ink);
+}
+
+.segment-card-desc {
+  color: var(--muted);
+  line-height: 1.7;
+  font-size: 0.92rem;
+  flex: 1;
+  margin-bottom: 18px;
+}
+
+.segment-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  text-decoration: none;
+  color: var(--coral);
+  font-weight: 700;
+  transition: opacity 0.2s;
+}
+
+.segment-link:hover {
+  opacity: 0.7;
+}
+
+.inactive-link {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.coming-soon-chip {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #FFF3D0;
+  color: #B8860B;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.design-note {
+  margin-top: 3rem;
+  background: white;
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  border: 1px solid rgba(0,0,0,0.06);
+  color: var(--muted);
+  line-height: 1.7;
+  font-size: 0.92rem;
+}
+
+/* ── Carousel inside segmented cards ── */
+
+.segment-card .carousel {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  background: #f0efed;
+}
+
+.segment-card .carousel-frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: none;
+  position: absolute;
+  inset: 0;
+}
+
+.segment-card .carousel-frame.active {
+  display: block;
+}
+
+.segment-card .carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.88);
+  cursor: pointer;
+  z-index: 5;
+  font-size: 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+
+.segment-card .carousel-btn.prev {
+  left: 10px;
+}
+
+.segment-card .carousel-btn.next {
+  right: 10px;
+}
+
+.segment-card .carousel-dots {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  gap: 6px;
+  z-index: 5;
+}
+
+.segment-card .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+}
+
+.segment-card .dot.active {
+  background: white;
+  transform: scale(1.25);
+}
+
+
+.video-thumb-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.video-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.18);
+  transition: background 0.25s ease;
+}
+
+.video-thumb-link:hover .video-overlay {
+  background: rgba(0,0,0,0.28);
+}
+
+.play-button {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 3.2rem;
+  color: white;
+
+  text-shadow: 0 4px 18px rgba(0,0,0,0.45);
+
+  transition: transform 0.25s ease;
+}
+
+.video-thumb-link:hover .play-button {
+  transform: scale(1.08);
+}
+
+.segment-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+
+
   </style>
 </head>
 <body>
@@ -985,69 +1302,225 @@
     <div class="section-head">
       <span class="tag tag--teal">Products in Development</span>
       <h2>Our Learning Tools</h2>
-      <p>Each product is crafted to reduce cognitive strain while expanding what's possible.</p>
+      <p>Technology designed constraints-first — beginning with neurodivergent needs and expanding outward.</p>
     </div>
-    <div class="cards-grid">
-
-      <!-- Card 1 — ReinGuide (images: rgimg1/2/3.png) -->
-      <div class="pcard">
-        <div class="carousel" id="c1">
-          <img src="rgimg1.png" alt="ReinGuide - View 1" class="active">
-          <img src="rgimg2.png" alt="ReinGuide - View 2">
-          <img src="rgimg3.png" alt="ReinGuide - View 3">
-          <button class="carousel-btn prev">‹</button>
-          <button class="carousel-btn next">›</button>
-          <div class="carousel-dots">
-            <div class="dot active"></div><div class="dot"></div><div class="dot"></div>
-          </div>
+  
+    <div class="segment">
+      <div class="segment-header">
+        <div class="section-label label-robotics">
+          Robotics · XR · VR
         </div>
-        <div class="pcard__body">
-          <div class="pcard__meta">
-            <span class="tag tag--teal">Therapy Tech</span>
-          </div>
-          <div class="pcard__title">ReinGuide</div>
-          <div class="pcard__desc">Smart digital reins with gentle haptic feedback — designed to enhance inclusive horse-riding therapy for children with autism, and fun for everyone.</div>
-          <a href="producto1.html" class="pcard__link">
-            Learn More
-            <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
-              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
+  
+        <div class="segment-title">
+          Physical & immersive experiences
+        </div>
+  
+        <div class="segment-desc">
+          Hardware and extended reality tools designed around sensory and motor needs — then extended to everyone.
         </div>
       </div>
-
-      <!-- Card 2 — BiGGi (iframe animations: visual1/2/3.html) -->
-      <div class="pcard">
-        <div class="carousel" id="c2" style="position:relative; overflow:hidden; aspect-ratio:4/3; background:#f0efed;">
-          <iframe class="carousel-frame active" src="visual1.html" title="BiGGi Visual 1" scrolling="no"></iframe>
-          <iframe class="carousel-frame" src="visual2.html" title="BiGGi Visual 2" scrolling="no"></iframe>
-          <iframe class="carousel-frame" src="visual3.html" title="BiGGi Visual 3" scrolling="no"></iframe>
-          <button class="carousel-btn prev">‹</button>
-          <button class="carousel-btn next">›</button>
-          <div class="carousel-dots">
-            <div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+  
+      <div class="cards-row">
+  
+        <!-- ReinGuide -->
+        <div class="segment-card">
+        <div class="segment-thumb"> 
+          <img src="rgimg1.png" alt="ReinGuide preview"> 
+        </div>
+  
+          <div class="segment-body">
+            <div class="segment-tag">
+              Haptic feedback · Therapy tech
+            </div>
+  
+            <div class="segment-card-title">
+              ReinGuide
+            </div>
+  
+            <div class="segment-card-desc">
+              Smart digital reins with gentle haptic guidance for inclusive horse-riding therapy — designed for children with autism, useful for all riders.
+            </div>
+  
+            <a class="segment-link" href="producto1.html">
+              Learn more →
+            </a>
           </div>
         </div>
-        <div class="pcard__body">
-          <div class="pcard__meta">
-            <span class="tag tag--indigo">AI Learning - Coding for motion graphics</span>
+        </div>
+  
+        <!-- XR -->
+        <div class="segment-card">
+          <div class="segment-thumb"> 
+            <img src="xrgame1.png" alt="Spectacles Riding Game preview"> 
+            <div class="coming-soon-chip"> 
+              Coming soon 
+            </div> 
           </div>
-          <div class="pcard__title">BiGGi — AI coding agent for p5.js</div>
-          <div class="pcard__desc">
-            BiGGi helps users learn to build code for visuals and mini games by generating structured, manageable chunks for users to understand and feel invited to modify the code themselves.
-            Instead of replacing the developer, it reduces cognitive overload, supports comprehension, and encourages active learning.
+          <div class="segment-body">
+            <div class="segment-tag">
+              Snap Spectacles · XR game
+            </div>
+  
+            <div class="segment-card-title">
+              Spectacles Riding Game
+            </div>
+  
+            <div class="segment-card-desc">
+              An immersive Snap Spectacles experience that gamifies horse-riding therapy — reinforcing balance, focus, and engagement through augmented play.
+            </div>
+  
+            <span class="segment-link inactive-link">
+              In development
+            </span>
           </div>
-          <a href="producto2.html" class="pcard__link">
-            Learn More
-            <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
-              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
+        </div>
+        </div>
+  
+      </div>
+    </div>
+  
+    <!-- AI -->
+    <div class="segment">
+      <div class="segment-header">
+        <div class="section-label label-ai">
+          Human-in-the-loop AI agents
+        </div>
+  
+        <div class="segment-title">
+          Guided creative coding
+        </div>
+  
+        <div class="segment-desc">
+          AI agents that scaffold — not replace — the learner. Structured chunks, reduced cognitive load, and an open invitation to modify the code yourself.
         </div>
       </div>
+  
+      <div class="cards-row">
+  
+        <!-- BiGGi — p5.js -->
+        <div class="segment-card">
+        
+          <div class="carousel" id="c2">
+            <iframe class="carousel-frame active"
+              src="visual1.html"
+              title="BiGGi Visual 1"
+              scrolling="no">
+            </iframe>
+        
+            <iframe class="carousel-frame"
+              src="visual2.html"
+              title="BiGGi Visual 2"
+              scrolling="no">
+            </iframe>
+        
+            <iframe class="carousel-frame"
+              src="visual3.html"
+              title="BiGGi Visual 3"
+              scrolling="no">
+            </iframe>
+        
+            <button class="carousel-btn prev">‹</button>
+            <button class="carousel-btn next">›</button>
+        
+            <div class="carousel-dots">
+              <div class="dot active"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+            </div>
+          </div>
+        
+          <div class="segment-body">
+        
+            <div class="segment-tag">
+              p5.js · Motion graphics
+            </div>
+        
+            <div class="segment-card-title">
+              BiGGi — p5.js agent
+            </div>
+        
+            <div class="segment-card-desc">
+              An AI coding agent that builds p5.js visuals and mini-games in legible,
+              manageable chunks — designed to invite understanding and tinkering,
+              not dependency.
+            </div>
+        
+            <a class="segment-link" href="producto2.html">
+              Learn more →
+            </a>
+        
+          </div>
+        </div>
+        
+  
+<!-- SVG -->
+<div class="segment-card">
 
+  <a
+    class="video-thumb-link"
+    href="https://www.youtube.com/watch?v=KzywGSDd5UU"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+
+    <div class="segment-thumb" style="position:relative;">
+
+      <!-- YouTube thumbnail -->
+      <img
+        src="https://img.youtube.com/vi/KzywGSDd5UU/maxresdefault.jpg"
+        alt="BiGGi SVG agent video preview"
+      >
+
+      <!-- Dark overlay -->
+      <div class="video-overlay"></div>
+
+      <!-- Play button -->
+      <div class="play-button">
+        ▶
+      </div>
+
+      <!-- Coming soon -->
+      <div class="coming-soon-chip">
+        Coming soon
+      </div>
+
+    </div>
+
+  </a>
+
+  <div class="segment-body">
+
+    <div class="segment-tag">
+      SVG · Generative graphics
+    </div>
+
+    <div class="segment-card-title">
+      BiGGi — SVG agent
+    </div>
+
+    <div class="segment-card-desc">
+      The same human-in-the-loop approach, applied to SVG — helping learners build scalable, editable graphics step by step while staying in control of every line.
+    </div>
+
+    <span class="segment-link inactive-link">
+      In development
+    </span>
+
+  </div>
+</div>
+
+  
+      </div>
+    </div>
+  
+    <div class="design-note">
+      <span>
+        All products are designed constraints-first: we begin with neurodivergent and special needs education, then expand outward. The result is technology that is usable by more people — not despite its constraints, but because of them.
+      </span>
     </div>
   </section>
+
+  
 
   <!-- ── ABOUT ── -->
   <section id="nosotros" class="about">
