@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberCowboys — Spectacles Riding Game · BIG FROOTS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    @font-face { font-family: 'QuadernoBold'; src: url('assets/quaderno_bold.otf') format('opentype'); }
+
+    :root {
+      --coral:    #F4613C; --coral-lt: #FF8B6B; --coral-dk: #C94220;
+      --teal:     #0BBFAD; --teal-lt:  #D6F6F3;
+      --indigo:   #0b5a42; --indigo-lt:#EEF0FF;
+      --amber:    #FFC842;
+      --white:    #FFFFFF; --off: #F7F5F2;
+      --ink:      #1A1A2E; --muted: #6B7280;
+      --radius: 14px; --shadow: 0 6px 30px rgba(0,0,0,0.08);
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family:'Nunito',sans-serif; background:var(--off); color:var(--ink); line-height:1.65; overflow-x:hidden; }
+
+    /* NAVBAR */
+    .navbar { position:sticky; top:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:0 48px; height:70px; background:rgba(255,255,255,0.92); backdrop-filter:blur(12px); border-bottom:1px solid rgba(0,0,0,0.06); box-shadow:0 2px 16px rgba(0,0,0,0.05); }
+    .navbar__brand { display:flex; align-items:center; gap:12px; text-decoration:none; }
+    .navbar__logo  { height:46px; object-fit:contain; }
+    .navbar__wordmark { font-family:'Fredoka',sans-serif; font-size:1.55rem; font-weight:700; color:var(--ink); letter-spacing:0.02em; text-transform:uppercase; line-height:1; }
+    .navbar__wordmark span { color:var(--coral); }
+    .navbar nav { display:flex; align-items:center; gap:8px; }
+    .navbar nav a { color:var(--ink); text-decoration:none; font-size:0.9rem; font-weight:600; padding:7px 16px; border-radius:8px; transition:background 0.2s,color 0.2s; }
+    .navbar nav a:hover { background:var(--indigo-lt); color:var(--indigo); }
+    .navbar nav a.cta { background:var(--coral); color:#fff; margin-left:8px; }
+    .navbar nav a.cta:hover { background:var(--coral-dk); }
+
+    /* UTILITIES */
+    .tag { display:inline-block; padding:4px 14px; border-radius:99px; font-size:0.75rem; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; }
+    .tag--teal   { background:var(--teal-lt);  color:#0a9a8a; }
+    .tag--indigo { background:var(--indigo-lt); color:var(--indigo); }
+    .tag--amber  { background:#FFF3D0; color:#B8860B; }
+
+    .section-label { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+    .section-label::before { content:''; display:block; width:32px; height:3px; background:var(--coral); border-radius:2px; }
+    .section-label span { font-size:0.78rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--coral); }
+
+    .breadcrumb { padding:16px 64px; display:flex; align-items:center; gap:8px; font-size:0.83rem; color:var(--muted); }
+    .breadcrumb a { color:var(--muted); text-decoration:none; transition:color 0.2s; }
+    .breadcrumb a:hover { color:var(--coral); }
+    .breadcrumb .sep { opacity:0.4; }
+    .breadcrumb .current { color:var(--ink); font-weight:600; }
+
+    .btn-primary { display:inline-flex; align-items:center; gap:8px; padding:14px 28px; background:var(--coral); color:#fff; border:none; border-radius:10px; font-family:'Nunito',sans-serif; font-size:0.95rem; font-weight:700; cursor:pointer; text-decoration:none; transition:background 0.2s,transform 0.15s,box-shadow 0.2s; box-shadow:0 4px 18px rgba(244,97,60,0.35); }
+    .btn-primary:hover { background:var(--coral-dk); transform:translateY(-2px); box-shadow:0 8px 24px rgba(244,97,60,0.4); }
+    .btn-outline { display:inline-flex; align-items:center; gap:8px; padding:13px 26px; background:transparent; color:var(--ink); border:2px solid rgba(0,0,0,0.14); border-radius:10px; font-family:'Nunito',sans-serif; font-size:0.95rem; font-weight:700; cursor:pointer; text-decoration:none; transition:border-color 0.2s,color 0.2s,transform 0.15s; }
+    .btn-outline:hover { border-color:var(--indigo); color:var(--indigo); transform:translateY(-2px); }
+    .btn-white { display:inline-flex; align-items:center; gap:8px; padding:14px 32px; background:var(--white); color:var(--coral); border:none; border-radius:10px; font-family:'Nunito',sans-serif; font-size:0.95rem; font-weight:700; cursor:pointer; text-decoration:none; transition:transform 0.15s,box-shadow 0.2s; box-shadow:0 4px 18px rgba(0,0,0,0.15); }
+    .btn-white:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(0,0,0,0.2); }
+
+    h2.stitle { font-family:'Fredoka',sans-serif; font-size:clamp(1.8rem,3vw,2.5rem); font-weight:700; line-height:1.2; color:var(--ink); margin-bottom:18px; }
+    h2.stitle.light { color:var(--white); }
+    p.sbody { font-size:0.98rem; color:var(--muted); line-height:1.8; margin-bottom:14px; }
+    p.sbody.light { color:rgba(255,255,255,0.7); }
+
+    /* HERO */
+    .hero { display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:64px; padding:56px 64px 80px; background:linear-gradient(145deg,#fff 0%,var(--teal-lt) 100%); position:relative; overflow:hidden; }
+    .hero::after { content:''; position:absolute; width:500px; height:500px; border-radius:50%; background:var(--coral-lt); filter:blur(80px); opacity:0.2; top:-100px; right:-100px; pointer-events:none; }
+    .hero__text { position:relative; z-index:1; }
+    .hero__meta { display:flex; align-items:center; gap:10px; margin-bottom:20px; flex-wrap:wrap; }
+    .hero__title { font-family:'Fredoka',sans-serif; font-size:clamp(2.6rem,5.5vw,4rem); font-weight:700; line-height:1.05; color:var(--ink); margin-bottom:6px; }
+    .hero__sub   { font-size:1rem; font-weight:700; color:var(--teal); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:18px; }
+    .hero__desc  { font-size:1.05rem; color:var(--muted); line-height:1.75; max-width:500px; margin-bottom:36px; }
+    .hero__actions { display:flex; gap:14px; flex-wrap:wrap; }
+    .hero__imgwrap { position:relative; z-index:1; border-radius:20px; overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,0.15); }
+    .hero__imgwrap img { width:100%; display:block; object-fit:cover; }
+    .hero__imgwrap .badge { position:absolute; bottom:20px; left:20px; background:rgba(255,255,255,0.92); backdrop-filter:blur(8px); border-radius:12px; padding:10px 16px; font-size:0.82rem; font-weight:700; color:var(--ink); display:flex; align-items:center; gap:8px; box-shadow:0 4px 16px rgba(0,0,0,0.12); }
+
+    /* SECTIONS */
+    .s-white  { background:var(--white);   padding:88px 64px; }
+    .s-off    { background:var(--off);     padding:88px 64px; }
+    .s-indigo { background:var(--indigo);  padding:80px 64px; }
+    .s-coral  { background:linear-gradient(135deg,var(--coral) 0%,var(--coral-dk) 100%); padding:72px 64px; text-align:center; }
+
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+    .two-col.flip > *:first-child { order:2; }
+    .two-col.flip > *:last-child  { order:1; }
+
+    /* IMAGE WRAPPER WITH CAPTION */
+    .simg-wrap { display:flex; flex-direction:column; gap:0; }
+    .simg { border-radius:20px; overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,0.12); }
+    .simg img { width:100%; display:block; object-fit:cover; }
+    .simg-caption { font-size:0.76rem; color:var(--muted); line-height:1.55; padding:10px 14px 0; font-style:italic; }
+    .simg-caption strong { font-style:normal; font-weight:700; color:var(--ink); }
+
+    /* CALLOUT */
+    .callout { background:var(--indigo); padding:72px 64px; text-align:center; }
+    .callout__inner { max-width:800px; margin:0 auto; }
+    .callout h2 { font-family:'Fredoka',sans-serif; font-size:clamp(1.6rem,3.5vw,2.8rem); font-weight:700; color:var(--white); line-height:1.3; margin-bottom:14px; }
+    .callout h2 em { font-style:normal; color:var(--amber); }
+    .callout p { color:rgba(255,255,255,0.6); font-size:1rem; }
+
+    /* FEATURE LIST */
+    .flist { display:flex; flex-direction:column; gap:14px; margin-top:8px; }
+    .fi { display:flex; align-items:flex-start; gap:14px; padding:16px; background:var(--off); border-radius:12px; border-left:3px solid var(--teal); }
+    .fi__icon { flex-shrink:0; margin-top:2px; width:28px; height:28px; }
+    .fi__icon svg { width:100%; height:100%; }
+    .fi h4 { font-size:0.92rem; font-weight:700; color:var(--ink); margin-bottom:3px; }
+    .fi p  { font-size:0.83rem; color:var(--muted); line-height:1.55; }
+
+    /* LEVELS / CARDS */
+    .cmd-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:20px; max-width:1000px; margin:0 auto; }
+    .cmd-card { background:var(--off); border-radius:var(--radius); padding:24px 18px; text-align:center; box-shadow:var(--shadow); transition:transform 0.2s; border-top:3px solid var(--teal); }
+    .cmd-card:hover { transform:translateY(-4px); }
+    .cmd-card .icon { width:44px; height:44px; margin:0 auto 10px; }
+    .cmd-card .icon svg { width:100%; height:100%; }
+    .cmd-card .pill { display:inline-block; background:var(--indigo-lt); color:var(--indigo); font-size:0.7rem; font-weight:700; letter-spacing:0.06em; padding:3px 10px; border-radius:99px; text-transform:uppercase; margin-bottom:8px; }
+    .cmd-card h4 { font-family:'Fredoka',sans-serif; font-size:1rem; font-weight:600; color:var(--ink); margin-bottom:6px; }
+    .cmd-card p { font-size:0.8rem; color:var(--muted); line-height:1.5; }
+
+    /* HOW IT WORKS */
+    .hw-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:22px; max-width:980px; margin:36px auto 0; }
+    .hw { background:var(--white); border-radius:var(--radius); padding:26px 22px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:10px; transition:transform 0.2s; }
+    .hw:hover { transform:translateY(-4px); }
+    .hw .icon { width:46px; height:46px; border-radius:12px; background:var(--teal-lt); display:flex; align-items:center; justify-content:center; }
+    .hw .icon svg { width:26px; height:26px; }
+    .hw h4 { font-family:'Fredoka',sans-serif; font-size:1.02rem; font-weight:600; color:var(--ink); }
+    .hw p  { font-size:0.84rem; color:var(--muted); line-height:1.6; }
+
+    /* SOFTWARE / TECH (on indigo) */
+    .sw-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:22px; }
+    .sw { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:12px; padding:16px 18px; }
+    .sw h5 { font-size:0.88rem; font-weight:700; color:var(--amber); margin-bottom:6px; display:flex; align-items:center; gap:8px; }
+    .sw h5 svg { width:16px; height:16px; flex-shrink:0; }
+    .sw p  { font-size:0.8rem; color:rgba(255,255,255,0.65); line-height:1.5; }
+
+    /* WHO / IMPACT */
+    .who-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; max-width:960px; margin:36px auto 0; }
+    .who { background:var(--white); border-radius:var(--radius); padding:26px 20px; box-shadow:var(--shadow); text-align:center; transition:transform 0.2s; }
+    .who:hover { transform:translateY(-4px); }
+    .who .icon { width:44px; height:44px; margin:0 auto 10px; }
+    .who .icon svg { width:100%; height:100%; }
+    .who h4 { font-family:'Fredoka',sans-serif; font-size:1rem; font-weight:600; color:var(--ink); margin-bottom:7px; }
+    .who p  { font-size:0.82rem; color:var(--muted); line-height:1.55; }
+
+    /* VALUE / ROADMAP (on indigo) */
+    .vlist { display:flex; flex-direction:column; gap:14px; margin-top:24px; }
+    .vrow { display:flex; align-items:flex-start; gap:14px; padding:16px 18px; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.1); border-radius:12px; }
+    .vrow .vi { font-size:1.4rem; flex-shrink:0; width:44px; height:44px; border-radius:10px; background:rgba(255,200,66,0.15); display:flex; align-items:center; justify-content:center; }
+    .vrow .vi svg { width:24px; height:24px; }
+    .vrow p { font-size:0.9rem; color:rgba(255,255,255,0.8); line-height:1.6; }
+
+    /* FOOTER */
+    footer { background:#10112a; color:rgba(255,255,255,0.5); padding:28px 64px; display:flex; align-items:center; justify-content:space-between; font-size:0.83rem; }
+    footer img { height:32px; opacity:0.6; filter:brightness(10); }
+    footer .fl { display:flex; gap:24px; }
+    footer .fl a { color:rgba(255,255,255,0.45); text-decoration:none; font-size:0.83rem; transition:color 0.2s; }
+    footer .fl a:hover { color:var(--teal); }
+
+    /* RESPONSIVE */
+    @media(max-width:900px){
+      .navbar{padding:0 20px;} .breadcrumb{padding:14px 24px;}
+      .hero,.two-col{grid-template-columns:1fr;gap:36px;}
+      .two-col.flip>*{order:unset;}
+      .hero,.s-white,.s-off,.s-indigo,.s-coral,.callout{padding:56px 24px;}
+      .sw-grid{grid-template-columns:1fr;}
+      footer{padding:24px;flex-direction:column;gap:16px;text-align:center;}
+    }
+    @media(max-width:600px){
+      .navbar nav a:not(.cta){display:none;}
+      .cmd-grid,.hw-grid,.who-grid{grid-template-columns:1fr 1fr;}
+    }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
+    .hero__text>*{opacity:0;animation:fadeUp 0.6s ease forwards;}
+    .hero__meta{animation-delay:0.1s;} .hero__title{animation-delay:0.22s;} .hero__sub{animation-delay:0.3s;} .hero__desc{animation-delay:0.38s;} .hero__actions{animation-delay:0.48s;}
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <a href="index.html" class="navbar__brand">
+      <img src="assets/logo-fruta.png" alt="BIG FROOTS Logo" class="navbar__logo">
+      <span class="navbar__wordmark">BIG <span>FROOTS</span></span>
+    </a>
+    <nav>
+      <a href="index.html#productos">Products</a>
+      <a href="index.html#nosotros">About Us</a>
+      <a href="index.html#contacto" class="cta">Get in Touch</a>
+    </nav>
+  </header>
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb">
+    <a href="index.html">Home</a><span class="sep">›</span>
+    <a href="index.html#productos">Products</a><span class="sep">›</span>
+    <span class="current">CyberCowboys — Spectacles Riding Game</span>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__text">
+      <div class="hero__meta">
+        <span class="tag tag--indigo">Snap Spectacles · XR</span>
+        <span class="tag tag--teal">Augmented reality</span>
+        <span class="tag tag--amber">Live demo</span>
+      </div>
+      <h1 class="hero__title">CyberCowboys</h1>
+      <p class="hero__sub">An enhanced horse-riding experience for Spectacles</p>
+      <p class="hero__desc">The reins can already speak through touch. CyberCowboys adds sight — projecting the whole riding lesson onto the real arena floor through Snap Spectacles, so riders, instructors, and assistants share one augmented view of the path ahead.</p>
+      <div class="hero__actions">
+        <a href="https://cybercowboys.fly.dev" target="_blank" class="btn-primary">
+          Open the live app →
+        </a>
+        <a href="index.html#contacto" class="btn-outline">Get in Touch</a>
+      </div>
+    </div>
+    <div class="hero__imgwrap">
+      <img src="assets/cc-Spectacles-view3.png" alt="CyberCowboys arena seen through Snap Spectacles, from horseback">
+      <div class="badge">🥽 As seen through Spectacles</div>
+    </div>
+  </section>
+
+  <!-- THE STORY -->
+  <section class="s-white">
+    <div class="two-col">
+      <div>
+        <div class="section-label"><span>Why we built it</span></div>
+        <h2 class="stitle">Communicating beyond words</h2>
+        <p class="sbody">After volunteering in assistive equine therapy sessions, we noticed something. Some riders with disabilities have a hard time receiving <em>verbal</em> instructions — but they respond beautifully to <em>tactile</em> ones. That insight gave rise to <strong>ReinGuide</strong>, our digital reins that let an instructor send gentle directional cues straight into a rider's hands.</p>
+        <p class="sbody">Spectacles is the technology we'd been waiting for to take that idea further. CyberCowboys is the next step: an augmented-reality riding experience where a lesson becomes something you can <em>see</em>, laid out on the real ground in front of you — from elementary basic commands all the way up to advanced jumping courses.</p>
+        <a href="producto1.html" class="btn-outline" style="margin-top:6px;">Meet ReinGuide →</a>
+      </div>
+      <div class="simg"><img src="assets/cc-Spectacles-view1.png" alt="Virtual arena obstacles and path projected onto a real riding arena"></div>
+    </div>
+  </section>
+
+  <!-- CALLOUT -->
+  <section class="callout">
+    <div class="callout__inner">
+      <h2>The WebView floats in front of you. <em>The arena builds behind you.</em></h2>
+      <p>Pick or design a course on the screen, then turn around — and ride straight into it.</p>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="s-off">
+    <div style="max-width:980px;margin:0 auto;">
+      <div class="section-label"><span>How it works</span></div>
+      <h2 class="stitle">One website. One headset. A whole arena in augmented reality.</h2>
+      <p class="sbody" style="max-width:600px;">Design or choose an arena from the CyberCowboys website — inside the Spectacles WebView, on a phone, or on a computer. The moment you save it, the 3D course appears on the real ground through your Spectacles, updated live.</p>
+      <div class="hw-grid">
+        <div class="hw">
+          <div class="icon">
+            <svg viewBox="0 0 26 26" fill="none" stroke="#0BBFAD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="20" height="14" rx="2"/><path d="M8 22h10M13 18v4"/></svg>
+          </div>
+          <h4>WebView in front</h4>
+          <p>The CyberCowboys site renders right inside Spectacles, so you can build and switch lessons without ever taking the headset off.</p>
+        </div>
+        <div class="hw">
+          <div class="icon">
+            <svg viewBox="0 0 26 26" fill="none" stroke="#0BBFAD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20l7-14 7 14M6 16h8"/><circle cx="20" cy="18" r="3"/></svg>
+          </div>
+          <h4>Arena behind you</h4>
+          <p>Turn around and the obstacles and the glowing path are laid onto the real arena floor at true scale — cones, poles, barrels, jumps, and stop zones.</p>
+        </div>
+        <div class="hw">
+          <div class="icon">
+            <svg viewBox="0 0 26 26" fill="none" stroke="#0BBFAD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2v4M13 20v4M2 13h4M20 13h4M5 5l3 3M18 18l3 3M21 5l-3 3M8 18l-3 3"/><circle cx="13" cy="13" r="4"/></svg>
+          </div>
+          <h4>Floor detection</h4>
+          <p>Look at the ground and hold steady — the lens finds the real floor and drops the entire course onto it, so nothing floats at eye level.</p>
+        </div>
+        <div class="hw">
+          <div class="icon">
+            <svg viewBox="0 0 26 26" fill="none" stroke="#0BBFAD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13a8 8 0 0 1 16 0"/><path d="M2 13a11 11 0 0 1 22 0"/><circle cx="13" cy="13" r="2"/><path d="M13 15v4"/></svg>
+          </div>
+          <h4>Live & real-time</h4>
+          <p>A WebSocket connection pushes every edit from the website to the headset within about a second — change the course, see it change in AR.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LESSON LEVELS -->
+  <section class="s-white">
+    <div style="max-width:1000px;margin:0 auto;text-align:center;">
+      <div class="section-label" style="justify-content:center;margin-bottom:14px;"><span>Lessons</span></div>
+      <h2 class="stitle" style="text-align:center;">From first commands to advanced courses</h2>
+      <p class="sbody" style="max-width:560px;margin:0 auto 40px;">English riding lessons grouped into four levels. Start with stop-and-walk transitions and build all the way up to jumping. Pick a ready-made lesson or design your own.</p>
+      <div class="cmd-grid">
+        <div class="cmd-card">
+          <div class="icon"><svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="20" fill="#D6F6F3"/><path d="M14 22h16" stroke="#0BBFAD" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+          <div class="pill">Level 1</div><h4>Novice</h4><p>Stop-walk transitions, basic commands, steering — communicating with the horse.</p>
+        </div>
+        <div class="cmd-card">
+          <div class="icon"><svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="20" fill="#D6F6F3"/><path d="M13 26c4-8 14-8 18 0" stroke="#0BBFAD" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+          <div class="pill">Level 2</div><h4>Elementary</h4><p>Half turns, circles, serpentines, and pole grids — curves and rhythm.</p>
+        </div>
+        <div class="cmd-card">
+          <div class="icon"><svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="20" fill="#FFE9E3"/><path d="M12 28l6-12 4 8 4-6 6 10" stroke="#F4613C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="pill">Level 3</div><h4>Intermediate</h4><p>More complex patterns and transitions, building precision and control.</p>
+        </div>
+        <div class="cmd-card" style="border-top-color:var(--coral);">
+          <div class="icon"><svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="20" fill="#FFE9E3"/><path d="M14 24c2-6 6-6 8 0M22 24c2-6 6-6 8 0M14 28h16" stroke="#F4613C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="pill">Level 4</div><h4>Advanced</h4><p>Jumping courses — the full arena, the full challenge.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LESSON LIBRARY IMAGE -->
+  <section class="s-off" style="padding-top:0;">
+    <div style="max-width:1000px;margin:0 auto;">
+      <div class="simg"><img src="assets/cc-lessons-overview.png" alt="Six pre-made CyberCowboys lessons, from stop-walk transitions to tight curves and pole grids"></div>
+      <p class="simg-caption" style="text-align:center;">A library of ready-made courses — each a top-down arena with a drawn path, obstacles, and numbered waypoints.</p>
+    </div>
+  </section>
+
+  <!-- DESIGNER -->
+  <section class="s-white">
+    <div class="two-col">
+      <div>
+        <div class="section-label"><span>Arena designer</span></div>
+        <h2 class="stitle">Design your arena. Save it. Practice later.</h2>
+        <p class="sbody">Lay out your own course on a top-down arena: drop cones, poles, barrels, jump fences, cavaletti, stop zones, number tags, and start/finish lines, then draw the path the horse should follow. Save your arrangements and reload them whenever you want to practice.</p>
+        <div class="flist">
+          <div class="fi">
+            <div class="fi__icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M6 9h6M6 13h8M6 17h4"/></svg></div>
+            <div><h4>Build & draw</h4><p>Place obstacles and draw the path point by point, in any color, directly on the arena map.</p></div>
+          </div>
+          <div class="fi">
+            <div class="fi__icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg></div>
+            <div><h4>Save & reload</h4><p>Store named courses to a library and pull any of them back up for the next session.</p></div>
+          </div>
+          <div class="fi">
+            <div class="fi__icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></div>
+            <div><h4>Anywhere</h4><p>Works in the Spectacles WebView, on a phone, or on a computer — the same arena, everywhere.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="simg"><img src="assets/cc-cybercowboys-website.png" alt="The CyberCowboys web designer with the top-down arena editor"></div>
+    </div>
+  </section>
+
+  <!-- CALIBRATION -->
+  <section class="s-off">
+    <div class="two-col flip">
+      <div>
+        <div class="section-label"><span>Calibration mode</span></div>
+        <h2 class="stitle">Line the virtual arena up with the real one</h2>
+        <p class="sbody">Every real arena is a different size and faces a different way. Calibration mode lets you set your arena's true dimensions and heading, then rotate, scale, and slide the virtual course until it sits exactly on top of your real one. The rider stands at the midpoint of the near edge, looking in — and everything lines up from there.</p>
+        <a href="https://cybercowboys.fly.dev" target="_blank" class="btn-primary" style="margin-top:4px;">Open the live app →</a>
+      </div>
+      <div class="simg"><img src="assets/cc-calibration-mode.png" alt="CyberCowboys arena calibration screen with dimensions, heading, and live coordinates"></div>
+    </div>
+  </section>
+
+  <!-- TECH STACK -->
+  <section class="s-indigo">
+    <div class="two-col">
+      <div>
+        <div class="section-label" style="margin-bottom:16px;"><span style="color:var(--teal);">Under the hood</span></div>
+        <h2 class="stitle light">Built to run live, from the web straight into AR</h2>
+        <p class="sbody light">CyberCowboys has two halves that talk to each other in real time: a website that designs and stores the courses, and a Spectacles lens that renders them in augmented reality on the real ground.</p>
+        <div class="sw-grid">
+          <div class="sw">
+            <h5><svg viewBox="0 0 16 16" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="2" width="14" height="11" rx="1.5"/><path d="M1 6h14M4 9h4"/></svg> Web app</h5>
+            <p>HTML, CSS, and vanilla JavaScript with a Node.js backend, hosted on Fly.io at cybercowboys.fly.dev.</p>
+          </div>
+          <div class="sw">
+            <h5><svg viewBox="0 0 16 16" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="8" cy="4" rx="6" ry="2.5"/><path d="M2 4v8c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5V4"/><path d="M2 8c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5"/></svg> Database</h5>
+            <p>An SQLite database stores every obstacle, path point, arena dimension, calibration, and saved course.</p>
+          </div>
+          <div class="sw">
+            <h5><svg viewBox="0 0 16 16" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6l3-3M2 6l3 3M14 10l-3 3M14 10l-3-3M2 6h8M6 10h8"/></svg> Real-time link</h5>
+            <p>A WebSocket pushes live database snapshots to the headset, so edits appear in AR within about a second.</p>
+          </div>
+          <div class="sw">
+            <h5><svg viewBox="0 0 16 16" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3c-2 1.5-3 4-3 5s1 3.5 3 5M11 3c2 1.5 3 4 3 5s-1 3.5-3 5"/><circle cx="8" cy="8" r="1.5"/></svg> Spectacles lens</h5>
+            <p>A Lens Studio project uses a WebView for the site, plus floor detection and a live arena streamer in TypeScript.</p>
+          </div>
+        </div>
+      </div>
+      <div class="simg" style="box-shadow:0 24px 60px rgba(0,0,0,0.3);"><img src="assets/cc-Spectacles-view2.png" alt="A rider on horseback wearing Spectacles near the CyberCowboys WebView"></div>
+    </div>
+  </section>
+
+  <!-- IMPACT -->
+  <section class="s-off">
+    <div style="max-width:960px;margin:0 auto;text-align:center;">
+      <div class="section-label" style="justify-content:center;margin-bottom:14px;"><span>Who it's for</span></div>
+      <h2 class="stitle" style="text-align:center;">Made for therapy. Built for every rider.</h2>
+      <p class="sbody" style="max-width:580px;margin:0 auto;">Born from assistive equine therapy, CyberCowboys turns an abstract lesson into something a rider can see and follow — and that clarity helps everyone in the arena.</p>
+      <div class="who-grid">
+        <div class="who">
+          <div class="icon"><svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="20" fill="#D6F6F3"/><circle cx="22" cy="17" r="4" stroke="#0BBFAD" stroke-width="2"/><path d="M15 28c1.5-3 4-4 7-4s5.5 1 7 4" stroke="#0BBFAD" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <h4>Riders with disabilities</h4>
+          <p>A visual path to follow complements tactile cues — guidance that doesn't depend on spoken words.</p>
+        </div>
+        <div class="who">
+          <div class="icon"><svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="20" fill="#D6F6F3"/><path d="M22 12l3 6 6 .9-4.5 4.3 1 6-5.5-3-5.5 3 1-6L13 18.9l6-.9z" stroke="#0BBFAD" stroke-width="2" stroke-linejoin="round"/></svg></div>
+          <h4>Instructors</h4>
+          <p>Lay out a lesson once, save it, and run riders through the exact same course every time.</p>
+        </div>
+        <div class="who">
+          <div class="icon"><svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="20" fill="#D6F6F3"/><path d="M14 24l5-10 4 8 3-5 4 7" stroke="#0BBFAD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h4>Beginners</h4>
+          <p>Seeing the route on the ground makes early lessons less abstract and far easier to follow.</p>
+        </div>
+        <div class="who">
+          <div class="icon"><svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="20" fill="#D6F6F3"/><path d="M22 13c-4 0-7 2.5-7 6 0 2 1.3 3.5 3 4.5V29h8v-5.5c1.7-1 3-2.5 3-4.5 0-3.5-3-6-7-6z" stroke="#0BBFAD" stroke-width="2" stroke-linejoin="round"/></svg></div>
+          <h4>Anyone learning</h4>
+          <p>A genuinely fun way to practice riding patterns — gamified, visual, and repeatable.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section class="s-indigo">
+    <div style="max-width:820px;margin:0 auto;text-align:center;">
+      <div class="section-label" style="justify-content:center;margin-bottom:16px;"><span style="color:var(--amber);">What's next</span></div>
+      <h2 class="stitle light" style="text-align:center;">The arena keeps growing</h2>
+      <div class="vlist" style="text-align:left;max-width:620px;margin:24px auto 0;">
+        <div class="vrow">
+          <div class="vi"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20v-1.5A4.5 4.5 0 0 1 7.5 14h3A4.5 4.5 0 0 1 15 18.5V20M16 14h.5a4.5 4.5 0 0 1 4.5 4.5V20"/></svg></div>
+          <p><strong style="color:#fff;">Multi-player sessions</strong> — so an instructor and rider (and friends) can share the same augmented arena at once.</p>
+        </div>
+        <div class="vrow">
+          <div class="vi"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3c-2 2-3 5-3 9s1 7 3 9M19 3c2 2 3 5 3 9s-1 7-3 9"/><circle cx="12" cy="12" r="2"/></svg></div>
+          <p><strong style="color:#fff;">Deeper ReinGuide integration</strong> — pairing the AR path with tactile cues sent straight to the reins.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="s-coral">
+    <h2 class="stitle light" style="text-align:center;margin-bottom:12px;">Ride into CyberCowboys</h2>
+    <p class="sbody light" style="max-width:520px;margin:0 auto 32px;text-align:center;">Try the live app, design an arena, or get in touch to help us bring augmented riding lessons to more therapy centers and stables.</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+      <a href="https://cybercowboys.fly.dev" target="_blank" class="btn-white">
+        Open the live app
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="index.html#contacto" class="btn-outline" style="border-color:rgba(255,255,255,0.6);color:#fff;">Get in Touch</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <img src="assets/logo-fruta.png" alt="BIG FROOTS">
+    <span>© 2025 BIG FROOTS. All rights reserved.</span>
+    <div class="fl">
+      <a href="index.html#productos">Products</a>
+      <a href="index.html#nosotros">About</a>
+      <a href="index.html#contacto">Contact</a>
+    </div>
+  </footer>
+
+</body>
+</html>
