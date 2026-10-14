@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pomodoro Desk — Focus Timer &amp; Tomato Rewards · BIG FROOTS</title>
+  <meta name="description" content="Pomodoro Desk: to-do lists, a focus timer and reading sessions that earn tomatoes, spent on rated chess puzzles. An attention-respecting productivity tool by BIG FROOTS.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    @font-face { font-family: 'QuadernoBold'; src: url('assets/quaderno_bold.otf') format('opentype'); }
+
+    :root {
+      --coral:    #F4613C; --coral-lt: #FF8B6B; --coral-dk: #C94220;
+      --teal:     #0BBFAD; --teal-lt:  #D6F6F3;
+      --indigo:   #0b5a42; --indigo-lt:#EEF0FF;
+      --amber:    #FFC842;
+      --white:    #FFFFFF; --off: #F7F5F2;
+      --ink:      #1A1A2E; --muted: #6B7280;
+      --radius: 14px; --shadow: 0 6px 30px rgba(0,0,0,0.08);
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family:'Nunito',sans-serif; background:var(--off); color:var(--ink); line-height:1.65; overflow-x:hidden; }
+
+    /* NAVBAR */
+    .navbar { position:sticky; top:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:0 48px; height:70px; background:rgba(255,255,255,0.92); backdrop-filter:blur(12px); border-bottom:1px solid rgba(0,0,0,0.06); box-shadow:0 2px 16px rgba(0,0,0,0.05); }
+    .navbar__brand { display:flex; align-items:center; gap:12px; text-decoration:none; }
+    .navbar__logo  { height:46px; object-fit:contain; }
+    .navbar__wordmark { font-family:'Fredoka',sans-serif; font-size:1.55rem; font-weight:700; color:var(--ink); letter-spacing:0.02em; text-transform:uppercase; line-height:1; }
+    .navbar__wordmark span { color:var(--coral); }
+    .navbar nav { display:flex; align-items:center; gap:8px; }
+    .navbar nav a { color:var(--ink); text-decoration:none; font-size:0.9rem; font-weight:600; padding:7px 16px; border-radius:8px; transition:background 0.2s,color 0.2s; }
+    .navbar nav a:hover { background:var(--indigo-lt); color:var(--indigo); }
+    .navbar nav a.cta { background:var(--coral); color:#fff; margin-left:8px; }
+    .navbar nav a.cta:hover { background:var(--coral-dk); }
+
+    /* UTILITIES */
+    .tag { display:inline-block; padding:4px 14px; border-radius:99px; font-size:0.75rem; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; }
+    .tag--teal   { background:var(--teal-lt);  color:#0a9a8a; }
+    .tag--indigo { background:var(--indigo-lt); color:var(--indigo); }
+    .tag--amber  { background:#FFF3D0; color:#B8860B; }
+
+    .section-label { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+    .section-label::before { content:''; display:block; width:32px; height:3px; background:var(--coral); border-radius:2px; }
+    .section-label span { font-size:0.78rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--coral); }
+
+    .breadcrumb { padding:16px 64px; display:flex; align-items:center; gap:8px; font-size:0.83rem; color:var(--muted); }
+    .breadcrumb a { color:var(--muted); text-decoration:none; transition:color 0.2s; }
+    .breadcrumb a:hover { color:var(--coral); }
+    .breadcrumb .sep { opacity:0.4; }
+    .breadcrumb .current { color:var(--ink); font-weight:600; }
+
+    .btn-primary { display:inline-flex; align-items:center; gap:8px; padding:14px 28px; background:var(--coral); color:#fff; border:none; border-radius:10px; font-family:'Nunito',sans-serif; font-size:0.95rem; font-weight:700; cursor:pointer; text-decoration:none; transition:background 0.2s,transform 0.15s,box-shadow 0.2s; box-shadow:0 4px 18px rgba(244,97,60,0.35); }
+    .btn-primary:hover { background:var(--coral-dk); transform:translateY(-2px); box-shadow:0 8px 24px rgba(244,97,60,0.4); }
+    .btn-outline { display:inline-flex; align-items:center; gap:8px; padding:13px 26px; background:transparent; color:var(--ink); border:2px solid rgba(0,0,0,0.14); border-radius:10px; font-family:'Nunito',sans-serif; font-size:0.95rem; font-weight:700; cursor:pointer; text-decoration:none; transition:border-color 0.2s,color 0.2s,transform 0.15s; }
+    .btn-outline:hover { border-color:var(--indigo); color:var(--indigo); transform:translateY(-2px); }
+    .btn-white { display:inline-flex; align-items:center; gap:8px; padding:14px 32px; background:var(--white); color:var(--coral); border:none; border-radius:10px; font-family:'Nunito',sans-serif; font-size:0.95rem; font-weight:700; cursor:pointer; text-decoration:none; transition:transform 0.15s,box-shadow 0.2s; box-shadow:0 4px 18px rgba(0,0,0,0.15); }
+    .btn-white:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(0,0,0,0.2); }
+
+    h2.stitle { font-family:'Fredoka',sans-serif; font-size:clamp(1.8rem,3vw,2.5rem); font-weight:700; line-height:1.2; color:var(--ink); margin-bottom:18px; }
+    h2.stitle.light { color:var(--white); }
+    p.sbody { font-size:0.98rem; color:var(--muted); line-height:1.8; margin-bottom:14px; }
+    p.sbody.light { color:rgba(255,255,255,0.7); }
+
+    /* HERO */
+    .hero { display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:64px; padding:56px 64px 80px; background:linear-gradient(145deg,#fff 0%,#FFE9E3 100%); position:relative; overflow:hidden; }
+    .hero::after { content:''; position:absolute; width:500px; height:500px; border-radius:50%; background:var(--coral-lt); filter:blur(80px); opacity:0.2; top:-100px; right:-100px; pointer-events:none; }
+    .hero__text { position:relative; z-index:1; }
+    .hero__meta { display:flex; align-items:center; gap:10px; margin-bottom:20px; flex-wrap:wrap; }
+    .hero__title { font-family:'Fredoka',sans-serif; font-size:clamp(2.6rem,5.5vw,4rem); font-weight:700; line-height:1.05; color:var(--ink); margin-bottom:6px; }
+    .hero__sub   { font-size:1rem; font-weight:700; color:var(--coral-dk); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:18px; }
+    .hero__desc  { font-size:1.05rem; color:var(--muted); line-height:1.75; max-width:500px; margin-bottom:36px; }
+    .hero__actions { display:flex; gap:14px; flex-wrap:wrap; }
+    .hero__imgwrap { position:relative; z-index:1; border-radius:20px; overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,0.15); }
+    .hero__imgwrap img { width:100%; display:block; object-fit:cover; }
+    .hero__imgwrap .badge { position:absolute; bottom:20px; left:20px; background:rgba(255,255,255,0.92); backdrop-filter:blur(8px); border-radius:12px; padding:10px 16px; font-size:0.82rem; font-weight:700; color:var(--ink); display:flex; align-items:center; gap:8px; box-shadow:0 4px 16px rgba(0,0,0,0.12); }
+
+    /* SECTIONS */
+    .s-white  { background:var(--white);   padding:88px 64px; }
+    .s-off    { background:var(--off);     padding:88px 64px; }
+    .s-indigo { background:var(--indigo);  padding:80px 64px; }
+    .s-coral  { background:linear-gradient(135deg,var(--coral) 0%,var(--coral-dk) 100%); padding:72px 64px; text-align:center; }
+
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+    .two-col.flip > *:first-child { order:2; }
+    .two-col.flip > *:last-child  { order:1; }
+
+    /* IMAGE WRAPPER WITH CAPTION */
+    .simg-wrap { display:flex; flex-direction:column; gap:0; }
+    .simg { border-radius:20px; overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,0.12); }
+    .simg img { width:100%; display:block; object-fit:cover; }
+    .simg-caption { font-size:0.76rem; color:var(--muted); line-height:1.55; padding:10px 14px 0; font-style:italic; }
+    .simg-caption strong { font-style:normal; font-weight:700; color:var(--ink); }
+
+    /* CALLOUT */
+    .callout { background:var(--indigo); padding:72px 64px; text-align:center; }
+    .callout__inner { max-width:800px; margin:0 auto; }
+    .callout h2 { font-family:'Fredoka',sans-serif; font-size:clamp(1.6rem,3.5vw,2.8rem); font-weight:700; color:var(--white); line-height:1.3; margin-bottom:14px; }
+    .callout h2 em { font-style:normal; color:var(--amber); }
+    .callout p { color:rgba(255,255,255,0.6); font-size:1rem; }
+
+    /* FEATURE LIST */
+    .flist { display:flex; flex-direction:column; gap:14px; margin-top:8px; }
+    .fi { display:flex; align-items:flex-start; gap:14px; padding:16px; background:var(--off); border-radius:12px; border-left:3px solid var(--teal); }
+    .fi__icon { flex-shrink:0; margin-top:2px; width:28px; height:28px; }
+    .fi__icon svg { width:100%; height:100%; }
+    .fi h4 { font-size:0.92rem; font-weight:700; color:var(--ink); margin-bottom:3px; }
+    .fi p  { font-size:0.83rem; color:var(--muted); line-height:1.55; }
+
+    /* LEVELS / CARDS */
+    .cmd-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:20px; max-width:1000px; margin:0 auto; }
+    .cmd-card { background:var(--off); border-radius:var(--radius); padding:24px 18px; text-align:center; box-shadow:var(--shadow); transition:transform 0.2s; border-top:3px solid var(--teal); }
+    .cmd-card:hover { transform:translateY(-4px); }
+    .cmd-card .icon { width:44px; height:44px; margin:0 auto 10px; }
+    .cmd-card .icon svg { width:100%; height:100%; }
+    .cmd-card .pill { display:inline-block; background:var(--indigo-lt); color:var(--indigo); font-size:0.7rem; font-weight:700; letter-spacing:0.06em; padding:3px 10px; border-radius:99px; text-transform:uppercase; margin-bottom:8px; }
+    .cmd-card h4 { font-family:'Fredoka',sans-serif; font-size:1rem; font-weight:600; color:var(--ink); margin-bottom:6px; }
+    .cmd-card p { font-size:0.8rem; color:var(--muted); line-height:1.5; }
+
+    /* HOW IT WORKS */
+    .hw-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:22px; max-width:980px; margin:36px auto 0; }
+    .hw { background:var(--white); border-radius:var(--radius); padding:26px 22px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:10px; transition:transform 0.2s; }
+    .hw:hover { transform:translateY(-4px); }
+    .hw .icon { width:46px; height:46px; border-radius:12px; background:var(--teal-lt); display:flex; align-items:center; justify-content:center; }
+    .hw .icon svg { width:26px; height:26px; }
+    .hw h4 { font-family:'Fredoka',sans-serif; font-size:1.02rem; font-weight:600; color:var(--ink); }
+    .hw p  { font-size:0.84rem; color:var(--muted); line-height:1.6; }
+
+    /* SOFTWARE / TECH (on indigo) */
+    .sw-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:22px; }
+    .sw { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:12px; padding:16px 18px; }
+    .sw h5 { font-size:0.88rem; font-weight:700; color:var(--amber); margin-bottom:6px; display:flex; align-items:center; gap:8px; }
+    .sw h5 svg { width:16px; height:16px; flex-shrink:0; }
+    .sw p  { font-size:0.8rem; color:rgba(255,255,255,0.65); line-height:1.5; }
+
+    /* WHO / IMPACT */
+    .who-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; max-width:960px; margin:36px auto 0; }
+    .who { background:var(--white); border-radius:var(--radius); padding:26px 20px; box-shadow:var(--shadow); text-align:center; transition:transform 0.2s; }
+    .who:hover { transform:translateY(-4px); }
+    .who .icon { width:44px; height:44px; margin:0 auto 10px; }
+    .who .icon svg { width:100%; height:100%; }
+    .who h4 { font-family:'Fredoka',sans-serif; font-size:1rem; font-weight:600; color:var(--ink); margin-bottom:7px; }
+    .who p  { font-size:0.82rem; color:var(--muted); line-height:1.55; }
+
+    /* VALUE / ROADMAP (on indigo) */
+    .vlist { display:flex; flex-direction:column; gap:14px; margin-top:24px; }
+    .vrow { display:flex; align-items:flex-start; gap:14px; padding:16px 18px; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.1); border-radius:12px; }
+    .vrow .vi { font-size:1.4rem; flex-shrink:0; width:44px; height:44px; border-radius:10px; background:rgba(255,200,66,0.15); display:flex; align-items:center; justify-content:center; }
+    .vrow .vi svg { width:24px; height:24px; }
+    .vrow p { font-size:0.9rem; color:rgba(255,255,255,0.8); line-height:1.6; }
+
+    /* FOOTER */
+    footer { background:#10112a; color:rgba(255,255,255,0.5); padding:28px 64px; display:flex; align-items:center; justify-content:space-between; font-size:0.83rem; }
+    footer img { height:32px; opacity:0.6; filter:brightness(10); }
+    footer .fl { display:flex; gap:24px; }
+    footer .fl a { color:rgba(255,255,255,0.45); text-decoration:none; font-size:0.83rem; transition:color 0.2s; }
+    footer .fl a:hover { color:var(--teal); }
+
+    /* POMODORO EXTRAS */
+    .simg img, .hero__imgwrap img { height:auto; }
+    .loop { display:grid; grid-template-columns:repeat(4,1fr); gap:0; max-width:1000px; margin:40px auto 0; counter-reset:step; }
+    .loop .step { position:relative; background:var(--white); padding:26px 20px 22px; box-shadow:var(--shadow); text-align:left; }
+    .loop .step:first-child { border-radius:var(--radius) 0 0 var(--radius); }
+    .loop .step:last-child { border-radius:0 var(--radius) var(--radius) 0; }
+    .loop .step + .step { border-left:1px dashed rgba(0,0,0,0.1); }
+    .loop .step::before { counter-increment:step; content:counter(step); display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:50%; background:var(--coral); color:#fff; font-family:'Fredoka',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:12px; }
+    .loop .step h4 { font-family:'Fredoka',sans-serif; font-size:1.02rem; font-weight:600; margin-bottom:6px; }
+    .loop .step p { font-size:0.83rem; color:var(--muted); line-height:1.55; }
+    .loop .step .earn { display:inline-block; margin-top:10px; font-size:0.72rem; font-weight:800; letter-spacing:0.06em; text-transform:uppercase; padding:3px 10px; border-radius:99px; background:#FFE9E3; color:var(--coral-dk); }
+    .loop .step .earn.spend { background:var(--indigo-lt); color:var(--indigo); }
+    .phone-pair { display:grid; grid-template-columns:1.6fr 1fr; gap:28px; align-items:end; }
+    .phone-pair .simg.phone { max-width:300px; justify-self:center; border-radius:28px; border:8px solid #1A1A2E; }
+    .gallery { display:grid; grid-template-columns:1fr 1fr; gap:24px; max-width:1100px; margin:36px auto 0; }
+    .gallery figure { margin:0; }
+
+    /* RESPONSIVE */
+    @media(max-width:900px){
+      .navbar{padding:0 20px;} .breadcrumb{padding:14px 24px;}
+      .hero,.two-col{grid-template-columns:1fr;gap:36px;}
+      .two-col.flip>*{order:unset;}
+      .hero,.s-white,.s-off,.s-indigo,.s-coral,.callout{padding:56px 24px;}
+      .sw-grid{grid-template-columns:1fr;}
+      .loop{grid-template-columns:1fr 1fr;gap:12px;} .loop .step{border-radius:var(--radius)!important;border-left:none!important;}
+      .phone-pair,.gallery{grid-template-columns:1fr;}
+      footer{padding:24px;flex-direction:column;gap:16px;text-align:center;}
+    }
+    @media(max-width:600px){
+      .navbar nav a:not(.cta){display:none;}
+      .cmd-grid,.hw-grid,.who-grid{grid-template-columns:1fr 1fr;}
+      .loop{grid-template-columns:1fr;}
+    }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
+    .hero__text>*{opacity:0;animation:fadeUp 0.6s ease forwards;}
+    .hero__meta{animation-delay:0.1s;} .hero__title{animation-delay:0.22s;} .hero__sub{animation-delay:0.3s;} .hero__desc{animation-delay:0.38s;} .hero__actions{animation-delay:0.48s;}
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <a href="index.html" class="navbar__brand">
+      <img src="assets/logo-fruta.png" alt="BIG FROOTS Logo" class="navbar__logo">
+      <span class="navbar__wordmark">BIG <span>FROOTS</span></span>
+    </a>
+    <nav>
+      <a href="index.html#productos">Products</a>
+      <a href="index.html#nosotros">About Us</a>
+      <a href="index.html#contacto" class="cta">Get in Touch</a>
+    </nav>
+  </header>
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb">
+    <a href="index.html">Home</a><span class="sep">›</span>
+    <a href="index.html#productos">Products</a><span class="sep">›</span>
+    <span class="current">Pomodoro Desk</span>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__text">
+      <div class="hero__meta">
+        <span class="tag tag--indigo">Focus · Wellbeing</span>
+        <span class="tag tag--teal">Phone · Laptop · Raspberry Pi</span>
+        <span class="tag tag--amber">Live app</span>
+      </div>
+      <h1 class="hero__title">Pomodoro Desk</h1>
+      <p class="hero__sub">Focus first. Then a chess puzzle.</p>
+      <p class="hero__desc">A to-do list, a focus timer and a reading tracker that pay you in tomatoes for finishing real work. Spend them on rated chess puzzles. The reward is a small, deliberate challenge for your brain, not another feed to scroll.</p>
+      <div class="hero__actions">
+        <a href="https://pomodoro-desk.fly.dev" target="_blank" rel="noopener" class="btn-primary">Open the live app →</a>
+        <a href="index.html#contacto" class="btn-outline">Get in Touch</a>
+      </div>
+    </div>
+    <div class="hero__imgwrap">
+      <img src="assets/pd-kanban.webp" alt="Pomodoro Desk Kanban board with two main goals and tasks moving from backlog to done" width="1600" height="900">
+      <div class="badge">🍅 23 tomatoes · 7-day streak</div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section class="s-white">
+    <div class="two-col">
+      <div>
+        <div class="section-label"><span>Why we built it</span></div>
+        <h2 class="stitle">A reward loop that gives your attention back</h2>
+        <p class="sbody">Most apps are built to keep you on them. Their rewards (likes, streaks, autoplay) pull you away from what you meant to do. We wanted the opposite: a desk companion that only rewards <em>finishing</em> things, and pays out in something that trains focus instead of breaking it.</p>
+        <p class="sbody">In Pomodoro Desk the currency is a tomato, the original <em>pomodoro</em>. You earn tomatoes by checking off tasks and reading without switching away. You spend them on chess puzzles rated from warm-up to brutal. The harder the puzzle, the more tomatoes it costs, so a hard puzzle is something you've earned.</p>
+      </div>
+      <div class="simg-wrap">
+        <div class="simg"><img src="assets/pd-puzzle.webp" alt="A chess puzzle on the Puzzles tab next to five difficulty levels priced in tomatoes" width="1600" height="900" loading="lazy"></div>
+        <p class="simg-caption"><strong>Puzzles tab.</strong> Rated puzzles come from Lichess. If Lichess can't be reached, a set of built-in practice puzzles is used instead.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALLOUT -->
+  <section class="callout">
+    <div class="callout__inner">
+      <h2>Earn it by focusing. <em>Spend it on thinking.</em></h2>
+      <p>Every tomato in your wallet stands for real work you finished.</p>
+    </div>
+  </section>
+
+  <!-- THE LOOP -->
+  <section class="s-off">
+    <div style="max-width:1000px;margin:0 auto;text-align:center;">
+      <div class="section-label" style="justify-content:center;margin-bottom:14px;"><span>The tomato loop</span></div>
+      <h2 class="stitle" style="text-align:center;">Four steps, every day</h2>
+      <p class="sbody" style="max-width:600px;margin:0 auto;">Every new desk starts with 5 tomatoes and a few example tasks, so you can try the whole loop on day one.</p>
+    </div>
+    <div class="loop">
+      <div class="step">
+        <h4>Plan the day</h4>
+        <p>Add tasks to Morning, Afternoon, Evening or Backlog. Tag each one with a project and a size.</p>
+        <span class="earn">Small · Medium · Big</span>
+      </div>
+      <div class="step">
+        <h4>Focus</h4>
+        <p>Run a 25-minute focus timer (with 5- and 15-minute breaks) and pin it to the task you're working on.</p>
+        <span class="earn">Sessions logged</span>
+      </div>
+      <div class="step">
+        <h4>Finish &amp; read</h4>
+        <p>Check off a task to earn its size in tomatoes. Reading sessions earn one tomato for every 5 minutes on screen.</p>
+        <span class="earn">+1 to +3 per task</span>
+      </div>
+      <div class="step">
+        <h4>Play</h4>
+        <p>Trade tomatoes for a rated chess puzzle. Warm-up costs 1 tomato and Brutal costs 4.</p>
+        <span class="earn spend">−1 to −4 per puzzle</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TODAY + PHONE -->
+  <section class="s-white">
+    <div style="max-width:1100px;margin:0 auto;">
+      <div class="section-label"><span>Today</span></div>
+      <h2 class="stitle">Your whole day on one screen</h2>
+      <p class="sbody" style="max-width:640px;">The Today tab puts the timer above four columns: Backlog, Morning, Afternoon and Evening. The current part of the day is highlighted, so you can see what's next without scrolling. Tasks can be dragged between columns and broken into subtasks.</p>
+      <div class="phone-pair" style="margin-top:28px;">
+        <div class="simg"><img src="assets/pd-today.webp" alt="Today tab on a laptop: 25-minute focus timer above Backlog, Morning, Afternoon and Evening task columns" width="1600" height="900" loading="lazy"></div>
+        <div class="simg phone"><img src="assets/pd-phone.webp" alt="Pomodoro Desk Today tab on a phone" width="700" height="1283" loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KANBAN + HISTORY -->
+  <section class="s-off">
+    <div style="max-width:1100px;margin:0 auto;">
+      <div class="section-label"><span>Projects, goals &amp; history</span></div>
+      <h2 class="stitle">See big goals move, one tomato at a time</h2>
+      <p class="sbody" style="max-width:660px;">Group tasks under a main goal, like "Submit paper draft", and watch its progress bar fill as tasks move from Backlog to Done on the Kanban board. History keeps your streak, daily totals and an itemized log of every day, which you can download as a CSV or PDF.</p>
+      <div class="gallery">
+        <figure>
+          <div class="simg"><img src="assets/pd-kanban.webp" alt="Kanban board with backlog, planned, in-progress and done columns" width="1600" height="900" loading="lazy"></div>
+          <figcaption class="simg-caption"><strong>Kanban.</strong> Main goals show their progress at the top. Filter by goal, project or search.</figcaption>
+        </figure>
+        <figure>
+          <div class="simg"><img src="assets/pd-history.webp" alt="History tab with a 7-day streak, daily goal setting and a bar chart of tomatoes earned per day" width="1600" height="900" loading="lazy"></div>
+          <figcaption class="simg-caption"><strong>History.</strong> Streak, daily goal, streak freezes and charts by day, week or month.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ATTENTION-RESPECTING FEATURES -->
+  <section class="s-white">
+    <div class="two-col flip">
+      <div>
+        <div class="section-label"><span>Designed for attention</span></div>
+        <h2 class="stitle">Kind streaks and honest timers</h2>
+        <div class="flist">
+          <div class="fi">
+            <div class="fi__icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></div>
+            <div><h4>Reading that counts only while you're there</h4><p>The reading timer pauses the moment you switch apps, change tabs or lock your phone. Strict mode also throws away your progress toward the next tomato.</p></div>
+          </div>
+          <div class="fi">
+            <div class="fi__icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M4.9 7l14.2 10M4.9 17l14.2-10"/></svg></div>
+            <div><h4>Streak freezes, not streak guilt</h4><p>Choose a daily goal of 1, 3, 5 or 8 tomatoes. Keep up to two freezes, and one covers a missed day automatically, so a sick day doesn't erase weeks of progress.</p></div>
+          </div>
+          <div class="fi">
+            <div class="fi__icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <div><h4>Rewards you can't fake</h4><p>Tomatoes are counted on the server. Once you've spent a task's tomatoes you can't uncheck it, so you can't check it off again for free tomatoes.</p></div>
+          </div>
+          <div class="fi">
+            <div class="fi__icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+            <div><h4>Your day, your time zone</h4><p>Streaks and daily totals follow your local day, not the server's clock.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="simg-wrap">
+        <div class="simg"><img src="assets/pd-read.webp" alt="Read tab with a reading session form, strict-mode option and today's reading total" width="1600" height="738" loading="lazy"></div>
+        <p class="simg-caption"><strong>Read tab.</strong> It also explains how to use Guided Access on iPhone or App pinning on Android to lock the phone to the screen.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TECH STACK -->
+  <section class="s-indigo">
+    <div style="max-width:980px;margin:0 auto;">
+      <div class="section-label" style="margin-bottom:16px;"><span style="color:var(--teal);">Under the hood</span></div>
+      <h2 class="stitle light">One desk that follows you from your phone to a Raspberry Pi</h2>
+      <p class="sbody light" style="max-width:640px;">Sign in once and the same desk opens on your phone, your laptop, or a Raspberry Pi touchscreen running full screen next to your keyboard.</p>
+      <div class="sw-grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
+        <div class="sw">
+          <h5><svg viewBox="0 0 16 16" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="2" width="14" height="11" rx="1.5"/><path d="M1 6h14M4 9h4"/></svg> Web app</h5>
+          <p>A single-page app in plain HTML, CSS and JavaScript, with chess.js for the puzzle board. Large touch targets work well on a Pi touchscreen.</p>
+        </div>
+        <div class="sw">
+          <h5><svg viewBox="0 0 16 16" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h12M8 2v12"/><circle cx="8" cy="8" r="6"/></svg> Server</h5>
+          <p>Node.js and Fastify on Fly.io. It checks every login and applies each change in a single database transaction.</p>
+        </div>
+        <div class="sw">
+          <h5><svg viewBox="0 0 16 16" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="8" cy="4" rx="6" ry="2.5"/><path d="M2 4v8c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5V4"/></svg> Database &amp; sign-in</h5>
+          <p>Postgres, with sign-in through Supabase Auth by password or emailed link. The data is kept out of Supabase's public API.</p>
+        </div>
+        <div class="sw">
+          <h5><svg viewBox="0 0 16 16" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10a4 4 0 0 1 3-6 5 5 0 0 1 9 2 3 3 0 0 1-1 6H5"/><path d="M5 14l6-6"/></svg> Works offline</h5>
+          <p>Changes wait in a queue on the device and sync when you're back online. Retries never count twice.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO -->
+  <section class="s-off">
+    <div style="max-width:960px;margin:0 auto;text-align:center;">
+      <div class="section-label" style="justify-content:center;margin-bottom:14px;"><span>Who it's for</span></div>
+      <h2 class="stitle" style="text-align:center;">For anyone who wants to finish what they start</h2>
+      <div class="who-grid">
+        <div class="who">
+          <div class="icon"><svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="20" fill="#D6F6F3"/><path d="M15 24c3 5 11 5 14 0M18 18h.01M26 18h.01" stroke="#0BBFAD" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+          <h4>ADHD &amp; neurodivergent minds</h4>
+          <p>Small tasks, visible rewards right away, and a schedule split into parts of the day lower the cost of getting started.</p>
+        </div>
+        <div class="who">
+          <div class="icon"><svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="20" fill="#FFE9E3"/><path d="M15 14h14v16H15zM19 19h6M19 23h6" stroke="#F4613C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h4>Students &amp; researchers</h4>
+          <p>Reading sessions and big goals like a thesis chapter turn long projects into progress you can count.</p>
+        </div>
+        <div class="who">
+          <div class="icon"><svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="20" fill="#D6F6F3"/><path d="M16 30h12M18 30l1-6h6l1 6M17 18a5 5 0 0 1 10 0c0 3-2 4-2 6h-6c0-2-2-3-2-6z" stroke="#0BBFAD" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h4>Chess learners</h4>
+          <p>Rated puzzles every day, tied to real work. It's practice you've earned.</p>
+        </div>
+        <div class="who">
+          <div class="icon"><svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="20" fill="#FFE9E3"/><rect x="13" y="15" width="18" height="12" rx="2" stroke="#F4613C" stroke-width="2.2"/><path d="M18 31h8" stroke="#F4613C" stroke-width="2.2" stroke-linecap="round"/></svg></div>
+          <h4>Desk tinkerers</h4>
+          <p>Run it full screen on a Raspberry Pi as a dedicated focus display beside your monitor.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="s-coral">
+    <h2 class="stitle light" style="text-align:center;margin-bottom:12px;">Start earning tomatoes</h2>
+    <p class="sbody light" style="max-width:520px;margin:0 auto 32px;text-align:center;">Make an account, plan today, and finish one task. Your first chess puzzle is already paid for.</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+      <a href="https://pomodoro-desk.fly.dev" target="_blank" rel="noopener" class="btn-white">
+        Open the live app
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="index.html#contacto" class="btn-outline" style="border-color:rgba(255,255,255,0.6);color:#fff;">Get in Touch</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <img src="assets/logo-fruta.png" alt="BIG FROOTS">
+    <span>© 2025 BIG FROOTS. All rights reserved.</span>
+    <div class="fl">
+      <a href="index.html#productos">Products</a>
+      <a href="index.html#nosotros">About</a>
+      <a href="index.html#contacto">Contact</a>
+    </div>
+  </footer>
+
+</body>
+</html>
