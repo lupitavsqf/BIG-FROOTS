@@ -859,6 +859,11 @@
   color: #3C3489;
 }
 
+.label-focus {
+  background: #FFE9E3;
+  color: #C94220;
+}
+
 .segment-title {
   font-family: 'Fredoka', sans-serif;
   font-size: 1.4rem;
@@ -879,6 +884,14 @@
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 24px;
 }
+
+.cards-row--single {
+  grid-template-columns: minmax(0, calc(50% - 12px));
+}
+@media (max-width: 700px) {
+  .cards-row--single { grid-template-columns: 1fr; }
+}
+
 
 .segment-card {
   background: white;
@@ -1507,6 +1520,52 @@
   </div>
 </div>
 
+  
+      </div>
+    </div>
+  
+    <!-- FOCUS & WELLBEING -->
+    <div class="segment">
+      <div class="segment-header">
+        <div class="section-label label-focus">
+          Focus · Wellbeing
+        </div>
+  
+        <div class="segment-title">
+          Attention-respecting productivity
+        </div>
+  
+        <div class="segment-desc">
+          Tools that reward finishing real work, not endless scrolling. They're built to protect your attention instead of competing for it.
+        </div>
+      </div>
+  
+      <div class="cards-row cards-row--single">
+  
+        <!-- Pomodoro Desk -->
+        <div class="segment-card">
+          <div class="segment-thumb">
+            <img src="assets/pd-kanban.webp" alt="Pomodoro Desk Kanban board with goals and tasks" style="object-position:left top;">
+          </div>
+  
+          <div class="segment-body">
+            <div class="segment-tag">
+              Focus timer · Chess puzzles
+            </div>
+  
+            <div class="segment-card-title">
+              Pomodoro Desk
+            </div>
+  
+            <div class="segment-card-desc">
+              To-do lists, a focus timer and reading sessions that earn tomatoes. You spend them on rated chess puzzles. It works on your phone, laptop or a Raspberry Pi on your desk.
+            </div>
+  
+            <a class="segment-link" href="pomodoro.html">
+              Learn more →
+            </a>
+          </div>
+        </div>
   
       </div>
     </div>
