@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BiGGi — a p5.js AI coding tutor · Lupita Vásquez Fabela</title>
+<meta name="description" content="BiGGi, a modular p5.js AI coding agent for beginners: what a year of playtests showed, and how the app now runs its own user tests.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
 <style>
@@ -292,7 +294,7 @@ h1 em{font-style:normal;color:var(--coral);}
   justify-content:center;
   margin-top:16px;
 }
-.loop-reject-arrow svg{overflow:visible;}
+.loop-reject-arrow svg{overflow:visible;max-width:100%;height:auto;}
 
 /* CONTEXT SYSTEM */
 .ctx-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:0;}
@@ -349,10 +351,70 @@ h1 em{font-style:normal;color:var(--coral);}
 .btn-cta-w{background:#fff;color:var(--teal);}
 .btn-cta-w:hover{background:var(--teal-lt);}
 
+/* SCREENSHOTS */
+.shot{margin:0;background:#fff;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:0 14px 30px rgba(0,0,0,0.06);}
+.shot img{display:block;width:100%;height:auto;}
+.shot figcaption{padding:10px 14px;font-size:0.78rem;color:var(--muted);border-top:1px solid var(--border);}
+.shot-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.gif-pane img.real{object-fit:cover;object-position:top left;}
+
+/* DATA SECTION */
+.data-kicker{display:inline-block;font-size:0.72rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);background:var(--teal-lt);padding:4px 11px;border-radius:20px;margin-bottom:12px;}
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:40px;}
+.stat{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;}
+.stat b{display:block;font-family:'Fredoka';font-size:2rem;line-height:1.05;color:var(--ink);font-variant-numeric:tabular-nums;}
+.stat span{display:block;font-size:0.8rem;color:var(--muted);margin-top:4px;line-height:1.4;}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:48px;}
+.chart-card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:22px 24px;}
+.chart-card h3{font-size:0.95rem;font-weight:800;margin-bottom:2px;}
+.chart-card .note{font-size:0.78rem;color:var(--muted);margin-bottom:16px;}
+.hbar{display:grid;grid-template-columns:minmax(120px,38%) 1fr 64px;align-items:center;gap:10px;margin-bottom:9px;font-size:0.8rem;}
+.hbar .lab{color:var(--ink);font-weight:600;line-height:1.3;}
+.hbar .track{height:14px;border-radius:0 4px 4px 0;background:transparent;}
+.hbar .fill{display:block;height:100%;border-radius:0 4px 4px 0;background:var(--teal-mid);min-width:3px;transition:filter .15s;}
+.hbar:hover .fill{filter:brightness(0.85);}
+.hbar .val{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums;font-family:'JetBrains Mono';font-size:0.74rem;}
+.hbar .val strong{color:var(--ink);font-weight:500;}
+.hbar.hl .fill{background:var(--coral);}
+details.table-view{margin-top:12px;font-size:0.78rem;color:var(--muted);}
+details.table-view summary{cursor:pointer;font-weight:700;}
+details.table-view table{margin-top:8px;border-collapse:collapse;width:100%;}
+details.table-view td,details.table-view th{padding:4px 8px;border-bottom:1px solid var(--border);text-align:left;}
+details.table-view td:last-child,details.table-view th:last-child{text-align:right;font-variant-numeric:tabular-nums;}
+
+.finding-list{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.finding{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:22px 24px;display:flex;flex-direction:column;gap:10px;}
+.finding .num{font-family:'Fredoka';font-size:1.6rem;font-weight:700;color:var(--coral);line-height:1;}
+.finding h3{font-size:1rem;font-weight:800;line-height:1.35;}
+.finding p{font-size:0.86rem;color:var(--muted);}
+.finding .fix{margin-top:auto;font-size:0.82rem;background:var(--off);border-left:3px solid var(--teal-mid);padding:9px 12px;color:var(--ink);}
+.finding .fix b{color:var(--teal);}
+.finding .fix.next{border-left-color:var(--amber-mid);}
+.finding .fix.next b{color:var(--amber);}
+.gap-note{margin:36px auto 0;max-width:760px;font-size:0.86rem;color:var(--muted);text-align:center;}
+
+/* TELEMETRY SECTION */
+.tele-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:40px;align-items:start;}
+.tele-steps{display:flex;flex-direction:column;gap:18px;counter-reset:step;}
+.tele-step{display:grid;grid-template-columns:36px 1fr;gap:14px;}
+.tele-step::before{counter-increment:step;content:counter(step);width:36px;height:36px;border-radius:10px;background:var(--purple-lt);color:var(--purple);font-family:'Fredoka';font-weight:700;font-size:1.1rem;display:flex;align-items:center;justify-content:center;}
+.tele-step h3{font-size:0.95rem;font-weight:800;margin-bottom:3px;}
+.tele-step p{font-size:0.85rem;color:var(--muted);}
+.tele-step code,.event-table code{white-space:nowrap;font-family:'JetBrains Mono';font-size:0.76rem;background:var(--off);padding:1px 6px;border-radius:5px;color:var(--ink);}
+.event-table{width:100%;border-collapse:collapse;font-size:0.82rem;margin-top:28px;background:#fff;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
+.event-table th{background:var(--ink);color:#fff;text-align:left;padding:9px 14px;font-size:0.74rem;letter-spacing:0.04em;text-transform:uppercase;}
+.event-table td{padding:9px 14px;border-top:1px solid var(--border);vertical-align:top;color:var(--muted);}
+.event-table td:first-child{color:var(--ink);font-weight:700;white-space:nowrap;}
+.privacy{margin-top:18px;font-size:0.8rem;color:var(--muted);background:var(--off);border-radius:var(--r-sm);padding:12px 14px;}
+
 footer{background:#0d0d1a;color:rgba(255,255,255,0.3);padding:22px 52px;text-align:center;font-size:0.82rem;}
 
+@media(max-width:600px){.brand>div:last-child{display:none;}.nav-r{gap:4px;}.nav-r .btn{padding:8px 12px;}.nav{height:58px;}}
 @media(max-width:900px){
-  .hero,.ctx-grid,.ba-wrap,.p5-strip{grid-template-columns:1fr;}
+  .hero,.ctx-grid,.ba-wrap,.p5-strip,.shot-grid,.chart-grid,.finding-list,.tele-grid{grid-template-columns:1fr;}
+  .stat-row{grid-template-columns:1fr 1fr;}
+  .nav-link.hide-sm{display:none;}
+  .hbar{grid-template-columns:110px 1fr 56px;}
   .section,.hero,.cta,.nav,.breadcrumb{padding-left:20px;padding-right:20px;}
   h1{font-size:2.2rem;}
   .loop-wrap{gap:0;justify-content:flex-start;}
@@ -362,7 +424,7 @@ footer{background:#0d0d1a;color:rgba(255,255,255,0.3);padding:22px 52px;text-ali
 <body>
 
 <header class="nav">
-  <a href="#" class="brand">
+  <a href="index.html#accessibility" class="brand" aria-label="Back to Lupita Vásquez Fabela’s portfolio">
     <div class="biggi-logo">
       <span class="biggi-letter">B</span>
       <span class="biggi-dotless">i<span class="logo-dot-wrapper"><span class="logo-ring"></span><span class="logo-ring"></span><span class="logo-dot"></span></span></span>
@@ -375,17 +437,19 @@ footer{background:#0d0d1a;color:rgba(255,255,255,0.3);padding:22px 52px;text-ali
     </div>
   </a>
   <div class="nav-r">
-    <a href="#" class="nav-link">How it works</a>
-    <a href="#" class="nav-link">About</a>
-    <a href="https://biggi.fly.dev" class="btn btn-primary">Try BiGGi</a>
+    <a href="#how" class="nav-link hide-sm">How it works</a>
+    <a href="#playtests" class="nav-link hide-sm">What playtests showed</a>
+    <a href="#self-testing" class="nav-link hide-sm">Self-running tests</a>
+    <a href="index.html" class="nav-link">← Portfolio</a>
+    <a href="https://biggi.fly.dev" class="btn btn-primary" target="_blank" rel="noopener">Try BiGGi</a>
   </div>
 </header>
 
 <!-- ── BREADCRUMB ── -->
 <nav class="breadcrumb" aria-label="Breadcrumb">
-  <a href="#">Home</a>
+  <a href="index.html">Portfolio</a>
   <span class="breadcrumb-sep">›</span>
-  <a href="#">Products</a>
+  <a href="index.html#accessibility">Learning &amp; accessibility tools</a>
   <span class="breadcrumb-sep">›</span>
   <span class="breadcrumb-current">BiGGi — p5.js AI Coding Agent</span>
 </nav>
@@ -556,21 +620,19 @@ footer{background:#0d0d1a;color:rgba(255,255,255,0.3);padding:22px 52px;text-ali
     <div class="app-frame">
       <div class="app-titlebar">
         <div class="app-dot d-r"></div><div class="app-dot d-y"></div><div class="app-dot d-g"></div>
-        <span class="app-label">BiGGi — Creating a responsive grid of circles</span>
+        <span class="app-label">BiGGi — “A BIG FROOTS 3D logo”, then “thicken the 3D letters”</span>
       </div>
       <div class="gif-pane">
-        <img src="assets/demo1.gif" alt="BiGGi demo" onerror="this.style.display='none'" />
-        <div class="gif-placeholder"></div>
+        <img class="real" src="biggi/app-3d-logo.webp" alt="The BiGGi app: a main prompt box, the generated p5.js code in the editor, and the live preview rotating orange 3D text" loading="lazy" />
       </div>
     </div>
     <div class="app-frame">
       <div class="app-titlebar">
         <div class="app-dot d-r"></div><div class="app-dot d-y"></div><div class="app-dot d-g"></div>
-        <span class="app-label">BiGGi — Creating a snake mini-game</span>
+        <span class="app-label">BiGGi — “A snake game”, from a playtest</span>
       </div>
       <div class="gif-pane">
-        <img src="assets/demo2.gif" alt="BiGGi demo" onerror="this.style.display='none'" />
-        <div class="gif-placeholder"></div>
+        <img class="real" src="biggi/app-snake.webp" alt="The BiGGi app running a snake game built in a playtest: snake and food squares on a grey canvas next to the generated code" loading="lazy" />
       </div>
     </div>
   </div>
@@ -770,6 +832,10 @@ function draw() {<br>
         BiGGi
       </div>
       <div class="ba-body">
+        <figure class="shot" style="margin-bottom:14px;">
+          <img src="biggi/app-modules.webp" alt="BiGGi Module View listing four modules for the 3D logo: Text Rendering, Setup and Canvas, Lighting, Animation Loop" loading="lazy" />
+          <figcaption>The real Module View: one card per piece of the sketch, each editable on its own.</figcaption>
+        </figure>
         <div class="mod-chips">
           <div class="chip chip-setup">Drawing &amp; Display<span>Render shapes, colors, animation</span></div>
           <div class="chip chip-draw">Input Handling<span>Mouse, keyboard, touch events</span></div>
@@ -799,22 +865,151 @@ function draw() {<br>
   </div>
 </section>
 
+<!-- ═══ WHAT PLAYTESTS SHOWED ═══ -->
+<section class="section sec-o" id="playtests">
+  <div class="sec-hdr">
+    <span class="data-kicker">From BiGGi’s own database · Nov 2025 – Nov 2026</span>
+    <h2>What a year of playtests showed</h2>
+    <p>Every prompt, follow-up, module and AI call BiGGi has handled is stored. Reading that log back turned up what people actually ask for, and a few problems nobody had reported.</p>
+  </div>
+
+  <div class="stat-row" role="list">
+    <div class="stat" role="listitem"><b>420</b><span>first prompts (“make me…”)</span></div>
+    <div class="stat" role="listitem"><b>244</b><span>follow-up prompts (“now make it…”)</span></div>
+    <div class="stat" role="listitem"><b>867k</b><span>tokens across 798 AI calls</span></div>
+    <div class="stat" role="listitem"><b>32</b><span>different names on the busiest playtest day (9 Dec 2025)</span></div>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h3>What people asked BiGGi to build</h3>
+      <p class="note">420 first prompts, grouped by keyword. Median length: 4 words.</p>
+      <div class="hbar" title="Snake: 198 prompts (47%)"><span class="lab">Snake game</span><span class="track"><i class="fill" style="width:100%"></i></span><span class="val"><strong>198</strong> · 47%</span></div>
+      <div class="hbar" title="Other games: 108 prompts (26%)"><span class="lab">Other games (space invaders, frogger, tetris…)</span><span class="track"><i class="fill" style="width:54.5%"></i></span><span class="val"><strong>108</strong> · 26%</span></div>
+      <div class="hbar" title="3D objects: 54 prompts (13%)"><span class="lab">3D objects</span><span class="track"><i class="fill" style="width:27.3%"></i></span><span class="val"><strong>54</strong> · 13%</span></div>
+      <div class="hbar" title="Visuals and tools: 47 prompts (11%)"><span class="lab">Visuals &amp; tools</span><span class="track"><i class="fill" style="width:23.7%"></i></span><span class="val"><strong>47</strong> · 11%</span></div>
+      <div class="hbar" title="Greetings and tests: 13 prompts (3%)"><span class="lab">“Hi” and tests</span><span class="track"><i class="fill" style="width:6.6%"></i></span><span class="val"><strong>13</strong> · 3%</span></div>
+      <details class="table-view"><summary>Show as a table</summary>
+        <table><tr><th>Category</th><th>Prompts</th></tr><tr><td>Snake game</td><td>198</td></tr><tr><td>Other games</td><td>108</td></tr><tr><td>3D objects</td><td>54</td></tr><tr><td>Visuals &amp; tools</td><td>47</td></tr><tr><td>“Hi” and tests</td><td>13</td></tr></table>
+      </details>
+    </div>
+    <div class="chart-card">
+      <h3>What they changed next</h3>
+      <p class="note">244 follow-ups. <span style="color:var(--coral);font-weight:700;">Coral</span> = tuning a single value: 45% of all follow-ups.</p>
+      <div class="hbar" title="Game rules: 88 follow-ups (36%)"><span class="lab">Game rules (collide, score, game over)</span><span class="track"><i class="fill" style="width:100%"></i></span><span class="val"><strong>88</strong> · 36%</span></div>
+      <div class="hbar hl" title="Size and position: 47 follow-ups (19%)"><span class="lab">Size &amp; position</span><span class="track"><i class="fill" style="width:53.4%"></i></span><span class="val"><strong>47</strong> · 19%</span></div>
+      <div class="hbar" title="Other: 37 follow-ups (15%)"><span class="lab">Other / new idea</span><span class="track"><i class="fill" style="width:42%"></i></span><span class="val"><strong>37</strong> · 15%</span></div>
+      <div class="hbar hl" title="Colour and look: 33 follow-ups (14%)"><span class="lab">Colour &amp; look</span><span class="track"><i class="fill" style="width:37.5%"></i></span><span class="val"><strong>33</strong> · 14%</span></div>
+      <div class="hbar hl" title="Speed: 29 follow-ups (12%)"><span class="lab">Speed</span><span class="track"><i class="fill" style="width:33%"></i></span><span class="val"><strong>29</strong> · 12%</span></div>
+      <div class="hbar" title="New feature: 6 follow-ups (2%)"><span class="lab">New feature</span><span class="track"><i class="fill" style="width:6.8%"></i></span><span class="val"><strong>6</strong> · 2%</span></div>
+      <div class="hbar" title="Pasted an error: 4 follow-ups (2%)"><span class="lab">Pasted an error</span><span class="track"><i class="fill" style="width:4.5%"></i></span><span class="val"><strong>4</strong> · 2%</span></div>
+      <details class="table-view"><summary>Show as a table</summary>
+        <table><tr><th>Follow-up</th><th>Count</th></tr><tr><td>Game rules</td><td>88</td></tr><tr><td>Size &amp; position</td><td>47</td></tr><tr><td>Other / new idea</td><td>37</td></tr><tr><td>Colour &amp; look</td><td>33</td></tr><tr><td>Speed</td><td>29</td></tr><tr><td>New feature</td><td>6</td></tr><tr><td>Pasted an error</td><td>4</td></tr></table>
+      </details>
+    </div>
+  </div>
+
+  <div class="finding-list">
+    <article class="finding">
+      <span class="num">45%</span>
+      <h3>Almost half the follow-ups only change one number</h3>
+      <p>“Slow down”, “make the squares a little bigger”, “make the food red”. Each one is a full AI round trip (about 1,100 tokens in) to edit a value a learner could change themselves.</p>
+      <div class="fix next"><b>Next:</b> show size, speed and colour as sliders on each module card. The tweak costs nothing, and the slider points at the line of code it changes.</div>
+    </article>
+    <article class="finding">
+      <span class="num">7%</span>
+      <h3>In busy playtests, people could get someone else’s game</h3>
+      <p>“Insert Full Code” fetched the newest build in the database, not yours. In up to 25 of 350 builds, another person started a session within the next 60 seconds, close enough to receive their code instead.</p>
+      <div class="fix"><b>Fixed:</b> every request now names its own session, and a returning visitor only gets back their own last work.</div>
+    </article>
+    <article class="finding">
+      <span class="num">200</span>
+      <h3>Failed generations looked like success</h3>
+      <p>When the AI call failed, the server still answered “200 OK”, so the app said “Code is ready — check the editor!” over an empty editor.</p>
+      <div class="fix"><b>Fixed:</b> a failed generation now returns an error, the button goes back to Send, and the failure is logged with how long it took.</div>
+    </article>
+    <article class="finding">
+      <span class="num">9</span>
+      <h3>People typed their prompt into the name box</h3>
+      <p>Sessions named “I want a snake game” or “I want a pastel neon snake game”: the pop-up asking for a name looked like the place to start.</p>
+      <div class="fix next"><b>Next:</b> drop the pop-up for a small name field beside the prompt. Until then, each visit is flagged when the name reads like a prompt.</div>
+    </article>
+    <article class="finding">
+      <span class="num">47%</span>
+      <h3>Everyone starts with a snake</h3>
+      <p>Nearly half of all first prompts are a snake game, most of them 3–4 words long. Eleven first prompts were just “Hi”. A blank box gives beginners little to go on.</p>
+      <div class="fix next"><b>Next:</b> example prompts under the box (a bouncing ball, a drawing pad, a 3D dice) so the first prompt is a choice, not a blank.</div>
+    </article>
+    <article class="finding">
+      <span class="num">185</span>
+      <h3>Modules do get changed after BiGGi writes them</h3>
+      <p>185 module versions were saved after generation, across 43 sessions. A build has a median of 4 modules, small enough to read one at a time.</p>
+      <div class="fix"><b>Now measured:</b> typing in the editor and in module cards is logged separately from accepted AI edits, so “did they code it themselves?” has an answer.</div>
+    </article>
+  </div>
+
+  <figure class="shot" style="margin-top:40px;">
+    <img src="biggi/admin-overview.webp" alt="BiGGi admin overview: 163 people, 420 main prompts, 244 debug prompts, 867,424 tokens used, last prompt November 10, 2026" loading="lazy" />
+    <figcaption>Where the numbers come from: the BiGGi admin page, reading the live database.</figcaption>
+  </figure>
+
+  <p class="gap-note">What the old log <strong>couldn’t</strong> say: 502 of its 852 “sessions” were page loads rather than builds; follow-ups got a new id each time (239 ids for 244 follow-ups, only 2 linked to the build they changed); runtime errors appeared on screen but were never stored (0 rows); and more than half the sessions were me, testing under variations of my own name. The next section is how the app now fills those gaps on its own.</p>
+</section>
+
+<!-- ═══ SELF-RUNNING PLAYTESTS ═══ -->
+<section class="section sec-w" id="self-testing">
+  <div class="sec-hdr">
+    <span class="data-kicker">Built into the app</span>
+    <h2>Playtests that run themselves</h2>
+    <p>No moderator, no survey, no screen recording. People use BiGGi, and the app writes down what a playtest needs to know.</p>
+  </div>
+
+  <div class="tele-grid">
+    <div>
+      <div class="tele-steps">
+        <div class="tele-step"><div><h3>Share a study link</h3><p><code>biggi.fly.dev/?study=dec-class&amp;task=snake</code> tags every visit with the study and the task. Open <code>?internal=1</code> once on your own devices and your visits stay out of the results.</p></div></div>
+        <div class="tele-step"><div><h3>People just use the app</h3><p>Each visit sends small batches of events every few seconds, plus one last batch when the tab closes. One visit id ties the name, the build, every follow-up and every run together.</p></div></div>
+        <div class="tele-step"><div><h3>Read the report</h3><p><code>/admin/playtest</code> shows the funnel from name to export, time to first prompt and first run, the most common runtime errors, and one row per visit with anything worrying in red.</p></div></div>
+      </div>
+      <p class="privacy">Events carry counts, timings and error messages only. Prompts and code already live in their own tables and are not copied into the event log. Names are whatever people type, so a study can use nicknames.</p>
+    </div>
+    <figure class="shot">
+      <img src="biggi/playtest-report.webp" alt="The new BiGGi playtest report: stat cards for visits, time to first prompt and first run, error rates, a funnel from entering a name to exporting, the most common runtime error, and a table of visits" loading="lazy" />
+      <figcaption>The playtest report, filled by two scripted test visits (not real participants) to check the whole loop end to end.</figcaption>
+    </figure>
+  </div>
+
+  <div style="overflow-x:auto;">
+  <table class="event-table">
+    <tr><th>Moment</th><th>Recorded automatically</th><th>Answers</th></tr>
+    <tr><td>Arrives</td><td><code>visit_start</code> <code>name_entered</code></td><td>Who came back? Did the name box get a prompt typed into it?</td></tr>
+    <tr><td>Builds</td><td><code>prompt_sent</code> <code>prompt_done</code> <code>prompt_failed</code></td><td>How long until the first prompt? How long did generation take, and did it fail?</td></tr>
+    <tr><td>Runs</td><td><code>run</code> <code>run_ok</code> <code>runtime_error</code></td><td>Did the code work the first time? Which errors keep coming back?</td></tr>
+    <tr><td>Iterates</td><td><code>followup_sent</code> <code>accept</code> <code>reject</code></td><td>How often are AI edits kept, and how long do people take to decide?</td></tr>
+    <tr><td>Codes by hand</td><td><code>editor_edit</code> <code>module_edit</code> <code>module_regenerate</code></td><td>Did they touch the code themselves, and in which module? The learning question.</td></tr>
+    <tr><td>Keeps it</td><td><code>export</code></td><td>Did they leave with a sketch (.js, .html or .png)?</td></tr>
+    <tr><td>Struggles</td><td><code>rage_click</code> <code>help_needed</code> <code>hidden</code></td><td>A button clicked three times in under a second, “it doesn’t work” in a follow-up, or the tab left in the middle of a build.</td></tr>
+  </table>
+  </div>
+</section>
+
 <section class="cta">
   <h2>Start your first p5 sketch</h2>
   <p>Free during beta. No setup, no boilerplate — just prompt and run.</p>
   <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-    <a href="https://biggi.fly.dev" class="btn btn-cta-w btn-lg">Try BiGGi free</a>
+    <a href="https://biggi.fly.dev" class="btn btn-cta-w btn-lg" target="_blank" rel="noopener">Try BiGGi free</a>
+    <a href="index.html" class="btn btn-lg" style="background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,0.5);">← Back to the portfolio</a>
   </div>
 </section>
 
-<footer>© 2025 BIG FROOTS — BiGGi is a p5.js AI coding environment</footer>
+<footer>© 2026 Lupita Vásquez Fabela · BIG FROOTS — BiGGi is a p5.js AI coding environment · <a href="index.html" style="color:inherit;">Back to the portfolio</a></footer>
 
 <div id="modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;justify-content:center;align-items:center;" onclick="closeModal()">
   <div style="background:#fff;border-radius:16px;padding:28px;max-width:720px;width:92%;text-align:center;" onclick="event.stopPropagation()">
     <div style="font-family:'Fredoka';font-size:1.5rem;margin-bottom:8px;">BiGGi in action</div>
     <p style="color:var(--muted);margin-bottom:16px;font-size:0.9rem;">See a full prompt → module → canvas → iterate cycle</p>
-    <video controls style="width:100%;border-radius:10px;background:#111;min-height:220px;" src="assets/demo.mp4">
-      <source src="assets/demo.mp4" type="video/mp4">
+    <video controls preload="none" poster="biggi/app-snake.webp" style="width:100%;border-radius:10px;background:#111;min-height:220px;">
+      <source src="biggi/demo.mp4" type="video/mp4">
     </video>
     <button onclick="closeModal()" style="margin-top:16px;padding:10px 24px;background:var(--coral);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;">Close</button>
   </div>
