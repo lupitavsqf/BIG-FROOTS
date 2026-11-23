@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BiGGi — a p5.js AI coding tutor · Lupita Vásquez Fabela</title>
+<title>BiGGi — a p5.js AI coding tutor · BIG FROOTS</title>
 <meta name="description" content="BiGGi, a modular p5.js AI coding agent for beginners: what a year of playtests showed, and how the app now runs its own user tests.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
@@ -424,7 +424,7 @@ footer{background:#0d0d1a;color:rgba(255,255,255,0.3);padding:22px 52px;text-ali
 <body>
 
 <header class="nav">
-  <a href="index.html#accessibility" class="brand" aria-label="Back to Lupita Vásquez Fabela’s portfolio">
+  <a href="index.html" class="brand" aria-label="BIG FROOTS home">
     <div class="biggi-logo">
       <span class="biggi-letter">B</span>
       <span class="biggi-dotless">i<span class="logo-dot-wrapper"><span class="logo-ring"></span><span class="logo-ring"></span><span class="logo-dot"></span></span></span>
@@ -440,16 +440,16 @@ footer{background:#0d0d1a;color:rgba(255,255,255,0.3);padding:22px 52px;text-ali
     <a href="#how" class="nav-link hide-sm">How it works</a>
     <a href="#playtests" class="nav-link hide-sm">What playtests showed</a>
     <a href="#self-testing" class="nav-link hide-sm">Self-running tests</a>
-    <a href="index.html" class="nav-link">← Portfolio</a>
+    <a href="index.html" class="nav-link">← BIG FROOTS</a>
     <a href="https://biggi.fly.dev" class="btn btn-primary" target="_blank" rel="noopener">Try BiGGi</a>
   </div>
 </header>
 
 <!-- ── BREADCRUMB ── -->
 <nav class="breadcrumb" aria-label="Breadcrumb">
-  <a href="index.html">Portfolio</a>
+  <a href="index.html">Home</a>
   <span class="breadcrumb-sep">›</span>
-  <a href="index.html#accessibility">Learning &amp; accessibility tools</a>
+  <a href="index.html">Products</a>
   <span class="breadcrumb-sep">›</span>
   <span class="breadcrumb-current">BiGGi — p5.js AI Coding Agent</span>
 </nav>
@@ -620,19 +620,21 @@ footer{background:#0d0d1a;color:rgba(255,255,255,0.3);padding:22px 52px;text-ali
     <div class="app-frame">
       <div class="app-titlebar">
         <div class="app-dot d-r"></div><div class="app-dot d-y"></div><div class="app-dot d-g"></div>
-        <span class="app-label">BiGGi — “A BIG FROOTS 3D logo”, then “thicken the 3D letters”</span>
+        <span class="app-label">BiGGi — Creating a responsive grid of circles</span>
       </div>
       <div class="gif-pane">
-        <img class="real" src="biggi/app-3d-logo.webp" alt="The BiGGi app: a main prompt box, the generated p5.js code in the editor, and the live preview rotating orange 3D text" loading="lazy" />
+        <img src="assets/demo1.gif" alt="BiGGi demo" onerror="this.style.display='none'" />
+        <div class="gif-placeholder"></div>
       </div>
     </div>
     <div class="app-frame">
       <div class="app-titlebar">
         <div class="app-dot d-r"></div><div class="app-dot d-y"></div><div class="app-dot d-g"></div>
-        <span class="app-label">BiGGi — “A snake game”, from a playtest</span>
+        <span class="app-label">BiGGi — Creating a snake mini-game</span>
       </div>
       <div class="gif-pane">
-        <img class="real" src="biggi/app-snake.webp" alt="The BiGGi app running a snake game built in a playtest: snake and food squares on a grey canvas next to the generated code" loading="lazy" />
+        <img src="assets/demo2.gif" alt="BiGGi demo" onerror="this.style.display='none'" />
+        <div class="gif-placeholder"></div>
       </div>
     </div>
   </div>
@@ -833,7 +835,7 @@ function draw() {<br>
       </div>
       <div class="ba-body">
         <figure class="shot" style="margin-bottom:14px;">
-          <img src="biggi/app-modules.webp" alt="BiGGi Module View listing four modules for the 3D logo: Text Rendering, Setup and Canvas, Lighting, Animation Loop" loading="lazy" />
+          <img src="assets/biggi-app-modules.webp" alt="BiGGi Module View listing four modules for the 3D logo: Text Rendering, Setup and Canvas, Lighting, Animation Loop" loading="lazy" />
           <figcaption>The real Module View: one card per piece of the sketch, each editable on its own.</figcaption>
         </figure>
         <div class="mod-chips">
@@ -949,7 +951,7 @@ function draw() {<br>
   </div>
 
   <figure class="shot" style="margin-top:40px;">
-    <img src="biggi/admin-overview.webp" alt="BiGGi admin overview: 163 people, 420 main prompts, 244 debug prompts, 867,424 tokens used, last prompt November 10, 2026" loading="lazy" />
+    <img src="assets/biggi-admin-overview.webp" alt="BiGGi admin overview: 163 people, 420 main prompts, 244 debug prompts, 867,424 tokens used, last prompt November 10, 2026" loading="lazy" />
     <figcaption>Where the numbers come from: the BiGGi admin page, reading the live database.</figcaption>
   </figure>
 
@@ -974,7 +976,7 @@ function draw() {<br>
       <p class="privacy">Events carry counts, timings and error messages only. Prompts and code already live in their own tables and are not copied into the event log. Names are whatever people type, so a study can use nicknames.</p>
     </div>
     <figure class="shot">
-      <img src="biggi/playtest-report.webp" alt="The new BiGGi playtest report: stat cards for visits, time to first prompt and first run, error rates, a funnel from entering a name to exporting, the most common runtime error, and a table of visits" loading="lazy" />
+      <img src="assets/biggi-playtest-report.webp" alt="The new BiGGi playtest report: stat cards for visits, time to first prompt and first run, error rates, a funnel from entering a name to exporting, the most common runtime error, and a table of visits" loading="lazy" />
       <figcaption>The playtest report, filled by two scripted test visits (not real participants) to check the whole loop end to end.</figcaption>
     </figure>
   </div>
@@ -998,18 +1000,18 @@ function draw() {<br>
   <p>Free during beta. No setup, no boilerplate — just prompt and run.</p>
   <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
     <a href="https://biggi.fly.dev" class="btn btn-cta-w btn-lg" target="_blank" rel="noopener">Try BiGGi free</a>
-    <a href="index.html" class="btn btn-lg" style="background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,0.5);">← Back to the portfolio</a>
+    <a href="index.html" class="btn btn-lg" style="background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,0.5);">← Back to BIG FROOTS</a>
   </div>
 </section>
 
-<footer>© 2026 Lupita Vásquez Fabela · BIG FROOTS — BiGGi is a p5.js AI coding environment · <a href="index.html" style="color:inherit;">Back to the portfolio</a></footer>
+<footer>© 2026 BIG FROOTS — BiGGi is a p5.js AI coding environment · <a href="index.html" style="color:inherit;">BIG FROOTS home</a></footer>
 
 <div id="modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;justify-content:center;align-items:center;" onclick="closeModal()">
   <div style="background:#fff;border-radius:16px;padding:28px;max-width:720px;width:92%;text-align:center;" onclick="event.stopPropagation()">
     <div style="font-family:'Fredoka';font-size:1.5rem;margin-bottom:8px;">BiGGi in action</div>
     <p style="color:var(--muted);margin-bottom:16px;font-size:0.9rem;">See a full prompt → module → canvas → iterate cycle</p>
-    <video controls preload="none" poster="biggi/app-snake.webp" style="width:100%;border-radius:10px;background:#111;min-height:220px;">
-      <source src="biggi/demo.mp4" type="video/mp4">
+    <video controls style="width:100%;border-radius:10px;background:#111;min-height:220px;" src="assets/demo.mp4">
+      <source src="assets/demo.mp4" type="video/mp4">
     </video>
     <button onclick="closeModal()" style="margin-top:16px;padding:10px 24px;background:var(--coral);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;">Close</button>
   </div>
